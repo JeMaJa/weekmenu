@@ -11,6 +11,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nl.jemaja.weekmenu.model.HealthScore;
 
 /**
  * @author yannick.tollenaere
@@ -22,8 +23,11 @@ import lombok.NoArgsConstructor;
 @Builder
 public class RecipeDto {
 	
-	private long RecipeId;
-    private String RecipeName;
-    private String url;
-
+	private long recipeId;
+    private String recipeName;
+    private String externalUrl;
+    private String description;
+    private boolean vega;
+    private boolean workdayOk;
+    private HealthScore healthScore;
 }
