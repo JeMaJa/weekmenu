@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.sql.Date;
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.TreeMap;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -15,7 +16,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 
+import nl.jemaja.weekmenu.config.DataSetup;
 import nl.jemaja.weekmenu.dto.RecipeDto;
 import nl.jemaja.weekmenu.dto.mapper.RecipeMapper;
 import nl.jemaja.weekmenu.model.Complexity;
@@ -24,6 +30,7 @@ import nl.jemaja.weekmenu.model.HealthScore;
 import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.service.RecipeService;
 import nl.jemaja.weekmenu.util.TestDataRunner;
+import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
 
 /**
  * @author yannick.tollenaere
@@ -32,11 +39,11 @@ import nl.jemaja.weekmenu.util.TestDataRunner;
 @SpringBootTest
 //@ExtendWith(TestDataRunner.class)
 class RecipeTest {
-	@MockBean
-	static 
-	RecipeService rService;
+
 	@Autowired
 	RecipeService recipeService;
+	
+	
 	
 	//@Autowired
 	//RecipeMapper mapper;
@@ -101,16 +108,24 @@ class RecipeTest {
 	}
 	
 	@Test
-	void findStoofvlees() {
+	void duplicateTest() {
 		
-		TestDataRunner();
-		
-		List<Recipe> recList = recipeService.findByRecipeName("Stoofvlees op grootmoeders wijze");
-		
-		//Recipe rec = recList.get(0);
-		System.out.println(recList.toString());
+			Recipe recipe = Recipe.builder()
+					.recipeName("test recipe123")
+					.description("De beschrijving")
+					.build();
+			recipeService.save(recipe);
+			Recipe recipe2 = Recipe.builder()
+					.recipeName("test recipe123")
+					.description("De andere beschrijving")
+					.build();
+			TreeMap<String, Object> recipeTree = recipeService.save(recipe);
+			Recipe recipe3 = (Recipe) recipeTree.get("Recipe");
+			assertEquals(recipe,recipe3);
 		
 	}
+	
+	
 	
 	@Test
 	void mapperTest() {
@@ -121,27 +136,31 @@ class RecipeTest {
 						.build();
 		
 		RecipeDto dto = mapper.recipeToRecipeDto(rec);
-		System.out.println("mappertest: "+dto.getRecipeName());
+		
+		Recipe rec2 = mapper.recipeDtoToRecipe(dto);
+		assertEquals(rec.getRecipeName(),rec2.getRecipeName());
+		
+	}
+	
+	@Test
+	void lastTest() {
+		
+		DataSetup.recipes(recipeService);
+		List<Recipe> list = recipeService.findLastEaten();
+		System.out.println("Longest not eaten: "+list.get(0).getRecipeName());
+	}
+	
+	@Test
+	void lastPageTest(){
+		DataSetup.recipes(recipeService);
+		Pageable sortedLastEatenAsc = 
+				  PageRequest.of(0, 5, Sort.by("lastEaten").ascending());
+		Page<Recipe> page = recipeService.findLastEatenPage(sortedLastEatenAsc);
+		for(int i=0;i<5;i++) {
+			System.out.println(i+ "recipe on Page:" +page.getContent().get(i).getRecipeName());
+		}
 		
 	}
 
-	public void TestDataRunner() {
-		
-		//RecipeService rs = new RecipeService();
-		
-		Recipe R1 = Recipe.builder()
-					.recipeName("Stoofvlees op grootmoeders wijze")
-					.vega(false)
-					.complexity(Complexity.COMPLEX)
-					.workdayOk(false)
-					.healthScore(HealthScore.D)
-					.build();
-		try {
-			System.out.println("Going to save");
-			R1 = recipeService.save(R1);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
+
 }

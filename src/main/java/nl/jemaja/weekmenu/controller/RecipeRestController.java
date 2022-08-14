@@ -3,70 +3,68 @@
  */
 package nl.jemaja.weekmenu.controller;
 
+import java.net.http.HttpResponse;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import lombok.extern.slf4j.Slf4j;
+import nl.jemaja.weekmenu.config.DataSetup;
 import nl.jemaja.weekmenu.model.Complexity;
 import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.model.RecipeList;
 import nl.jemaja.weekmenu.repository.RecipeRepository;
+import nl.jemaja.weekmenu.service.DayRecipeService;
+import nl.jemaja.weekmenu.service.PlannerService;
 import nl.jemaja.weekmenu.service.RecipeService;
 
 /**
  * @author yannick.tollenaere
  *
  */
+@Slf4j
 @RestController
 public class RecipeRestController {
 	
 	@Autowired
-	private RecipeService recipeService;
+	RecipeService recipeService;
 	
 	@Autowired
-	private RecipeRepository recipeRepository;
+	RecipeRepository recipeRepository;
 	
-	/*
-	 * @GetMapping("/test")
-	 
-	public String getRecipe(ModelMap model) {
-		Recipe rec = Recipe.builder()
-					.recipeName("Goulash")
-					.build();
-		
-		try {
-			recipeService.save(rec);
-		} catch (Exception e) {
-			System.out.println("Boeoeoeoeoe");
-		}
-		Recipe rec2 = Recipe.builder()
-				.recipeName("Soep")
-				.build();
+	@Autowired
+	DayRecipeService dRService;
 	
-		try {
-			recipeService.save(rec);
-		} catch (Exception e) {
-			System.out.println("Boeoeoeoeoe");
-		}
-		RecipeList recipeList = new RecipeList();
-		//to do, make a query to get all the recipies from the DB and put them in recipeList
-		model.put("recipeList", recipeList);
-		
-		
-		
-		return "recipe";
-		
-	}
-	*/
+
+
 	
 	@GetMapping(path = "/blaat", produces = MediaType.APPLICATION_JSON_VALUE) 
 	public List<Recipe> getRecipes() {
 		return recipeRepository.findAll();
+	}
+	
+	@GetMapping(path = "/init", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity init() {
+		ResponseEntity response = new ResponseEntity(HttpStatus.OK);
+		
+		try {
+			DataSetup.days(dRService);
+			DataSetup.recipes(recipeService);
+		} catch (Exception e) {
+			response.status(HttpStatus.INTERNAL_SERVER_ERROR);
+			log.error(e.getStackTrace().toString());
+		}
+		
+		
+		return response;
+		
 	}
 	
 

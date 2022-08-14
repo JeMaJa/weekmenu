@@ -7,18 +7,9 @@ import org.springframework.stereotype.Component;
 
 import nl.jemaja.weekmenu.dto.RecipeDto;
 import nl.jemaja.weekmenu.model.Recipe;
-/*
- * 
- * 	private long recipeId;
-    private String recipeName;
-    private String externalUrl;
-    private String description;
-    private boolean vega;
-    private boolean workdayOk;
-    private boolean healthScore;
- */
+
 @Component
-public class RecipeMapper{
+public class RecipeMapper {
 	public Recipe recipeDtoToRecipe(RecipeDto recipeDto) {
 		return Recipe.builder()
 				.recipeName(recipeDto.getRecipeName())
@@ -28,6 +19,8 @@ public class RecipeMapper{
 				.vega(recipeDto.isVega())
 				.workdayOk(recipeDto.isWorkdayOk())
 				.healthScore(recipeDto.getHealthScore())
+				.complexity(recipeDto.getComplexity())
+				.coolDown(recipeDto.isCooldDown())
 				.build();
 	}
 	
@@ -40,6 +33,8 @@ public class RecipeMapper{
 				.vega(recipe.isVega())
 				.workdayOk(recipe.isWorkdayOk())
 				.healthScore(recipe.getHealthScore())
+				.complexity(recipe.getComplexity())
+				.cooldDown(recipe.isCoolDown())
 				.build();
 	}
 

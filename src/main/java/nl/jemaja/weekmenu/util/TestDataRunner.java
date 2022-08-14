@@ -5,8 +5,7 @@ package nl.jemaja.weekmenu.util;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import nl.jemaja.weekmenu.model.Complexity;
-import nl.jemaja.weekmenu.model.HealthScore;
+
 import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.service.DayRecipeService;
 import nl.jemaja.weekmenu.service.RecipeService;
@@ -27,9 +26,9 @@ public class TestDataRunner {
 		Recipe R1 = Recipe.builder()
 					.recipeName("Stoofvlees op grootmoeders wijze")
 					.vega(false)
-					.complexity(Complexity.COMPLEX)
+					.complexity(1)
 					.workdayOk(false)
-					.healthScore(HealthScore.D)
+					.healthScore(1)
 					.build();
 	}
 	

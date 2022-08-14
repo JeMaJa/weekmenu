@@ -7,31 +7,45 @@
 <body>
 	<div class="container">
 	<h2>Add new recipe.</h2>
+	<div th:if="${infoDto.type == 'Error'}" class="alert alert-danger" role="alert" th:text="${infoDto.body}">Error</div>
+	<div th:if="${infoDto.type == 'Succes'}" class="alert alert-success" role="alert" th:text="${infoDto.body}">Succes</div>
+	<div th:if="${infoDto.type == 'Duplicate'}" class="alert alert-success" role="alert" th:text="${infoDto.body}">Succes</div>
+	
 	<form method="post" action="" id="frmNewRecipe">
 	<div class="mb-3">
 	  <label for="recipeName" class="form-label">Recipe name:</label>
 	  <input type="text" class="form-control" th:field="${recipeDto.recipeName}" placeholder="stoofvlees">
+	  <div th:if="${#fields.hasErrors('recipeDto.recipeName')}">Invalid recipe name</div>
 	</div>
 	<div class="mb-3">
 	  <label for="description" class="form-label">Description</label>
-	  <textarea class="form-control" id="description" rows="5"></textarea>
+	  <textarea class="form-control" th:field="${recipeDto.description}"rows="5"></textarea>
 	</div>
 	<div class="form-check">
-  		<input class="form-check-input" type="checkbox" value="" id="vega">
+  		<input class="form-check-input" type="checkbox" value="" th:field="${recipeDto.vega}">
   		<label class="form-check-label" for="vega">
     	Vegetarian
   		</label>
 	</div>
 	<div class="form-check">
-  		<input class="form-check-input" type="checkbox" value="" id="workdayOk">
+  		<input class="form-check-input" type="checkbox" value="" th:field="${recipeDto.workdayOk}">
   		<label class="form-check-label" for="workdayOk">
     	Workday Ok
   		</label>
 	</div>
 	<div class="mb-3">
 		<label for="healthScore" class="form-label">Health Score</label>
-		<input type="range" class="form-range" min="0" max="5" step="1" id="healthScore">
+		<input type="range" class="form-range" min="0" max="5" step="1" th:field="${recipeDto.healthScore}">
+	</div>
 	<div class="mb-3">
+		<label for="complexity" class="form-label">Complexity</label>
+		<input type="range" class="form-range" min="0" max="5" step="1" th:field="${recipeDto.complexity}">
+	</div>
+	<div class="mb-3">
+	  <label for="externalUrl" class="form-label">Link:</label>
+	  <input type="url" class="form-control" th:field="${recipeDto.externalUrl}" placeholder="www.jemaja.nl">
+	  <div th:if="${#fields.hasErrors('recipeDto.externalUrl')}">Invalid link</div>
+	</div>
 	<input type="submit">
 	</form>
 	

@@ -29,5 +29,7 @@ public class RecipeDto {
     private String description;
     private boolean vega;
     private boolean workdayOk;
-    private HealthScore healthScore;
+    private boolean cooldDown;
+    private int healthScore;
+    private int complexity;
 }
