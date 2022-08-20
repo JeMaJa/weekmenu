@@ -55,7 +55,7 @@ public class RecipeRestController {
 		ResponseEntity response = new ResponseEntity(HttpStatus.OK);
 		
 		try {
-			DataSetup.days(dRService);
+			//DataSetup.days(dRService);
 			DataSetup.recipes(recipeService);
 		} catch (Exception e) {
 			response.status(HttpStatus.INTERNAL_SERVER_ERROR);

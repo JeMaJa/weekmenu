@@ -8,16 +8,25 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.dto.DayRecipeDto;
 import nl.jemaja.weekmenu.dto.InfoDto;
+import nl.jemaja.weekmenu.dto.RecipeDto;
 import nl.jemaja.weekmenu.dto.mapper.DayRecipeMapper;
+import nl.jemaja.weekmenu.dto.mapper.RecipeMapper;
 import nl.jemaja.weekmenu.model.DayRecipe;
+import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.service.DayRecipeService;
 import nl.jemaja.weekmenu.service.PlannerService;
 import nl.jemaja.weekmenu.service.RecipeService;
@@ -48,6 +57,8 @@ public class MenuController {
 		Calendar cal = Calendar.getInstance();
 		InfoDto infoDto = new InfoDto();
 		List<DayRecipeDto> dayRecipeDtos = new ArrayList<DayRecipeDto>();
+		
+		
 		DayRecipeMapper mapper = new DayRecipeMapper();
 		
 		if(from == null) {
@@ -78,9 +89,35 @@ public class MenuController {
 		for(int i =0; i<dayRecipeList.size();i++) {
 			dayRecipeDtos.add(mapper.dayRecipeToDayRecipeDto(dayRecipeList.get(i)));
 		}
+		List<RecipeDto> recipeDtos = new ArrayList<RecipeDto>();
+		List<Recipe> recipeList = rService.findAll();
+		RecipeMapper rMapper = new RecipeMapper();
+		
+		for(int i =0;i<recipeList.size();i++) {
+			recipeDtos.add(rMapper.recipeToRecipeDto(recipeList.get(i)));
+		}
+		RecipeDto dr = new RecipeDto();
+		model.put("recipeDto1", dr);
+		
+		model.put("recipeDtos", recipeDtos);
+		
 		model.put("dayRecipeDtos", dayRecipeDtos);
 		model.put("infoDto", infoDto);
 		
+		return "period";
+	}
+	
+	@PostMapping(path = "/updatedayrecipe")
+	public RedirectView submitPost(
+			  HttpServletRequest request, 
+			  @ModelAttribute RecipeDto recipeDto, 
+			  RedirectAttributes redirectAttributes) {
+				return null;
+		
+	}
+	
+	@GetMapping(path ="/boehoe")
+	String boehoe(ModelMap model,Long recipe, Date date) {
 		return "period";
 	}
 	

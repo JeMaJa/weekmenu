@@ -4,6 +4,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.hibernate.sql.Update;
@@ -240,6 +241,10 @@ public class DayRecipeService {
 		}
 		
 		return returnList;
+	}
+	public DayRecipe findById(long dayRecipeId) {
+		Optional<DayRecipe> opt = dayRecipeRepo.findById(dayRecipeId);
+		return  opt.get();
 	}
 
 

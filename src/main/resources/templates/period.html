@@ -15,6 +15,8 @@
 	src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
 	integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
 	crossorigin="anonymous"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>	
+
 <div class="container px-4 text-center">
 
 <div class="p-3"><!-- Navigation start -->
@@ -51,7 +53,7 @@
 	  </button>
 	  <ul class="dropdown-menu">
 	    <li><a class="dropdown-item" href="#">Accept suggestion</a></li>
-	    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal1">Choose other recipe</a></li>
+	    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal1" th:data-whatever="${dayRecipeDto.date}">Choose other recipe</a></li>
 	    <li><a class="dropdown-item" href="#">Suggest other recipe</a></li>
 	    <li><hr class="dropdown-divider"></li>
 	    <li><a class="dropdown-item" href="#">Modify recipe</a></li>
@@ -67,15 +69,26 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="exampleModalLabel">Choose other recipe</h5>
+        <h5 class="modal-title" id="ModalLabel">Choose other recipe</h5>
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        Here we need to load the recipe selector form
+        
+        	<form method="get" id="modalform" action="/boeboe">
+        	<div class="mydate row-sm">
+        	Date:
+        	<input type="date" class="form-control" id="date" name="date"></div>
+        	<div class="row-sm">
+        	<select class="form-control" id="recipeId" name="recipeId">
+    			<option value="default">Select another recipe</option>
+    			<option th:each="recipeDto: ${recipeDtos}" th:value="${recipeDto.recipeId}"th:text="${recipeDto.recipeName }"/>
+			</select></div>
+        	</form>
+        
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Accept</button>
+        <button type="button" class="btn btn-primary" id="modalAccept">Accept</button>
       </div>
     </div>
   </div>
@@ -86,11 +99,23 @@
 <!--div class="fixed-bottom">-->
 <!--  <div class="fixed-bottom">Copyright &copy 2022 Yannick Tollenaere. <br>This application is licensed under the <a href="https://raw.githubusercontent.com/JeMaJa/weekmenu/main/LICENSE.md">MIT License</a><br></div>
 <!-- </div>-->
+<p><br><br><br>
+<script>$('#modal1').on('show.bs.modal', function (event) {
+	  var button = $(event.relatedTarget) // Button that triggered the modal
+	  var date = button.data('whatever') // Extract info from data-* attributes
+	  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+	  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+	  var modal = $(this)
+	  modal.find('.modal-title').text('New recipe for:  ' + date)
+	  modal.find('.mydate input').val(date)
+	})</script>
 
+
+<p><br><br><br>
 </div>
 <div class="container fixed-bottom">Copyright &copy 2022 Yannick Tollenaere. <br>This application is licensed under the <a href="https://raw.githubusercontent.com/JeMaJa/weekmenu/main/LICENSE.md">MIT License</a><br></div>
 
-
+<script type="text/javascript" src="/js/period.js"></script>
 
 </body>
 

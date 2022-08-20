@@ -173,6 +173,10 @@ public class RecipeService {
 		
 	}
 
+	public List<Recipe> findAll() {
+				return recipeRepo.findAll();
+	}
+
 
 
 }
