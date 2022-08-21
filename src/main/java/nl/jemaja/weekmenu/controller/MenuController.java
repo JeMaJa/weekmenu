@@ -29,6 +29,7 @@ import nl.jemaja.weekmenu.dto.mapper.DayRecipeMapper;
 import nl.jemaja.weekmenu.dto.mapper.RecipeMapper;
 import nl.jemaja.weekmenu.model.DayRecipe;
 import nl.jemaja.weekmenu.model.Recipe;
+import nl.jemaja.weekmenu.repository.DayRecipeRepository;
 import nl.jemaja.weekmenu.service.DayRecipeService;
 import nl.jemaja.weekmenu.service.PlannerService;
 import nl.jemaja.weekmenu.service.RecipeService;
@@ -52,6 +53,9 @@ public class MenuController {
 	
 	@Autowired
 	DayRecipeService dRService;
+	
+	@Autowired
+	DayRecipeRepository dRRepo;
 	
 	
 	@GetMapping(path = "/")
@@ -81,6 +85,7 @@ public class MenuController {
 		//plan these days.
 		try {
 			plannerService.planPeriod(from, to);
+			
 		} catch (NoRecipeFoundException e) {
 			// TODO Auto-generated catch block
 			log.error("No Recipe found exception trown");
@@ -122,25 +127,29 @@ public class MenuController {
 		Recipe recipe = new Recipe();
 		DayRecipe dayRecipe = new DayRecipe();
 		InfoDto infoDto = new InfoDto();
+		infoDto.setBody("Could not update recipe for: "+dayRecipeDto.getDate());
+		infoDto.setType("Warning");
 		log.debug("updatedayrecipe got recipe: "+dayRecipeDto.toString());
 		try {
 			List<DayRecipe> dayRecipeList = dRService.findByDate(dayRecipeDto.getDate());
 			dayRecipe = dayRecipeList.get(0);
+			try {
+				recipe = rService.findByRecipeId(dayRecipeDto.getRecipeId());
+				try {
+					dRService.scheduleDiner(dayRecipe, recipe, rService);
+					infoDto.setBody("Updated menu for: "+dayRecipeDto.getDate());
+					infoDto.setType("Success");
+				} catch (Exception e) {
+					log.error("Could not Schedule dinner");
+				}
+			} catch (Exception e) {
+				log.error("updatedayrecipe did not find a recipe with id "+dayRecipeDto.getRecipeId());
+			}
 		} catch (Exception e) {
 			log.error("updatedayrecipe did not find a day recipe for the provided date: "+dayRecipeDto.getDate());
 		}
-		try {
-			recipe = rService.findByRecipeId(dayRecipeDto.getRecipeId());
-		} catch (Exception e) {
-			log.error("updatedayrecipe did not find a recipe with id "+dayRecipeDto.getRecipeId());
-		}
-		try {
-			dRService.scheduleDiner(dayRecipe, recipe, rService);
-			infoDto.setBody("Updated menu for: "+dayRecipeDto.getDate());
-			infoDto.setType("Success");
-		} catch (Exception e) {
-			log.error("Could not Schedule dinner");
-		}
+		
+		
 		
 		
 		redirectAttributes.addFlashAttribute("updateInfoDto", infoDto);

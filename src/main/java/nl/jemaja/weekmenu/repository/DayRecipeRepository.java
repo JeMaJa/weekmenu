@@ -41,6 +41,8 @@ public interface DayRecipeRepository extends PagingAndSortingRepository<DayRecip
 	@Query("update DayRecipe dr set dr.recipe = ?2, dr.status= ?3 where dr.id = ?1")
 	public void scheduleDinner(long id, Recipe recipe, int status);
 
+	
+
 
 	
 	

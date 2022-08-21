@@ -131,12 +131,14 @@ public class RecipeWebController {
 		  if(result.get("Recipe") != null && result.get("Status").toString().equals("saved")) {
 			  recipe = (Recipe) result.get("Recipe"); 
 			  //we now have the saved Dto, with the right ID
+			  infoDto.setType("Success");
+			  infoDto.setBody("Saved recipe: "+recipe.getRecipeName());
 			  redirectAttributes.addFlashAttribute("recipeDto", recipeDto);
-			  
+			  redirectAttributes.addFlashAttribute("infoDto", infoDto);
 			  return new RedirectView("/recipe/success", true);
 		  } else if(result.get("Status").toString().equals("duplicate")) {
 			  log.debug("in duplicate");
-			  infoDto.setType("Duplicate");
+			  infoDto.setType("Warning");
 			  infoDto.setBody("A recipe with this name already exists.");
 			  redirectAttributes.addFlashAttribute("infoDto", infoDto);
 			  redirectAttributes.addFlashAttribute("recipeDto", recipeDto);
@@ -156,6 +158,9 @@ public class RecipeWebController {
 	      Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
 	      if (inputFlashMap != null) {
 	          RecipeDto recipeDto = (RecipeDto) inputFlashMap.get("recipeDto");
+	          InfoDto infoDto = (InfoDto) inputFlashMap.get("infoDto");
+	          log.debug(infoDto.toString());
+	          log.debug(recipeDto.toString());
 	          return "success";
 	      } else {
 	          return "redirect:/recipe/submit";

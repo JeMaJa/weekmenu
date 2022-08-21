@@ -4,7 +4,7 @@
 package nl.jemaja.weekmenu.config;
 
 import java.util.Calendar;
-import java.util.Date;
+import java.sql.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -34,10 +34,10 @@ public class DataSetup {
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.YEAR, 2022);
 		cal.set(Calendar.DAY_OF_YEAR, 1);    
-		Date start =  cal.getTime();
+		Date start =  new Date(cal.getTimeInMillis());
 		cal.set(Calendar.YEAR, 2024);
 		cal.set(Calendar.DAY_OF_YEAR, 1);    
-		Date end=  cal.getTime();
+		Date end=  new Date(cal.getTimeInMillis());
 		try {
 			dRService.creater(start, end);
 		} catch (Exception e) {
@@ -124,7 +124,7 @@ public class DataSetup {
 		}
 		log.debug("Saved recipe: "+r.getRecipeName());
 		r = Recipe.builder()
-				.recipeName("Lasagne bolognese")
+				.recipeName("Erwten en Wortels met vlees een aardappels.")
 				.workdayOk(true)
 				.vega(false)
 				.description("Lorum Ipsum.")
@@ -154,12 +154,12 @@ public class DataSetup {
 		}
 		log.debug("Saved recipe: "+r.getRecipeName());
 		r = Recipe.builder()
-				.recipeName("Lasagne bolognese")
+				.recipeName("Pizza")
 				.workdayOk(true)
 				.vega(false)
 				.description("Lorum Ipsum.")
-				.complexity(4)
-				.healthScore(4)
+				.complexity(1)
+				.healthScore(1)
 				.lastEaten(java.sql.Date.valueOf("2018-07-23"))
 				.build();
 		try {

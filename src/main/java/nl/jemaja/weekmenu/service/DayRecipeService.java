@@ -247,6 +247,7 @@ public class DayRecipeService {
 		Optional<DayRecipe> opt = dayRecipeRepo.findById(dayRecipeId);
 		return  opt.get();
 	}
+	
 
 
 }

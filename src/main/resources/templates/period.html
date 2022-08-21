@@ -18,31 +18,7 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>	
 
 <div class="container px-4 text-center">
-
-<div class="p-3"><!-- Navigation start -->
-
-<nav class="navbar navbar-expand-lg bg-light">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="#">Weekmenu</a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="recipe/submit">Add new recipe</a>
-        </li>
-	</ul></div></div>      
-</nav>
-
-
-</div><!-- Navigation end -->
-<!-- Error Block -->
-<div th:if="${infoDto.type == 'Error'}" class="alert alert-danger" role="alert" th:text="${infoDto.body}">Error</div>
-<div th:if="${infoDto.type == 'Success'}" class="alert alert-success" role="alert" th:text="${infoDto.body}">Success</div>
+<div th:replace="header"></div>
 <!-- Start block for a day -->
 <div class="row align-items-center" th:each="dayRecipeDto: ${dayRecipeDtos}">
 <div class="col-md-2 gy-1"><div class="p-1 " th:text="${dayRecipeDto.date}">24-07-2018</div></div>
@@ -86,7 +62,7 @@
         	<input type="date" class="form-control" id="date" name="date"></div>
         	<div class="row-sm gy-1">
         	<select class="form-control" id="recipeId" name="recipeId">
-    			<option value="default">Select another recipe</option>
+    			<option value=0>Select another recipe</option>
     			<option th:each="recipeDto: ${recipeDtos}" th:value="${recipeDto.recipeId}"th:text="${recipeDto.recipeName }"/>
 			</select></div>
         	</form>
