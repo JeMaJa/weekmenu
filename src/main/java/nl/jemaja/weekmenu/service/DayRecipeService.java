@@ -162,7 +162,7 @@ public class DayRecipeService {
 		}
 		return 0;
 	}
-	public int creater(java.util.Date start, java.util.Date end) {
+	public int creater(Date start, Date end) {
 		//Generates new DayRecipe items
 		
 		Calendar c = Calendar.getInstance();
@@ -198,6 +198,7 @@ public class DayRecipeService {
 		}
 		return 0;
 	}
+	
 
 	public List<DayRecipe> getOrCreate(Date from, Date to) {
 		Calendar cal = Calendar.getInstance();

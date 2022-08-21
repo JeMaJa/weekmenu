@@ -42,10 +42,16 @@
 </div><!-- Navigation end -->
 <!-- Error Block -->
 <div th:if="${infoDto.type == 'Error'}" class="alert alert-danger" role="alert" th:text="${infoDto.body}">Error</div>
+<div th:if="${infoDto.type == 'Success'}" class="alert alert-success" role="alert" th:text="${infoDto.body}">Success</div>
 <!-- Start block for a day -->
 <div class="row align-items-center" th:each="dayRecipeDto: ${dayRecipeDtos}">
 <div class="col-md-2 gy-1"><div class="p-1 " th:text="${dayRecipeDto.date}">24-07-2018</div></div>
-<div class="col-md-8 gy-1"><div class="p-1 "th:text="${dayRecipeDto.recipeName}">Recipe goes here</div></div>
+<div class="col-md-8 gy-1">
+		
+		<i class="p-1 "th:text="${dayRecipeDto.recipeName}" th:if="${dayRecipeDto.status == 1}" >Recipe goes here</i>
+		<b class="p-1 "th:text="${dayRecipeDto.recipeName}" th:if="${dayRecipeDto.status == 2}" >Recipe goes here</b>
+		
+</div>
 <div class="col-md-2 gy-1"><div class="p-1">
 	<div class="dropdown">
 	  <button class="btn btn-secondary dropdown-toggle btn-sm" type="button" data-bs-toggle="dropdown" aria-expanded="true">
@@ -73,18 +79,18 @@
         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
       </div>
       <div class="modal-body">
-        
-        	<form method="get" id="modalform" action="/boeboe">
-        	<div class="mydate row-sm">
+        <div class="container-sm">
+        	<form method="post" id="modalform" action="/updatedayrecipe">
+        	<div class="mydate row-sm gy-1">
         	Date:
         	<input type="date" class="form-control" id="date" name="date"></div>
-        	<div class="row-sm">
+        	<div class="row-sm gy-1">
         	<select class="form-control" id="recipeId" name="recipeId">
     			<option value="default">Select another recipe</option>
     			<option th:each="recipeDto: ${recipeDtos}" th:value="${recipeDto.recipeId}"th:text="${recipeDto.recipeName }"/>
 			</select></div>
         	</form>
-        
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -100,15 +106,7 @@
 <!--  <div class="fixed-bottom">Copyright &copy 2022 Yannick Tollenaere. <br>This application is licensed under the <a href="https://raw.githubusercontent.com/JeMaJa/weekmenu/main/LICENSE.md">MIT License</a><br></div>
 <!-- </div>-->
 <p><br><br><br>
-<script>$('#modal1').on('show.bs.modal', function (event) {
-	  var button = $(event.relatedTarget) // Button that triggered the modal
-	  var date = button.data('whatever') // Extract info from data-* attributes
-	  // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-	  // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-	  var modal = $(this)
-	  modal.find('.modal-title').text('New recipe for:  ' + date)
-	  modal.find('.mydate input').val(date)
-	})</script>
+
 
 
 <p><br><br><br>

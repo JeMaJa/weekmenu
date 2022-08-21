@@ -8,6 +8,7 @@ package nl.jemaja.weekmenu.model;
 import java.sql.Date;
 import java.time.OffsetDateTime;
 
+import javax.persistence.Cacheable;
 import javax.persistence.Column;
 
 /**
@@ -36,6 +37,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Cacheable(false)
 public class DayRecipe {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Id

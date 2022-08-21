@@ -7,6 +7,7 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import lombok.extern.slf4j.Slf4j;
@@ -53,12 +55,16 @@ public class MenuController {
 	
 	
 	@GetMapping(path = "/")
-	String showPeriod(ModelMap model, Date from, Date to) {
+	String showPeriod(ModelMap model, Date from, Date to, HttpServletRequest request) {
 		Calendar cal = Calendar.getInstance();
 		InfoDto infoDto = new InfoDto();
 		List<DayRecipeDto> dayRecipeDtos = new ArrayList<DayRecipeDto>();
 		
-		
+		 Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
+	      if (inputFlashMap != null) {
+	    	  log.debug("Receive inputflashmap");
+	          infoDto = (InfoDto) inputFlashMap.get("updateInfoDto");
+	      }
 		DayRecipeMapper mapper = new DayRecipeMapper();
 		
 		if(from == null) {
@@ -69,8 +75,8 @@ public class MenuController {
 			to = new Date(cal.getTimeInMillis());
 		}
 		
-		//check if DayRecipe objects exist, if not make them probably not needed to fetch, since we will fetch again after planning
-		List<DayRecipe> dayRecipeList = dRService.getOrCreate(from,to);
+		//check if DayRecipe objects exist, if not make them.
+		dRService.creater(from,to);
 		
 		//plan these days.
 		try {
@@ -83,8 +89,8 @@ public class MenuController {
 			infoDto.setType("Error");
 			infoDto.setBody("No Recipe's found in the database. Add at least one recipe to schedule a menu.");
 		}
-		dayRecipeList.clear(); // clear the list
-		dayRecipeList = dRService.findByDateBetween(from, to); // now we have the planned versions
+		//dayRecipeList.clear(); // clear the list
+		List<DayRecipe> dayRecipeList = dRService.findByDateBetween(from, to); // now we have the planned versions
 		
 		for(int i =0; i<dayRecipeList.size();i++) {
 			dayRecipeDtos.add(mapper.dayRecipeToDayRecipeDto(dayRecipeList.get(i)));
@@ -96,8 +102,7 @@ public class MenuController {
 		for(int i =0;i<recipeList.size();i++) {
 			recipeDtos.add(rMapper.recipeToRecipeDto(recipeList.get(i)));
 		}
-		RecipeDto dr = new RecipeDto();
-		model.put("recipeDto1", dr);
+		
 		
 		model.put("recipeDtos", recipeDtos);
 		
@@ -110,16 +115,40 @@ public class MenuController {
 	@PostMapping(path = "/updatedayrecipe")
 	public RedirectView submitPost(
 			  HttpServletRequest request, 
-			  @ModelAttribute RecipeDto recipeDto, 
+			  @ModelAttribute DayRecipeDto dayRecipeDto, 
 			  RedirectAttributes redirectAttributes) {
-				return null;
+				
+		DayRecipeMapper mapper = new DayRecipeMapper();
+		Recipe recipe = new Recipe();
+		DayRecipe dayRecipe = new DayRecipe();
+		InfoDto infoDto = new InfoDto();
+		log.debug("updatedayrecipe got recipe: "+dayRecipeDto.toString());
+		try {
+			List<DayRecipe> dayRecipeList = dRService.findByDate(dayRecipeDto.getDate());
+			dayRecipe = dayRecipeList.get(0);
+		} catch (Exception e) {
+			log.error("updatedayrecipe did not find a day recipe for the provided date: "+dayRecipeDto.getDate());
+		}
+		try {
+			recipe = rService.findByRecipeId(dayRecipeDto.getRecipeId());
+		} catch (Exception e) {
+			log.error("updatedayrecipe did not find a recipe with id "+dayRecipeDto.getRecipeId());
+		}
+		try {
+			dRService.scheduleDiner(dayRecipe, recipe, rService);
+			infoDto.setBody("Updated menu for: "+dayRecipeDto.getDate());
+			infoDto.setType("Success");
+		} catch (Exception e) {
+			log.error("Could not Schedule dinner");
+		}
+		
+		
+		redirectAttributes.addFlashAttribute("updateInfoDto", infoDto);
+		return new RedirectView("/", true);
 		
 	}
 	
-	@GetMapping(path ="/boehoe")
-	String boehoe(ModelMap model,Long recipe, Date date) {
-		return "period";
-	}
+	
 	
 	
 

@@ -75,7 +75,7 @@ public class PlannerService {
 					}
 				}
 				//we left the while loop, so recipe k must be our recipe
-				dRService.scheduleDiner(dayRecipeList.get(j), recipeList.get(k), rService);
+				dRService.suggestDiner(dayRecipeList.get(j), recipeList.get(k), rService);
 				usedRecipes.add(recipeList.get(k).getRecipeId()); // adding to the used recipe list
 
 			} else {
@@ -94,7 +94,7 @@ public class PlannerService {
 						}
 					}
 				}//we left the while loop, so recipe k must be our recipe
-				dRService.scheduleDiner(dayRecipeList.get(j), recipeList.get(k), rService);
+				dRService.suggestDiner(dayRecipeList.get(j), recipeList.get(k), rService);
 				usedRecipes.add(recipeList.get(k).getRecipeId()); // adding to the used recipe list
 			} 
 			} else {
@@ -102,7 +102,7 @@ public class PlannerService {
 			}
 			
 
-
+			
 	
 			//c.add(Calendar.DATE, 1);
 		}
