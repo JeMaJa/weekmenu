@@ -20,19 +20,19 @@
 <div class="container px-4 text-center">
 <div th:replace="header"></div>
 
-<table border="1">
+<table class="table">
     <thead>
         <tr>
-            <th th:text="#{msg.id}" />
-            <th th:text="#{msg.name}" />
+            <th>Recipe</th>
+            <th>Complexity</th>
+            <th>HealthScore</th>
         </tr>
     </thead>
     <tbody>
-        <tr th:each="recipe, iStat : ${recipePage.content}"
-            th:style="${iStat.odd}? 'font-weight: bold;'"
-            th:alt-title="${iStat.even}? 'even' : 'odd'">
-            <td th:text="${recipe.recipeId}" />
-            <td th:text="${recipe.recipeName}" />
+        <tr th:each="recipe : ${recipePage.content}">
+            <td><a th:text="${recipe.recipeName}" th:href="@{/recipe(id=${recipe.recipeId})}" ></a></td>
+            <td th:text="${recipe.complexity}" />
+            <td th:text="${recipe.healthScore}" />
         </tr>
     </tbody>
 </table>

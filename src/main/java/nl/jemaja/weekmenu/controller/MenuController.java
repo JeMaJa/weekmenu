@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -62,7 +63,7 @@ public class MenuController {
 	
 	
 	@GetMapping(path = "/")
-	String showPeriod(ModelMap model, String f, String t, HttpServletRequest request) {
+	String showPeriod(ModelMap model, Optional<String> f, Optional<String> t, HttpServletRequest request) {
 		
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
@@ -84,22 +85,22 @@ public class MenuController {
 	      }
 		DayRecipeMapper mapper = new DayRecipeMapper();
 		
-		if(f == null) {
+		if(!f.isPresent()) {
 			from = new Date(cal.getTimeInMillis());
 		} else {
 			try {
-				from = (Date) sdf.parse(f);
+				from = (Date) sdf.parse(f.get());
 			} catch (ParseException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 		}
-		if(t == null) {
+		if(!t.isPresent()) {
 			cal.add(Calendar.DATE, 14);
 			to = new Date(cal.getTimeInMillis());
 		} else 
 			try {
-				to = (Date) sdf.parse(t);
+				to = (Date) sdf.parse(t.get());
 			} catch (ParseException e1) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
