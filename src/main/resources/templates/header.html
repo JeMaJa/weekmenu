@@ -42,9 +42,10 @@
   </symbol>
 </svg>
 <div th:if="${infoDto}">
-<div th:if="${infoDto.type == 'Error'}" 	class="alert alert-danger d-flex align-items-center" role="alert"><svg th:if="${infoDto.type == 'Error'}" 	class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">	<use xlink:href="#exclamation-triangle-fill"/></svg><div th:text="${infoDto.body}"></div></div>
-<div th:if="${infoDto.type == 'Success'}" 	class="alert alert-success d-flex align-items-center" role="alert"><svg th:if="${infoDto.type == 'Success'}" 	class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">	<use xlink:href="#check-circle-fill"/></svg>		<div th:text="${infoDto.body}"></div></div>
-<div th:if="${infoDto.type == 'Warning'}" 	class="alert alert-warning d-flex align-items-center" role="alert"><svg th:if="${infoDto.type == 'Warning'}" 	class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">	<use xlink:href="#exclamation-triangle-fill"/></svg><div th:text="${infoDto.body}"></div></div>
+<div th:if="${infoDto.type == 'Error'}" 	class="alert alert-danger d-flex align-items-center alert-dismissible fade show" role="alert"><svg th:if="${infoDto.type == 'Error'}" 	class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">	<use xlink:href="#exclamation-triangle-fill"/></svg><div th:text="${infoDto.body}">		</div><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
+<div th:if="${infoDto.type == 'Success'}" 	class="alert alert-success d-flex align-items-center alert-dismissible fade show" role="alert"><svg th:if="${infoDto.type == 'Success'}" 	class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:">	<use xlink:href="#check-circle-fill"/></svg>		<div th:text="${infoDto.body}">	</div><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
+<div th:if="${infoDto.type == 'Warning'}" 	class="alert alert-warning d-flex align-items-center alert-dismissible fade show" role="alert"><svg th:if="${infoDto.type == 'Warning'}" 	class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Warning:">	<use xlink:href="#exclamation-triangle-fill"/></svg><div th:text="${infoDto.body}">	</div><button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button></div>
+
 </div>
 
 </body>

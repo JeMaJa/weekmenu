@@ -1,7 +1,7 @@
 /**
  * 
  */
-package nl.jemaja.weekmenu.controller;
+package nl.jemaja.weekmenu.controller.api;
 
 import java.net.http.HttpResponse;
 import java.util.List;
@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +32,8 @@ import nl.jemaja.weekmenu.service.RecipeService;
  */
 @Slf4j
 @RestController
-public class RecipeRestController {
+@RequestMapping("/api/v1/")
+public class RecipeRestControllerV1 {
 	
 	@Autowired
 	RecipeService recipeService;

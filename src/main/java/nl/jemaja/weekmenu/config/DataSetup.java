@@ -48,7 +48,7 @@ public class DataSetup {
 
 	public static void recipes(RecipeService recipeService) {
 		Recipe r = Recipe.builder()
-				.recipeName("Stoofvlees op grootmoeders wijze.")
+				.recipeName("Grandma's stew.")
 				.workdayOk(false)
 				.vega(false)
 				.description("Lorum Ipsum.")
@@ -63,7 +63,7 @@ public class DataSetup {
 		}
 		log.debug("Saved recipe: "+r.getRecipeName());
 		r = Recipe.builder()
-				.recipeName("Rodekool Stamppot met worstjes.")
+				.recipeName("Red cabbage stew with sausages.")
 				.workdayOk(true)
 				.vega(false)
 				.description("Lorum Ipsum.")
@@ -94,7 +94,7 @@ public class DataSetup {
 
 		log.debug("Saved recipe: "+r.getRecipeName());
 		r = Recipe.builder()
-				.recipeName("Friet met snack")
+				.recipeName("Fries")
 				.workdayOk(true)
 				.vega(false)
 				.description("Lorum Ipsum.")
@@ -109,7 +109,7 @@ public class DataSetup {
 		}
 		log.debug("Saved recipe: "+r.getRecipeName());
 		r = Recipe.builder()
-				.recipeName("Hutspot")
+				.recipeName("Stew")
 				.workdayOk(true)
 				.vega(false)
 				.description("Lorum Ipsum.")
@@ -124,7 +124,7 @@ public class DataSetup {
 		}
 		log.debug("Saved recipe: "+r.getRecipeName());
 		r = Recipe.builder()
-				.recipeName("Erwten en Wortels met vlees een aardappels.")
+				.recipeName("Peas and Carrots with meat and potatoes.")
 				.workdayOk(true)
 				.vega(false)
 				.description("Lorum Ipsum.")
@@ -139,7 +139,7 @@ public class DataSetup {
 		}
 		log.debug("Saved recipe: "+r.getRecipeName());
 		r = Recipe.builder()
-				.recipeName("Vegetarische lasagne")
+				.recipeName("Vegetarian lasagne")
 				.workdayOk(true)
 				.vega(true)
 				.description("Lorum Ipsum.")
@@ -169,7 +169,7 @@ public class DataSetup {
 		}
 		log.debug("Saved recipe: "+r.getRecipeName());
 		r = Recipe.builder()
-				.recipeName("Biefstuk met pepersaus en frites")
+				.recipeName("Steak with pepper sauce and fries")
 				.workdayOk(true)
 				.vega(false)
 				.description("Lorum Ipsum.")
