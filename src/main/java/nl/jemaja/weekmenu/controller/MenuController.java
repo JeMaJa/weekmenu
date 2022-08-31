@@ -4,6 +4,8 @@
 package nl.jemaja.weekmenu.controller;
 
 import java.sql.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -59,11 +62,21 @@ public class MenuController {
 	
 	
 	@GetMapping(path = "/")
-	String showPeriod(ModelMap model, Date from, Date to, HttpServletRequest request) {
+	String showPeriod(ModelMap model, String f, String t, HttpServletRequest request) {
+		
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
+		Date from = new Date(0);
+	
+		Date to =new Date(0);
+		
+		
+		
 		Calendar cal = Calendar.getInstance();
 		InfoDto infoDto = new InfoDto();
 		List<DayRecipeDto> dayRecipeDtos = new ArrayList<DayRecipeDto>();
-		
+		//Date from = new Date(0);
+		//Date to = new Date(0);
 		 Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
 	      if (inputFlashMap != null) {
 	    	  log.debug("Receive inputflashmap");
@@ -71,13 +84,26 @@ public class MenuController {
 	      }
 		DayRecipeMapper mapper = new DayRecipeMapper();
 		
-		if(from == null) {
+		if(f == null) {
 			from = new Date(cal.getTimeInMillis());
+		} else {
+			try {
+				from = (Date) sdf.parse(f);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		}
-		if(to == null) {
+		if(t == null) {
 			cal.add(Calendar.DATE, 14);
 			to = new Date(cal.getTimeInMillis());
-		}
+		} else 
+			try {
+				to = (Date) sdf.parse(t);
+			} catch (ParseException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
 		
 		//check if DayRecipe objects exist, if not make them.
 		dRService.creater(from,to);
