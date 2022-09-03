@@ -37,8 +37,8 @@
 	    <li><a class="dropdown-item" href="#">Accept suggestion</a></li>
 	    <li><a class="dropdown-item" href="#" data-bs-toggle="modal" data-bs-target="#modal1" th:data-whatever="${dayRecipeDto.date}">Choose other recipe</a></li>
 	    <li><a class="dropdown-item" href="#">Suggest other recipe</a></li>
-	    <li><hr class="dropdown-divider"></li>
-	    <li><a class="dropdown-item" href="#">Modify recipe</a></li>
+	    
+	    <li><a class="dropdown-item" id="modal2button" href="#" data-bs-toggle="modal" data-bs-target="#modal2" th:data-id="${dayRecipeDto.recipeId}"  >Show recipe</a></li>
 	  </ul>
 	</div>
 </div>
@@ -77,7 +77,28 @@
 </div>
 
 
+<!-- Show recipe Modal -->
+<div class="modal fade" id="modal2" tabindex="-1" aria-labelledby="modal2" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="Modal2Label" ></h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-sm" id="Modal2body">
+        	
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="modalAccept">Accept</button>
+      </div>
+    </div>
+  </div>
+</div>
 
+-->
 <!--div class="fixed-bottom">-->
 <!--  <div class="fixed-bottom">Copyright &copy 2022 Yannick Tollenaere. <br>This application is licensed under the <a href="https://raw.githubusercontent.com/JeMaJa/weekmenu/main/LICENSE.md">MIT License</a><br></div>
 <!-- </div>-->

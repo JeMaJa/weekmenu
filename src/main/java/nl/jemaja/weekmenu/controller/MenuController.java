@@ -63,7 +63,7 @@ public class MenuController {
 	
 	
 	@GetMapping(path = "/")
-	String showPeriod(ModelMap model, Optional<String> f, Optional<String> t, HttpServletRequest request) {
+	String showPeriod(ModelMap model, Optional<String> f, Optional<String> t, HttpServletRequest request) throws ParseException {
 		
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-mm-dd");
@@ -88,23 +88,15 @@ public class MenuController {
 		if(!f.isPresent()) {
 			from = new Date(cal.getTimeInMillis());
 		} else {
-			try {
-				from = (Date) sdf.parse(f.get());
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+			from = Date.valueOf(f.get());
 		}
 		if(!t.isPresent()) {
 			cal.add(Calendar.DATE, 14);
 			to = new Date(cal.getTimeInMillis());
-		} else 
-			try {
-				to = (Date) sdf.parse(t.get());
-			} catch (ParseException e1) {
-				// TODO Auto-generated catch block
-				e1.printStackTrace();
-			}
+		} else {
+				to = Date.valueOf(t.get());
+		}
+			
 		
 		//check if DayRecipe objects exist, if not make them.
 		dRService.creater(from,to);

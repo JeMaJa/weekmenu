@@ -52,6 +52,12 @@ public class RecipeRestControllerV1 {
 		return recipeRepository.findAll();
 	}
 	
+	@GetMapping(path = "/recipe", produces = MediaType.APPLICATION_JSON_VALUE)
+	public Recipe getRecipeById(long id) {
+		log.debug("returning recipe id: "+id);
+		return recipeRepository.findByRecipeId(id);
+	}
+	
 	@GetMapping(path = "/init", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity init() {
 		ResponseEntity response = new ResponseEntity(HttpStatus.OK);

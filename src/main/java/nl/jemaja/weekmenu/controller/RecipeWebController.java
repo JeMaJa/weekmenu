@@ -61,7 +61,7 @@ public class RecipeWebController {
 	public String getRecipes(ModelMap map,@RequestParam("page") Optional<Integer> page, 
 		      @RequestParam("size") Optional<Integer> size, @RequestParam("q") Optional<String> query) {
 		int currentPage = page.orElse(0);
-        int pageSize = size.orElse(20);
+        int pageSize = size.orElse(10);
         Page<Recipe> recipePage = null;
 		PageRequest sortedByName = PageRequest.of(currentPage, pageSize, Sort.by("recipeName").ascending());
 		if(!query.isEmpty()) {
