@@ -170,8 +170,9 @@ public class DayRecipeService {
 		
 		Calendar endC = Calendar.getInstance();
 		endC.setTime(end);
-				
-		c.add(Calendar.DATE, 1);
+		
+		
+		
 		while(c.before(endC)) {
 			log.debug("Creating DayRecipe for: "+ c.toString());
 			Boolean workDay = true;
