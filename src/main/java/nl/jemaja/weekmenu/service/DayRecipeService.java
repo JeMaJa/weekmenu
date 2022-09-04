@@ -170,6 +170,7 @@ public class DayRecipeService {
 		
 		Calendar endC = Calendar.getInstance();
 		endC.setTime(end);
+		endC.add(Calendar.DATE, 1);
 		
 		
 		
