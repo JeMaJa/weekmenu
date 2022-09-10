@@ -34,4 +34,5 @@ public class DayRecipeDto {
 	private String recipeName;
 	private Boolean workDay;
 	private int status;
+	private Long id;
 }

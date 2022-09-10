@@ -1,3 +1,4 @@
+/*modal stuff */
 let modalAccept = document.getElementById('modalAccept')
 
 modalAccept.addEventListener('click', function() {
@@ -40,6 +41,29 @@ $('#modal2').on('show.bs.modal', function(event) {
 })
 
 /*
+Accept recipe stuff
+
+$('#accept').click(function() {
+    var button = $(event.currentTarget) // Button that triggered the modal  
+    var id = button.context.dataset.whatever;
+	console.log(id);
+});
+*/
+function acceptSuggestion() {
+	var button = $(event.currentTarget) // Button that triggered the modal  
+    var id = button.context.dataset.whatever;
+	console.log(id);
+	$.ajax({
+            url: '/api/v1/dayrecipe/accept/'+id,
+            type: 'PUT',
+            success: function (result) {
+                // Do something with the result
+                location.reload();
+            }
+        });
+}
+
+/*
 DATE RANGE LICENSE:
 https://www.daterangepicker.com/
 
@@ -67,8 +91,8 @@ $(function() {
         'Next Month': [moment().add(1,'month').startOf('month'), moment().add(1,'month').endOf('month')]
     },
     "alwaysShowCalendars": true,
-    "startDate": moment().startOf('week'),
-    "endDate": moment().add(7, 'days').endOf('week'),
+   // "startDate": moment().startOf('week'),
+  //  "endDate": moment().add(7, 'days').endOf('week'),
     "opens": "left",
     locale: {
       format: 'DD-MM-YYYY'

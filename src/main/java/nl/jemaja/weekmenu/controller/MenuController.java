@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -94,9 +95,19 @@ public class MenuController {
 			cal.add(Calendar.DATE, 14);
 			to = new Date(cal.getTimeInMillis());
 		} else {
-				to = Date.valueOf(t.get());
+			to = Date.valueOf(t.get());
 		}
-			
+		SimpleDateFormat smf = new SimpleDateFormat("dd-MM-yyyy");
+		infoDto.setFrom(smf.format(from));
+		infoDto.setTo(smf.format(to));
+		long diffInMillies = Math.abs(to.getTime() - from.getTime());
+	    long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+	    if(diff >61) {
+	    	cal.setTimeInMillis(from.getTime());
+	    	cal.add(Calendar.DATE, 14);
+			to = new Date(cal.getTimeInMillis());
+	    }
+		
 		
 		//check if DayRecipe objects exist, if not make them.
 		dRService.creater(from,to);
@@ -107,9 +118,9 @@ public class MenuController {
 			
 		} catch (NoRecipeFoundException e) {
 			// TODO Auto-generated catch block
-			log.error("No Recipe found exception trown");
+			log.warn("No Recipe found exception trown");
 			
-			e.printStackTrace();
+			
 			infoDto.setType("Error");
 			infoDto.setBody("No Recipe's found in the database. Add at least one recipe to schedule a menu.");
 		}
@@ -169,7 +180,7 @@ public class MenuController {
 		}
 		
 		
-		
+		log.debug("here");
 		
 		redirectAttributes.addFlashAttribute("updateInfoDto", infoDto);
 		return new RedirectView("/", true);

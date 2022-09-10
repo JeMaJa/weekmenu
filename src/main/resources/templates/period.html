@@ -34,7 +34,7 @@
 				</form>
 				<div class="input-group input-group-sm mb-3">
 				<span class="input-group-text" id="inputGroup-sizing-sm">Date range:</span>
-				<input type="text" name="daterange" value="01/01/2018 - 01/15/2018" class="form-control"/>
+				<input type="text" name="daterange" th:value="${infoDto.from} +' - '+ ${infoDto.to}" class="form-control"/>
 				</div>
 		<!-- Start block for a day -->
 		<div class="row align-items-center"
@@ -44,10 +44,10 @@
 			</div>
 			<div class="col-md-8 gy-1">
 
-				<i class="p-1 " th:text="${dayRecipeDto.recipeName}"
-					th:if="${dayRecipeDto.status == 1}">Recipe goes here</i> <b
-					class="p-1 " th:text="${dayRecipeDto.recipeName}"
-					th:if="${dayRecipeDto.status == 2}">Recipe goes here</b>
+				<div	class="fst-italic" th:text="${dayRecipeDto.recipeName}" th:id="'dr'+${dayRecipeDto.id}" 
+					th:if="${dayRecipeDto.status == 1}">Recipe goes here</div> 
+				<div	class="fw-bold" th:text="${dayRecipeDto.recipeName}"  th:id="'dr'+${dayRecipeDto.id}" 
+					th:if="${dayRecipeDto.status == 2}">Recipe goes here</div>
 
 			</div>
 			<div class="col-md-2 gy-1">
@@ -57,7 +57,7 @@
 							type="button" data-bs-toggle="dropdown" aria-expanded="true">
 							Options</button>
 						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#">Accept suggestion</a></li>
+							<li><a class="dropdown-item" href="#" data-bs-target="#accept" onClick="acceptSuggestion()" th:data-whatever="${dayRecipeDto.id}">Accept suggestion</a></li>
 							<li><a class="dropdown-item" href="#" data-bs-toggle="modal"
 								data-bs-target="#modal1" th:data-whatever="${dayRecipeDto.date}">Choose
 									other recipe</a></li>
@@ -73,7 +73,7 @@
 			</div>
 		</div>
 		<!-- End block for a day -->
-
+		
 		<!-- Modal -->
 		<div class="modal fade" id="modal1" tabindex="-1"
 			aria-labelledby="modal1" aria-hidden="true">
@@ -134,7 +134,7 @@
 			</div>
 		</div>
 
-		-->
+	
 		<!--div class="fixed-bottom">-->
 		<!--  <div class="fixed-bottom">Copyright &copy 2022 Yannick Tollenaere. <br>This application is licensed under the <a href="https://raw.githubusercontent.com/JeMaJa/weekmenu/main/LICENSE.md">MIT License</a><br></div>
 <!-- </div>-->
