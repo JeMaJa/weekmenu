@@ -40,6 +40,7 @@ public class DayRecipeMapper {
 						.recipe(rec)
 						.workday(dto.getWorkDay())
 						.status(dto.getStatus())
+						.id(dto.getId())
 						.build();
 			} catch (NotFoundException e) {
 				// TODO Auto-generated catch block
@@ -51,6 +52,7 @@ public class DayRecipeMapper {
 					.date(dto.getDate())
 					.workday(dto.getWorkDay())
 					.status(dto.getStatus())
+					.id(dto.getId())
 					.build();
 		}
 		RecipeMapper map = new RecipeMapper();
@@ -68,12 +70,14 @@ public class DayRecipeMapper {
 					.recipeId(dr.getRecipe().getRecipeId())
 					.status(dr.getStatus())
 					.workDay(dr.getWorkday())
+					.id(dr.getId())
 					.build();
 		} else {
 			dto = DayRecipeDto.builder()
 					.date(dr.getDate())
 					.status(dr.getStatus())
 					.workDay(dr.getWorkday())
+					.id(dr.getId())
 					.build();
 		}
 

@@ -12,6 +12,7 @@ import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
 
 import nl.jemaja.weekmenu.model.DayRecipe;
@@ -21,7 +22,7 @@ import nl.jemaja.weekmenu.model.Recipe;
  * @author yannick.tollenaere
  *
  */
-@Transactional
+//@Transactional(isolation = Isolation.SERIALIZABLE)
 @Repository
 public interface DayRecipeRepository extends PagingAndSortingRepository<DayRecipe, Long> {
 	List<DayRecipe> findByDate(Date date);
@@ -37,9 +38,15 @@ public interface DayRecipeRepository extends PagingAndSortingRepository<DayRecip
 
 	Page<DayRecipe> findByDateBetween(Date startDate, Date endDate, PageRequest pageRequest);
 
+	@Transactional(isolation = Isolation.SERIALIZABLE)
 	@Modifying
 	@Query("update DayRecipe dr set dr.recipe = ?2, dr.status= ?3 where dr.id = ?1")
 	public void scheduleDinner(long id, Recipe recipe, int status);
+	
+	@Transactional(isolation = Isolation.SERIALIZABLE)
+	@Modifying
+	@Query("update DayRecipe dr set  dr.status= 2 where dr.id = ?1")
+	public void acceptSuggestion(long id);
 
 	
 

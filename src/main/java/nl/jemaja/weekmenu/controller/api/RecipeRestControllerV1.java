@@ -6,6 +6,8 @@ package nl.jemaja.weekmenu.controller.api;
 import java.net.http.HttpResponse;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -13,12 +15,20 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.view.RedirectView;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.config.DataSetup;
+import nl.jemaja.weekmenu.dto.DayRecipeDto;
 import nl.jemaja.weekmenu.model.Complexity;
+import nl.jemaja.weekmenu.model.DayRecipe;
 import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.model.RecipeList;
 import nl.jemaja.weekmenu.repository.RecipeRepository;
@@ -74,6 +84,10 @@ public class RecipeRestControllerV1 {
 		return response;
 		
 	}
+	
+	
+
+	
 	
 
 

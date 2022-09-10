@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import javax.transaction.Transactional;
+
 import org.hibernate.sql.Update;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -25,6 +27,8 @@ import nl.jemaja.weekmenu.model.DayRecipe;
 import nl.jemaja.weekmenu.model.DayRecipePagedList;
 import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.repository.DayRecipeRepository;
+import nl.jemaja.weekmenu.util.exceptions.IncorrectStatusException;
+import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
 @Slf4j
 @Service
 public class DayRecipeService {
@@ -248,6 +252,18 @@ public class DayRecipeService {
 	public DayRecipe findById(long dayRecipeId) {
 		Optional<DayRecipe> opt = dayRecipeRepo.findById(dayRecipeId);
 		return  opt.get();
+	}
+	
+	public DayRecipe acceptSuggestion(Long id) throws NotFoundException, IncorrectStatusException {
+		Optional<DayRecipe> dr = dayRecipeRepo.findById(id);
+		Optional<DayRecipe> dr2 = null;
+		if(dr.get().getStatus() == 1) {
+			dayRecipeRepo.acceptSuggestion(id);
+			dayRecipeRepo.save(dr.get());
+			dr2 = dayRecipeRepo.findById(id);
+		}
+		else throw new IncorrectStatusException();
+		return dr2.get();
 	}
 	
 
