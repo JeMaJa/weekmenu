@@ -1,5 +1,7 @@
 package nl.jemaja.weekmenu.controller.api;
 
+import java.sql.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ import nl.jemaja.weekmenu.dto.DayRecipeDto;
 import nl.jemaja.weekmenu.dto.mapper.DayRecipeMapper;
 import nl.jemaja.weekmenu.model.DayRecipe;
 import nl.jemaja.weekmenu.service.DayRecipeService;
+import nl.jemaja.weekmenu.service.PlannerService;
 import nl.jemaja.weekmenu.util.exceptions.IncorrectStatusException;
 @Slf4j
 @RestController
@@ -36,12 +39,19 @@ public class DayRecipeRestControllerV1 {
 		DayRecipeMapper map = new DayRecipeMapper();
 		HttpStatus status = HttpStatus.OK;
 		try {
-			dRService.acceptSuggestion(id);
+			//dRService.acceptSuggestion(id);
+			
 			DayRecipe dr2 = dRService.findById(id);
+			if(dr2.getStatus() == 1)
+			{
+				dr2.setStatus(2);
+				dRService.save(dr2);
+			} else {
+				log.warn("Day Recipe: "+id+" doe not have status 1, so cannot be updated to 2");
+				status = HttpStatus.CONFLICT;
+			}
 			returnVal = map.dayRecipeToDayRecipeDto(dr2);
-		} catch (IncorrectStatusException e) {
-			log.warn("Day Recipe: "+id+" doe not have status 1, so cannot be updated to 2");
-			status = HttpStatus.CONFLICT;
+
 		} catch (Exception e) {
 			log.error("Ow now!");
 			log.error(e.getMessage());
@@ -50,6 +60,29 @@ public class DayRecipeRestControllerV1 {
 		}
 		
 		return new ResponseEntity<DayRecipeDto>(returnVal, status);
+	}
+	
+	@PutMapping(path = "suggest/{id}")
+	public ResponseEntity<DayRecipeDto> suggestNew(@PathVariable("id") Long id) {
+		DayRecipeDto returnVal = null;
+		DayRecipeMapper map = new DayRecipeMapper();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			DayRecipe dr = dRService.findById(id);
+			Date date = dr.getDate();
+			PlannerService pService = new PlannerService();
+			pService.planPeriod(date, date);
+			DayRecipe dr2 = dRService.findById(id);
+			returnVal = map.dayRecipeToDayRecipeDto(dr2);
+		
+		} catch (Exception e) {
+			log.error("Could not accept day Recipe with ID: "+id);
+			log.error(e.getMessage());
+			status = HttpStatus.BAD_REQUEST;
+			
+		}
+		return new ResponseEntity<DayRecipeDto>(returnVal, status);
+		
 	}
 
 
