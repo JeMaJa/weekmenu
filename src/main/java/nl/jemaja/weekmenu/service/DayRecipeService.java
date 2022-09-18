@@ -86,7 +86,11 @@ public class DayRecipeService {
 		int returnVal = 0;
 		log.debug("Scheduling dinner"+dayRecipe.getDate() + " to be: "+recipe.getRecipeName());
 		try {
-			dayRecipeRepo.scheduleDinner(dayRecipe.getId(),recipe,status);
+			//remove old way via custom query
+			//dayRecipeRepo.scheduleDinner(dayRecipe.getId(),recipe,status);
+			dayRecipe.setRecipe(recipe);
+			dayRecipe.setStatus(status);
+			this.save(dayRecipe);
 			recipeService.setLastEaten(recipe.getRecipeId(),dayRecipe.getDate()); 
 		} catch (Exception e){
 			returnVal = 1;
@@ -264,6 +268,10 @@ public class DayRecipeService {
 		}
 		else throw new IncorrectStatusException();
 		return dr2.get();
+	}
+	public void clearDayRecipe(Long id) throws NotFoundException {
+		//to do
+		
 	}
 	
 
