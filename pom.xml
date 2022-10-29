@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>nl.jemaja</groupId>
 	<artifactId>weekmenu</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.1-BETA</version>
 	<name>weekmenu</name>
 	<description>A Spring Boot application to manage and create the weekly menu at home</description>
 	<properties>
