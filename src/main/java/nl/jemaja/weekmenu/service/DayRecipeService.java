@@ -37,6 +37,9 @@ public class DayRecipeService {
 	DayRecipeRepository dayRecipeRepo;
 	
 	
+	public DayRecipeService(DayRecipeRepository dRRepo) {
+		this.dayRecipeRepo = dRRepo;
+	}
 	public DayRecipe save(DayRecipe dayRecipe) {
 		dayRecipeRepo.save(dayRecipe);
 		return dayRecipe;
@@ -258,20 +261,11 @@ public class DayRecipeService {
 		return  opt.get();
 	}
 	
-	public DayRecipe acceptSuggestion(Long id) throws NotFoundException, IncorrectStatusException {
-		Optional<DayRecipe> dr = dayRecipeRepo.findById(id);
-		Optional<DayRecipe> dr2 = null;
-		if(dr.get().getStatus() == 1) {
-			dayRecipeRepo.acceptSuggestion(id);
-			dayRecipeRepo.save(dr.get());
-			dr2 = dayRecipeRepo.findById(id);
-		}
-		else throw new IncorrectStatusException();
-		return dr2.get();
-	}
-	public void clearDayRecipe(Long id) throws NotFoundException {
-		//to do
-		
+	
+
+	public Date findPrevLastEaten(Recipe recipe, Date date) {
+		log.debug("in the date"+dayRecipeRepo.toString());
+		return dayRecipeRepo.findPrevLastEaten(recipe,date);
 	}
 	
 

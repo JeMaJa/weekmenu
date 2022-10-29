@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.dto.DayRecipeDto;
 import nl.jemaja.weekmenu.dto.mapper.DayRecipeMapper;
 import nl.jemaja.weekmenu.model.DayRecipe;
+import nl.jemaja.weekmenu.repository.DayRecipeRepository;
 import nl.jemaja.weekmenu.service.DayRecipeService;
 import nl.jemaja.weekmenu.service.PlannerService;
 import nl.jemaja.weekmenu.util.exceptions.IncorrectStatusException;
@@ -26,6 +27,12 @@ public class DayRecipeRestControllerV1 {
 
 	@Autowired
 	DayRecipeService dRService;
+	
+	@Autowired
+	DayRecipeRepository dayRecipeRepo;
+	
+	@Autowired
+	PlannerService pService;
 	
 	@GetMapping(path = "dayrecipe/{id}" )
 	public ResponseEntity<DayRecipe> getDayRecipe(@PathVariable("id") Long id){
@@ -69,14 +76,16 @@ public class DayRecipeRestControllerV1 {
 		HttpStatus status = HttpStatus.OK;
 		try {
 			DayRecipe dr = dRService.findById(id);
+			dr.setRecipe(null);
+			dr.setStatus(0);
 			Date date = dr.getDate();
-			PlannerService pService = new PlannerService();
+			
 			pService.planPeriod(date, date);
 			DayRecipe dr2 = dRService.findById(id);
 			returnVal = map.dayRecipeToDayRecipeDto(dr2);
 		
 		} catch (Exception e) {
-			log.error("Could not accept day Recipe with ID: "+id);
+			log.error("Could not suggest new: "+id);
 			log.error(e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
 			

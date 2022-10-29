@@ -60,6 +60,9 @@ public class MenuController {
 	DayRecipeService dRService;
 	
 	@Autowired
+	DayRecipeRepository dayRecipeRepo;
+	
+	@Autowired
 	DayRecipeRepository dRRepo;
 	
 	
