@@ -22,7 +22,7 @@ import nl.jemaja.weekmenu.model.Recipe;
  * @author yannick.tollenaere
  *
  */
-//@Transactional(isolation = Isolation.SERIALIZABLE)
+
 @Repository
 public interface DayRecipeRepository extends PagingAndSortingRepository<DayRecipe, Long> {
 	List<DayRecipe> findByDate(Date date);
@@ -38,20 +38,11 @@ public interface DayRecipeRepository extends PagingAndSortingRepository<DayRecip
 
 	Page<DayRecipe> findByDateBetween(Date startDate, Date endDate, PageRequest pageRequest);
 
-	/*
-	 * 
-	 * To be removed, not used anymore since close of #15
-	 * leave code here for learning purposes
-	@Transactional(isolation = Isolation.SERIALIZABLE)
-	@Modifying
-	@Query("update DayRecipe dr set dr.recipe = ?2, dr.status= ?3 where dr.id = ?1")
-	public void scheduleDinner(long id, Recipe recipe, int status);
+
+	@Query(value = "select max(dr.date) from DayRecipe dr where dr.recipe = ?1 and dr.date < ?2")
+	public Date findPrevLastEaten(Recipe recipe, Date date);
+
 	
-	@Transactional(isolation = Isolation.SERIALIZABLE)
-	@Modifying
-	@Query("update DayRecipe dr set  dr.status= 2 where dr.id = ?1")
-	public void acceptSuggestion(long id);
-	*/
 	
 
 
