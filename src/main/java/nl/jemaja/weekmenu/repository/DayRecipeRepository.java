@@ -38,6 +38,8 @@ public interface DayRecipeRepository extends PagingAndSortingRepository<DayRecip
 
 	Page<DayRecipe> findByDateBetween(Date startDate, Date endDate, PageRequest pageRequest);
 
+
+
 	/*
 	 * 
 	 * To be removed, not used anymore since close of #15

@@ -75,6 +75,7 @@ public class RecipeRestControllerV1 {
 		try {
 			//DataSetup.days(dRService);
 			DataSetup.recipes(recipeService);
+			DataSetup.users();
 		} catch (Exception e) {
 			response.status(HttpStatus.INTERNAL_SERVER_ERROR);
 			log.error(e.getStackTrace().toString());

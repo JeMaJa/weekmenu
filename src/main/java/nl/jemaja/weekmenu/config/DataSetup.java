@@ -14,9 +14,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.model.Recipe;
+import nl.jemaja.weekmenu.model.User;
 import nl.jemaja.weekmenu.repository.DayRecipeRepository;
+import nl.jemaja.weekmenu.repository.UserRepository;
 import nl.jemaja.weekmenu.service.DayRecipeService;
 import nl.jemaja.weekmenu.service.RecipeService;
+import nl.jemaja.weekmenu.service.UserDetailsServiceImpl;
 
 /**
  * @author yannick.tollenaere
@@ -28,6 +31,10 @@ import nl.jemaja.weekmenu.service.RecipeService;
 public class DataSetup {
 
 
+	@Autowired
+	static
+	UserRepository userRepository;
+	
 	public static void days(DayRecipeService dRService) {
 		//create the entire year, and next of DayRecipe objects
 		//DayRecipeService dRservice = new DayRecipeService();
@@ -201,5 +208,16 @@ public class DataSetup {
 
 
 
+	}
+	public static void users() {
+		UserDetailsServiceImpl userService = new UserDetailsServiceImpl();
+		User userOne = User.builder().username("Yannick").password("Password12").build();
+		try {
+			userService.
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 	}
 }

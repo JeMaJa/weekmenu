@@ -10,7 +10,7 @@
 	</parent>
 	<groupId>nl.jemaja</groupId>
 	<artifactId>weekmenu</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>0.0.2-SNAPSHOT</version>
 	<name>weekmenu</name>
 	<description>A Spring Boot application to manage and create the weekly menu at home</description>
 	<properties>
@@ -25,6 +25,15 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-mail</artifactId>
 		</dependency>
+		<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-security</artifactId>
+</dependency>
+<dependency>
+  <groupId>org.springframework.security</groupId>
+  <artifactId>spring-security-test</artifactId>
+  <scope>test</scope>
+</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
