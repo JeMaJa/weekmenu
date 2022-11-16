@@ -15,6 +15,12 @@ import nl.jemaja.weekmenu.model.Recipe;
 public class DayRecipeRepoImpl implements DayRecipeRepository {
 
 	@Override
+	public List<DayRecipe> findByDateBetweenOrderByDateAsc(Date startDate, Date endDate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public Iterable<DayRecipe> findAll(Sort sort) {
 		// TODO Auto-generated method stub
 		return null;
