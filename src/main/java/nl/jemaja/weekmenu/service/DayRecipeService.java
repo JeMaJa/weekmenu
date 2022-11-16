@@ -49,8 +49,14 @@ public class DayRecipeService {
 		return dayRecipeRepo.findByDate(date);
 	}
 	
+	
+	
 	public List<DayRecipe> findByDateBetween(Date startDate, Date endDate) {
 		return dayRecipeRepo.findByDateBetween(startDate, endDate);
+	}
+	
+	public List<DayRecipe> findByDateBetweenOrderByDateAsc(Date startDate, Date endDate) {
+		return dayRecipeRepo.findByDateBetweenOrderByDateAsc(startDate, endDate);
 	}
 	
 	public List<DayRecipe> findByrecipe(Recipe recipe) {
