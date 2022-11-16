@@ -27,7 +27,10 @@ import nl.jemaja.weekmenu.model.Recipe;
 public interface DayRecipeRepository extends PagingAndSortingRepository<DayRecipe, Long> {
 	List<DayRecipe> findByDate(Date date);
 	
+	
 	List<DayRecipe> findByDateBetween(Date startDate, Date endDate);
+	
+	List<DayRecipe> findByDateBetweenOrderByDateAsc(Date startDate, Date endDate);
 	
 	List<DayRecipe> findByRecipe(Recipe recipe);
 	

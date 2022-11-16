@@ -128,7 +128,7 @@ public class MenuController {
 			infoDto.setBody("No Recipe's found in the database. Add at least one recipe to schedule a menu.");
 		}
 		//dayRecipeList.clear(); // clear the list
-		List<DayRecipe> dayRecipeList = dRService.findByDateBetween(from, to); // now we have the planned versions
+		List<DayRecipe> dayRecipeList = dRService.findByDateBetweenOrderByDateAsc(from, to); // now we have the planned versions
 		
 		for(int i =0; i<dayRecipeList.size();i++) {
 			dayRecipeDtos.add(mapper.dayRecipeToDayRecipeDto(dayRecipeList.get(i)));
