@@ -262,7 +262,7 @@ public class DayRecipeService {
 		Optional<DayRecipe> dr = dayRecipeRepo.findById(id);
 		Optional<DayRecipe> dr2 = null;
 		if(dr.get().getStatus() == 1) {
-			dayRecipeRepo.acceptSuggestion(id);
+			//dayRecipeRepo.acceptSuggestion(id);
 			dayRecipeRepo.save(dr.get());
 			dr2 = dayRecipeRepo.findById(id);
 		}

@@ -63,7 +63,7 @@ public class MenuController {
 	DayRecipeRepository dRRepo;
 	
 	
-	@GetMapping(path = "/")
+	@GetMapping(path = "/period")
 	String showPeriod(ModelMap model, Optional<String> f, Optional<String> t, HttpServletRequest request) throws ParseException {
 		
 		
@@ -183,10 +183,14 @@ public class MenuController {
 		log.debug("here");
 		
 		redirectAttributes.addFlashAttribute("updateInfoDto", infoDto);
-		return new RedirectView("/", true);
+		return new RedirectView("/period", true);
 		
 	}
 	
+	@GetMapping(path = "/login")
+	String login() throws ParseException {
+	return "login";
+	}
 	
 	
 	
