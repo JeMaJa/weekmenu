@@ -28,13 +28,14 @@
 			<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
 				<form method="get" id="frmDateRange">
 					
-					<input type="hidden" name="f" id="f">
-					<input type="hidden" name="t" id="t">
+					<input type="hidden" name="f" id="f" th:value="${infoDto.from}">
+					<input type="hidden" name="t" id="t" th:value="${infoDto.to}">
 
 				</form>
 				<div class="input-group input-group-sm mb-3">
 				<span class="input-group-text" id="inputGroup-sizing-sm">Date range:</span>
 				<input type="text" name="daterange" th:value="${infoDto.from} +' - '+ ${infoDto.to}" class="form-control"/>
+				<button type="button" class="btn btn-secondary" onclick="planPeriod()">Suggest menu</button>
 				</div>
 		<!-- Start block for a day -->
 		<div class="row align-items-center"

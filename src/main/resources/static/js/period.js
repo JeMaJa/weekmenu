@@ -105,4 +105,28 @@ $(function() {
 });
 })
 
+function planPeriod() {
+  var startPlan 	= document.getElementById('f').value;
+  var endPlan 		= document.getElementById('t').value;
+  
+  var planData = {
+      f: startPlan,
+      t: endPlan,
+      
+    };
+  
+ 
+  console.log('Plan period: ' + startPlan + ' to ' + endPlan);
+  console.log('JSON: ' + JSON.stringify(planData));
+	$.ajax({
+            url: '/api/v1/dayrecipe/plan',
+            type: 'POST',
+            data: planData,
+            //contentType: 'json',
+            success: function (result) {
+                // Do something with the result
+                location.reload();
+            }
+        });
+}
 
