@@ -112,19 +112,7 @@ public class MenuController {
 		//check if DayRecipe objects exist, if not make them.
 		dRService.creater(from,to);
 		
-		//plan these days.
-		try {
-			plannerService.planPeriod(from, to);
-			
-		} catch (NoRecipeFoundException e) {
-			// TODO Auto-generated catch block
-			log.warn("No Recipe found exception trown");
-			
-			
-			infoDto.setType("Error");
-			infoDto.setBody("No Recipe's found in the database. Add at least one recipe to schedule a menu.");
-		}
-		//dayRecipeList.clear(); // clear the list
+
 		List<DayRecipe> dayRecipeList = dRService.findByDateBetween(from, to); // now we have the planned versions
 		
 		for(int i =0; i<dayRecipeList.size();i++) {

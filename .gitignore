@@ -3,6 +3,7 @@
 
 # Log file
 *.log
+SPRING.txt
 
 # BlueJ files
 *.ctxt
