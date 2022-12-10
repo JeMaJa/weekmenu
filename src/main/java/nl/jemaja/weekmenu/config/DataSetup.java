@@ -14,9 +14,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.model.Recipe;
+import nl.jemaja.weekmenu.model.User;
 import nl.jemaja.weekmenu.repository.DayRecipeRepository;
+
 import nl.jemaja.weekmenu.service.DayRecipeService;
 import nl.jemaja.weekmenu.service.RecipeService;
+
+import org.springframework.security.core.userdetails.UserDetails;
 
 /**
  * @author yannick.tollenaere
@@ -28,6 +32,8 @@ import nl.jemaja.weekmenu.service.RecipeService;
 public class DataSetup {
 
 
+
+	
 	public static void days(DayRecipeService dRService) {
 		//create the entire year, and next of DayRecipe objects
 		//DayRecipeService dRservice = new DayRecipeService();
@@ -202,4 +208,5 @@ public class DataSetup {
 
 
 	}
+	
 }
