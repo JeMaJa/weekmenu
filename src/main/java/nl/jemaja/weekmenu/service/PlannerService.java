@@ -14,7 +14,11 @@ import org.springframework.stereotype.Service;
 import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.model.DayRecipe;
 import nl.jemaja.weekmenu.model.Recipe;
+
 import nl.jemaja.weekmenu.repository.RecipeRepository;
+
+import nl.jemaja.weekmenu.repository.DayRecipeRepository;
+
 import nl.jemaja.weekmenu.util.exceptions.NoRecipeFoundException;
 
 /**
@@ -31,8 +35,10 @@ public class PlannerService {
 	@Autowired
 	DayRecipeService dRService;
 	
+
 	@Autowired
 	RecipeRepository recipeRepo;
+
 
 	public void planPeriod(Date startDate, Date endDate) throws NoRecipeFoundException {
 		log.debug("planning: "+startDate.toString() + " - " + endDate.toString());

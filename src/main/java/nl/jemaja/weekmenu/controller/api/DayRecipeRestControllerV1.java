@@ -22,7 +22,9 @@ import nl.jemaja.weekmenu.dto.DayRecipeDto;
 import nl.jemaja.weekmenu.dto.mapper.DayRecipeMapper;
 import nl.jemaja.weekmenu.model.DayRecipe;
 import nl.jemaja.weekmenu.repository.DayRecipeRepository;
+
 import nl.jemaja.weekmenu.repository.RecipeRepository;
+
 import nl.jemaja.weekmenu.service.DayRecipeService;
 import nl.jemaja.weekmenu.service.PlannerService;
 import nl.jemaja.weekmenu.service.RecipeService;
@@ -37,6 +39,7 @@ public class DayRecipeRestControllerV1 {
 	DayRecipeService dRService;
 	
 	@Autowired
+
 	PlannerService plannerService;
 	
 	@Autowired
@@ -44,6 +47,12 @@ public class DayRecipeRestControllerV1 {
 	
 	@Autowired
 	RecipeRepository recipeRepo;
+
+	DayRecipeRepository dayRecipeRepo;
+	
+	@Autowired
+	PlannerService pService;
+
 	
 	@GetMapping(path = "dayrecipe/{id}" )
 	public ResponseEntity<DayRecipe> getDayRecipe(@PathVariable("id") Long id){
@@ -119,16 +128,22 @@ public class DayRecipeRestControllerV1 {
 		HttpStatus status = HttpStatus.OK;
 		try {
 			DayRecipe dr = dRService.findById(id);
+			dr.setRecipe(null);
+			dr.setStatus(0);
 			Date date = dr.getDate();
 			
+
 			//Remove the old recipe so it will replan
 			dr.setRecipe(null);
 			plannerService.planPeriod(date, date);
+
 			DayRecipe dr2 = dRService.findById(id);
 			returnVal = map.dayRecipeToDayRecipeDto(dr2);
 		
 		} catch (Exception e) {
+
 			log.error("Could not suggest new recipe for DayRecipe with ID: "+id);
+
 			log.error(e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
 			
