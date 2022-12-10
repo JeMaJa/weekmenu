@@ -42,11 +42,12 @@ public interface DayRecipeRepository extends PagingAndSortingRepository<DayRecip
 	Page<DayRecipe> findByDateBetween(Date startDate, Date endDate, PageRequest pageRequest);
 
 
+
 	@Query(value = "select max(dr.date) from DayRecipe dr where dr.recipe = ?1 and dr.date < ?2")
 	public Date findPrevLastEaten(Recipe recipe, Date date);
 
 	
-	
+
 
 
 	
