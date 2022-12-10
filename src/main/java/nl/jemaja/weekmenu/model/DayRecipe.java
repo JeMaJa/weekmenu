@@ -23,15 +23,24 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nl.jemaja.weekmenu.repository.DayRecipeRepoImpl;
+import nl.jemaja.weekmenu.repository.DayRecipeRepository;
+import nl.jemaja.weekmenu.service.DayRecipeService;
+import nl.jemaja.weekmenu.service.RecipeService;
 
+@Component
 @Entity
 @Builder
 @Data
@@ -39,6 +48,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Cacheable(false)
 public class DayRecipe {
+	
+	
+	@Transient
+	@Autowired
+	DayRecipeService dRService;
+	
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Id
 	private long id;
@@ -53,5 +68,18 @@ public class DayRecipe {
 	@UpdateTimestamp
     private OffsetDateTime lastModifiedDate;
 	private Boolean workday;
+	
+	public void setRecipe(Recipe newRecipe) {
+		
+		if(this.recipe != null) {
+			
+			//update the last eaten
+			DayRecipeRepository dRRepo = new DayRecipeRepoImpl();
+			DayRecipeService dRService = new DayRecipeService(dRRepo);
+			Date prevDate = dRService.findPrevLastEaten(this.recipe,this.date);
+			this.recipe.setLastEaten(prevDate);
+		} 
+		this.recipe = newRecipe;
+	}
 
 }

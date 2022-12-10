@@ -44,6 +44,7 @@ public class Recipe {
 	@Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
     
+	@Temporal(TemporalType.TIMESTAMP)
 	private Date lastEaten;
 
     

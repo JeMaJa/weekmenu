@@ -37,6 +37,9 @@ public class DayRecipeService {
 	DayRecipeRepository dayRecipeRepo;
 	
 	
+	public DayRecipeService(DayRecipeRepository dRRepo) {
+		this.dayRecipeRepo = dRRepo;
+	}
 	public DayRecipe save(DayRecipe dayRecipe) {
 		dayRecipeRepo.save(dayRecipe);
 		return dayRecipe;
@@ -46,8 +49,14 @@ public class DayRecipeService {
 		return dayRecipeRepo.findByDate(date);
 	}
 	
+	
+	
 	public List<DayRecipe> findByDateBetween(Date startDate, Date endDate) {
 		return dayRecipeRepo.findByDateBetween(startDate, endDate);
+	}
+	
+	public List<DayRecipe> findByDateBetweenOrderByDateAsc(Date startDate, Date endDate) {
+		return dayRecipeRepo.findByDateBetweenOrderByDateAsc(startDate, endDate);
 	}
 	
 	public List<DayRecipe> findByrecipe(Recipe recipe) {
@@ -258,6 +267,7 @@ public class DayRecipeService {
 		return  opt.get();
 	}
 	
+
 	public DayRecipe acceptSuggestion(Long id) throws NotFoundException, IncorrectStatusException {
 		Optional<DayRecipe> dr = dayRecipeRepo.findById(id);
 		Optional<DayRecipe> dr2 = null;
@@ -272,6 +282,7 @@ public class DayRecipeService {
 	public void clearDayRecipe(Long id) throws NotFoundException {
 		//to do
 		
+
 	}
 	
 

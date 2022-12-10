@@ -47,6 +47,8 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 	@Query("update Recipe r set r.lastEaten = ?2 where r.recipeId = ?1")
 	void updateLastEaten(long recipeId, Date date);
 
+
+
 	//Page<Recipe> findAll(PageRequest pageRequest);
 	
 

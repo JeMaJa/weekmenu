@@ -60,6 +60,9 @@ public class MenuController {
 	DayRecipeService dRService;
 	
 	@Autowired
+	DayRecipeRepository dayRecipeRepo;
+	
+	@Autowired
 	DayRecipeRepository dRRepo;
 	
 	
@@ -112,7 +115,8 @@ public class MenuController {
 		dRService.creater(from,to);
 		
 
-		List<DayRecipe> dayRecipeList = dRService.findByDateBetween(from, to); // now we have the planned versions
+		List<DayRecipe> dayRecipeList = dRService.findByDateBetweenOrderByDateAsc(from, to); // now we have the planned versions
+
 		
 		for(int i =0; i<dayRecipeList.size();i++) {
 			dayRecipeDtos.add(mapper.dayRecipeToDayRecipeDto(dayRecipeList.get(i)));
