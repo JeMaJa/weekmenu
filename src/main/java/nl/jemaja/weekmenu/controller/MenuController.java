@@ -63,7 +63,7 @@ public class MenuController {
 	DayRecipeRepository dRRepo;
 	
 	
-	@GetMapping(path = "/period")
+	@GetMapping(path = "/")
 	String showPeriod(ModelMap model, Optional<String> f, Optional<String> t, HttpServletRequest request) throws ParseException {
 		
 		
@@ -77,8 +77,7 @@ public class MenuController {
 		Calendar cal = Calendar.getInstance();
 		InfoDto infoDto = new InfoDto();
 		List<DayRecipeDto> dayRecipeDtos = new ArrayList<DayRecipeDto>();
-		//Date from = new Date(0);
-		//Date to = new Date(0);
+
 		 Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
 	      if (inputFlashMap != null) {
 	    	  log.debug("Receive inputflashmap");
@@ -171,7 +170,7 @@ public class MenuController {
 		log.debug("here");
 		
 		redirectAttributes.addFlashAttribute("updateInfoDto", infoDto);
-		return new RedirectView("/period", true);
+		return new RedirectView("/", true);
 		
 	}
 	

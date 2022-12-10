@@ -63,6 +63,20 @@ function acceptSuggestion() {
         });
 }
 
+function newSuggestion() {
+	var button = $(event.currentTarget) // Button that triggered the modal  
+    var id = button.context.dataset.whatever;
+	console.log(id);
+	$.ajax({
+            url: '/api/v1/dayrecipe/suggest/'+id,
+            type: 'PUT',
+            success: function (result) {
+                // Do something with the result
+                location.reload();
+            }
+        });
+}
+
 /*
 DATE RANGE LICENSE:
 https://www.daterangepicker.com/
@@ -119,7 +133,7 @@ function planPeriod() {
   console.log('Plan period: ' + startPlan + ' to ' + endPlan);
   console.log('JSON: ' + JSON.stringify(planData));
 	$.ajax({
-            url: '/api/v1/dayrecipe/plan',
+            url: '/api/v1/dayrecipe/planperiod',
             type: 'POST',
             data: planData,
             //contentType: 'json',
