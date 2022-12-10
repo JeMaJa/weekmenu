@@ -3,6 +3,7 @@ package nl.jemaja.weekmenu.security;
 import javax.sql.DataSource;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -25,6 +26,12 @@ import lombok.extern.slf4j.Slf4j;
 public class SecurityConfig {
 	@Autowired
 	private DataSource dataSource;
+	
+	@Value("${jemaja.weekmenu.username}")
+	private String username;
+	
+	@Value("${jemaja.weekmenu.password}")
+	private String password;
 
 	/*@Bean
 	public BCryptPasswordEncoder encode() {
@@ -35,10 +42,13 @@ public class SecurityConfig {
 
 	@Bean
 	public UserDetailsService userDetailsService() {
+		
+		log.debug("got user: "+username);
+		
 		UserDetails user =
 			 User.withDefaultPasswordEncoder()
-				.username("user")
-				.password("password")
+				.username(username)
+				.password(password)
 				.roles("USER")
 				.build();
 
@@ -49,7 +59,7 @@ public class SecurityConfig {
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 		http
 		.authorizeHttpRequests((requests) -> requests
-			.antMatchers("/", "/home","/api/v1/init","/h2-console/").permitAll()
+			.antMatchers("/js/*", "/home","/api/v1/init","/h2-console/*").permitAll()
 			.anyRequest().authenticated()
 		)
 		.formLogin((form) -> form

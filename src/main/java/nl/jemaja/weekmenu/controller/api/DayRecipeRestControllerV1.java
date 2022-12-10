@@ -21,8 +21,11 @@ import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.dto.DayRecipeDto;
 import nl.jemaja.weekmenu.dto.mapper.DayRecipeMapper;
 import nl.jemaja.weekmenu.model.DayRecipe;
+import nl.jemaja.weekmenu.repository.DayRecipeRepository;
+import nl.jemaja.weekmenu.repository.RecipeRepository;
 import nl.jemaja.weekmenu.service.DayRecipeService;
 import nl.jemaja.weekmenu.service.PlannerService;
+import nl.jemaja.weekmenu.service.RecipeService;
 import nl.jemaja.weekmenu.util.exceptions.IncorrectStatusException;
 import nl.jemaja.weekmenu.util.exceptions.NoRecipeFoundException;
 @Slf4j
@@ -35,6 +38,12 @@ public class DayRecipeRestControllerV1 {
 	
 	@Autowired
 	PlannerService plannerService;
+	
+	@Autowired
+	RecipeService recipeService;
+	
+	@Autowired
+	RecipeRepository recipeRepo;
 	
 	@GetMapping(path = "dayrecipe/{id}" )
 	public ResponseEntity<DayRecipe> getDayRecipe(@PathVariable("id") Long id){
@@ -71,7 +80,7 @@ public class DayRecipeRestControllerV1 {
 		return new ResponseEntity<DayRecipeDto>(returnVal, status);
 	}
 	
-	@PostMapping(path = "plan")
+	@PostMapping(path = "planperiod")
 	public ResponseEntity<String> planperiod(@RequestParam String f, String t) {
 		log.debug("API plan Post f: "+ f + " t: "+ t);
 
@@ -111,13 +120,15 @@ public class DayRecipeRestControllerV1 {
 		try {
 			DayRecipe dr = dRService.findById(id);
 			Date date = dr.getDate();
-			PlannerService pService = new PlannerService();
-			pService.planPeriod(date, date);
+			
+			//Remove the old recipe so it will replan
+			dr.setRecipe(null);
+			plannerService.planPeriod(date, date);
 			DayRecipe dr2 = dRService.findById(id);
 			returnVal = map.dayRecipeToDayRecipeDto(dr2);
 		
 		} catch (Exception e) {
-			log.error("Could not accept day Recipe with ID: "+id);
+			log.error("Could not suggest new recipe for DayRecipe with ID: "+id);
 			log.error(e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
 			
@@ -125,6 +136,14 @@ public class DayRecipeRestControllerV1 {
 		return new ResponseEntity<DayRecipeDto>(returnVal, status);
 		
 	}
+	
+	@PostMapping(path = "create/{date}")
+	public ResponseEntity<DayRecipeDto> createDayRecipe(@PathVariable("date") String d) {
+		//to do, create a DayRecipe for a date
+		return null;
+	}
+	
+	
 
 
 }
