@@ -14,7 +14,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.model.Recipe;
-import nl.jemaja.weekmenu.model.User;
+
 import nl.jemaja.weekmenu.repository.DayRecipeRepository;
 
 import nl.jemaja.weekmenu.service.DayRecipeService;
