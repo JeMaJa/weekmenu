@@ -266,6 +266,10 @@ public class DayRecipeService {
 		Optional<DayRecipe> opt = dayRecipeRepo.findById(dayRecipeId);
 		return  opt.get();
 	}
+	public Date findPrevLastEaten(Recipe recipe, Date date) {
+		log.debug("in the date"+dayRecipeRepo.toString());
+		return dayRecipeRepo.findPrevLastEaten(recipe,date);
+	}
 	
 
 	public DayRecipe acceptSuggestion(Long id) throws NotFoundException, IncorrectStatusException {

@@ -74,10 +74,10 @@ public class DayRecipe {
 		if(this.recipe != null) {
 			
 			//update the last eaten
-			//DayRecipeRepository dRRepo = new DayRecipeRepoImpl();
-			//DayRecipeService dRService = new DayRecipeService(dRRepo);
-			//Date prevDate = dRService.findPrevLastEaten(this.recipe,this.date);
-			//this.recipe.setLastEaten(prevDate);
+			DayRecipeRepository dRRepo = new DayRecipeRepoImpl();
+			DayRecipeService dRService = new DayRecipeService(dRRepo);
+			Date prevDate = dRService.findPrevLastEaten(this.recipe,this.date);
+			this.recipe.setLastEaten(prevDate);
 		} 
 		this.recipe = newRecipe;
 	}
