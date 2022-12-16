@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import javax.transaction.Transactional;
@@ -147,7 +148,7 @@ public class DayRecipeService {
         
     
 
-	
+	@Deprecated
 	public int creater(int num) {
 		//Generates new DayRecipe items
 		Date date = dayRecipeRepo.findMaxDate();
@@ -181,7 +182,7 @@ public class DayRecipeService {
 	}
 	public int creater(Date start, Date end) {
 		//Generates new DayRecipe items
-		
+		int i=0;
 		Calendar c = Calendar.getInstance();
 		c.setTime(start);
 		
@@ -189,33 +190,53 @@ public class DayRecipeService {
 		endC.setTime(end);
 		endC.add(Calendar.DATE, 1);
 		
-		
+		List<DayRecipe> dRList = this.findByDateBetweenOrderByDateAsc(start, end);
+		long days = TimeUnit.DAYS.convert(Math.abs(start.getTime()-end.getTime()), TimeUnit.MILLISECONDS);
+		if(days < dRList.size()) {
+			//All days exist, nothing to do
+			log.debug("nothing to create.");
+			return 0;
+		} else {
 		
 		while(c.before(endC)) {
-			log.debug("Creating DayRecipe for: "+ c.toString());
-			Boolean workDay = true;
-			
+			log.debug("Checking DayRecipe for: "+ c.toString());
 			Date d = new Date(c.getTimeInMillis());
-			if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || 
-				    c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-				workDay = false;
-			}
+			if(!dRList.isEmpty() && i <dRList.size() && d.equals(dRList.get(i).getDate())) {
+				//date is in, skip to next
+				i++;
+				c.add(Calendar.DATE, 1);
+				
+			} else {
+				//date is not in, so we need to add it!
+				log.debug("create: "+c.toString());
+				Boolean workDay = true;
+				
+				
+				if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || 
+					    c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+					workDay = false;
+				}
+				
+				DayRecipe dR = DayRecipe.builder()
+								.date(d)
+								.recipe(null)
+								.workday(workDay)
+								.status(0)
+								.build();
+				try {
+					save(dR);
+				} catch (org.springframework.dao.DataIntegrityViolationException e) {
+					//it already exists, that is fine just ignor
+					log.debug("Duplicate exception, skipp to next");
+				}
+				c.add(Calendar.DATE, 1);
+				
+			} 
 			
-			DayRecipe dR = DayRecipe.builder()
-							.date(d)
-							.recipe(null)
-							.workday(workDay)
-							.status(0)
-							.build();
-			try {
-				save(dR);
-			} catch (org.springframework.dao.DataIntegrityViolationException e) {
-				//it already exists, that is fine just ignor
-				log.debug("Duplicate exception, skipp to next");
-			}
-			c.add(Calendar.DATE, 1);
+			
 		}
 		return 0;
+		}
 	}
 	
 
