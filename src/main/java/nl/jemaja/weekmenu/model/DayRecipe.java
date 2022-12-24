@@ -47,7 +47,7 @@ import nl.jemaja.weekmenu.service.RecipeService;
 @AllArgsConstructor
 @NoArgsConstructor
 @Cacheable(false)
-public class DayRecipe {
+public class DayRecipe implements Comparable<DayRecipe>{
 	
 	
 	@Transient
@@ -81,5 +81,10 @@ public class DayRecipe {
 		} 
 		this.recipe = newRecipe;
 	}
+	
+	public int compareTo(DayRecipe dayrecipe) {
+        return date.compareTo(dayrecipe.getDate());
+    }
+	
 
 }

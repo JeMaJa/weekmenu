@@ -20,9 +20,11 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ObjectUtils;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.jemaja.weekmenu.dto.RecipeStatsDto;
 import nl.jemaja.weekmenu.model.DayRecipe;
 import nl.jemaja.weekmenu.model.DayRecipePagedList;
 import nl.jemaja.weekmenu.model.Recipe;
+import nl.jemaja.weekmenu.model.RecipeLabel;
 import nl.jemaja.weekmenu.model.RecipePagedList;
 import nl.jemaja.weekmenu.repository.RecipeRepository;
 import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
@@ -38,6 +40,9 @@ public class RecipeService {
 
 	@Autowired
 	RecipeRepository recipeRepo;
+	
+	@Autowired
+	DayRecipeService dRService;
 
 	/*
 	 * Method: save(Recipe recipe) 
@@ -176,6 +181,33 @@ public class RecipeService {
 	public List<Recipe> findAll() {
 				return recipeRepo.findAll();
 	}
+	
+	public Recipe setLabel(Recipe recipe, RecipeLabel label) {
+		List<RecipeLabel> list = (List<RecipeLabel>) recipe.getLabels();
+	// check if label is already in
+		if(!list.contains(label) || list.isEmpty()) {
+			log.debug("Adding label");
+			list.add(label);
+			recipe.setLabels(list);
+			this.save(recipe);
+		}
+		return recipe;
+		
+	}
+	
+	public List<RecipeLabel> getLabels(Recipe recipe){
+		return recipe.getLabels();
+		
+	}
+	
+	public RecipeStatsDto getStats(Recipe recipe) {
+		Date date = new java.sql.Date(System.currentTimeMillis());
+		return null;
+		
+		
+		
+	}
+
 
 
 

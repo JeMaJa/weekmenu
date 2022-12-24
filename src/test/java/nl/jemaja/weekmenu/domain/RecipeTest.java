@@ -107,7 +107,7 @@ class RecipeTest {
 		System.out.println(recipe2.toString());
 	}
 	
-	@Test
+/*	@Test
 	void duplicateTest() {
 		
 			Recipe recipe = Recipe.builder()
@@ -123,7 +123,7 @@ class RecipeTest {
 			Recipe recipe3 = (Recipe) recipeTree.get("Recipe");
 			assertEquals(recipe,recipe3);
 		
-	}
+	}*/
 	
 	
 	
