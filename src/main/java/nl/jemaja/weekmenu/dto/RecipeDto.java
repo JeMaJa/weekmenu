@@ -32,4 +32,5 @@ public class RecipeDto {
     private boolean cooldDown;
     private int healthScore;
     private int complexity;
+    private String imageUrl;
 }

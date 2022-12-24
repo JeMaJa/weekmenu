@@ -145,7 +145,7 @@ public class DayRecipeRestControllerV1 {
 			log.error("Could not suggest new recipe for DayRecipe with ID: "+id);
 
 			log.error(e.getMessage());
-			status = HttpStatus.BAD_REQUEST;
+			status = HttpStatus.NO_CONTENT;
 			
 		}
 		return new ResponseEntity<DayRecipeDto>(returnVal, status);

@@ -2,17 +2,23 @@ package nl.jemaja.weekmenu.model;
 
 import java.time.OffsetDateTime;
 import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.JoinColumn;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -67,10 +73,27 @@ public class Recipe {
     private int complexity;
     @Column(columnDefinition = "int default 3")
     private int healthScore;
+    @Column(columnDefinition = "int default 4")
+    private int servings;  // number of servings in default recipe.
+    private String imageUrl;
+    private String shortDescription;
+    
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(
+        name = "recipe_labels",
+        joinColumns = {@JoinColumn(name = "recipe_id", referencedColumnName = "recipeId")},
+        inverseJoinColumns = {@JoinColumn(name = "label_id", referencedColumnName = "id")})
+    private List<RecipeLabel> labels;
+    
+    @ManyToMany(cascade=CascadeType.ALL)
+    @JoinTable(
+        name = "recipe_ingredients",
+        joinColumns = {@JoinColumn(name = "recipe_id", referencedColumnName = "recipeId")},
+        inverseJoinColumns = {@JoinColumn(name = "ingredient_id", referencedColumnName = "id")})
+    private List<Ingredient> ingredients;
     
     
-    
-    private Ingredient[] ingredients;
+   
 	
     
     

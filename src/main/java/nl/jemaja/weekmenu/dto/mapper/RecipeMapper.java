@@ -21,6 +21,7 @@ public class RecipeMapper {
 				.healthScore(recipeDto.getHealthScore())
 				.complexity(recipeDto.getComplexity())
 				.coolDown(recipeDto.isCooldDown())
+				.imageUrl(recipeDto.getImageUrl())
 				.build();
 	}
 	
@@ -35,6 +36,7 @@ public class RecipeMapper {
 				.healthScore(recipe.getHealthScore())
 				.complexity(recipe.getComplexity())
 				.cooldDown(recipe.isCoolDown())
+				.imageUrl(recipe.getImageUrl())
 				.build();
 	}
 

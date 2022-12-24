@@ -3,38 +3,29 @@
  */
 package nl.jemaja.weekmenu.controller.api;
 
-import java.net.http.HttpResponse;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import org.springframework.web.servlet.view.RedirectView;
-
 import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.config.DataSetup;
-import nl.jemaja.weekmenu.dto.DayRecipeDto;
-import nl.jemaja.weekmenu.model.Complexity;
-import nl.jemaja.weekmenu.model.DayRecipe;
+import nl.jemaja.weekmenu.dto.RecipeDto;
+import nl.jemaja.weekmenu.dto.mapper.RecipeMapper;
 import nl.jemaja.weekmenu.model.Recipe;
-import nl.jemaja.weekmenu.model.RecipeList;
+import nl.jemaja.weekmenu.model.RecipeLabel;
 import nl.jemaja.weekmenu.repository.RecipeRepository;
 import nl.jemaja.weekmenu.service.DayRecipeService;
-import nl.jemaja.weekmenu.service.PlannerService;
+
+import nl.jemaja.weekmenu.service.RecipeLabelService;
 import nl.jemaja.weekmenu.service.RecipeService;
+import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
 
 /**
  * @author yannick.tollenaere
@@ -54,13 +45,11 @@ public class RecipeRestControllerV1 {
 	@Autowired
 	DayRecipeService dRService;
 	
-
+	@Autowired
+	RecipeLabelService labelService;
 
 	
-	@GetMapping(path = "/blaat", produces = MediaType.APPLICATION_JSON_VALUE) 
-	public List<Recipe> getRecipes() {
-		return recipeRepository.findAll();
-	}
+	
 	
 	@GetMapping(path = "/recipe", produces = MediaType.APPLICATION_JSON_VALUE)
 	public Recipe getRecipeById(long id) {
@@ -86,6 +75,30 @@ public class RecipeRestControllerV1 {
 		
 	}
 	
+	@PostMapping(path = "addlabel/{recipeId}/{labelId}")
+	public ResponseEntity<RecipeDto> addLabel(@PathVariable("recipeId") long recipeId,@PathVariable("labelId") long labelId) {
+		//HttpStatus status = HttpStatus.OK;
+		log.debug("in add label");
+		
+		try {
+			Recipe recipe = recipeService.findByRecipeId(recipeId);
+			RecipeLabel label = labelService.findById(labelId);
+			log.debug("got recipe: "+recipe.getRecipeName()+" and label: " +label.getName());
+			recipeService.setLabel(recipe, label);
+			RecipeMapper mapper = new RecipeMapper();
+			RecipeDto dto = mapper.recipeToRecipeDto(recipe);
+			ResponseEntity response = new ResponseEntity(dto, HttpStatus.OK);
+			return response;
+			
+		} catch (NotFoundException e) {
+			log.error(e.getMessage());
+			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		
+		
+		
+	}
 	
 
 	
