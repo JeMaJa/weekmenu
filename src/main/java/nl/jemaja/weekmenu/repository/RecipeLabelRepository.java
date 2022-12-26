@@ -14,9 +14,8 @@ public interface RecipeLabelRepository extends JpaRepository<RecipeLabel, Long> 
 
 	RecipeLabel findById(long id);
 
-	//@Query(value = "SELECT l.* FROM recipe_label l, recipe_labels j WHERE j.recipe_id = ?1 AND j.label_id = l.label_id", nativeQuery = true)
-	//List<RecipeLabel> findByRecipe(long recipeId);
-	
+	List<RecipeLabel> findByRecipe(long recipeId);
+
 	
 
 }

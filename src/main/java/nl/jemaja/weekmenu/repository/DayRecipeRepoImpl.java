@@ -146,4 +146,16 @@ public class DayRecipeRepoImpl implements DayRecipeRepository {
 		return null;
 	}
 
+	@Override
+	public Date findNextEaten(Recipe recipe, Date currentdate) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int countEaten(Recipe recipe, Date currentdate) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

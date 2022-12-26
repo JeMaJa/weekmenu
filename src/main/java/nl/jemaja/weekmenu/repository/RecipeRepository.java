@@ -40,12 +40,14 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
 	List<Recipe> findAll();
 
-	@Query("select r from Recipe r order by r.lastEaten ASC")
-	List<Recipe> findLastEaten();
+	
 
 	@Modifying
 	@Query("update Recipe r set r.lastEaten = ?2 where r.recipeId = ?1")
 	void updateLastEaten(long recipeId, Date date);
+
+	
+
 
 
 

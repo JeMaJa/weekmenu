@@ -26,6 +26,7 @@ import nl.jemaja.weekmenu.model.DayRecipePagedList;
 import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.model.RecipeLabel;
 import nl.jemaja.weekmenu.model.RecipePagedList;
+import nl.jemaja.weekmenu.repository.DayRecipeRepository;
 import nl.jemaja.weekmenu.repository.RecipeRepository;
 import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
 
@@ -43,6 +44,9 @@ public class RecipeService {
 	
 	@Autowired
 	DayRecipeService dRService;
+	
+	@Autowired
+	DayRecipeRepository dRRepo;
 
 	/*
 	 * Method: save(Recipe recipe) 
@@ -164,8 +168,9 @@ public class RecipeService {
 	}
 
 
-	public List<Recipe> findLastEaten() {
-		return recipeRepo.findLastEaten();
+	public Date findLastEaten(Recipe recipe) {
+		Date currentdate = new java.sql.Date(System.currentTimeMillis());
+		return dRRepo.findPrevLastEaten(recipe,currentdate);
 	}
 
 	public void setLastEaten(long recipeId, Date date) {
@@ -201,11 +206,22 @@ public class RecipeService {
 	}
 	
 	public RecipeStatsDto getStats(Recipe recipe) {
-		Date date = new java.sql.Date(System.currentTimeMillis());
+		Date currentdate = new java.sql.Date(System.currentTimeMillis());
+		Date lastEaten = dRRepo.findPrevLastEaten(recipe,currentdate); 
+		Date nextEaten = dRRepo.findNextEaten(recipe,currentdate); 
+		int timesEaten = dRRepo.countEaten(recipe,currentdate);
+		long total = dRRepo.count();
+		RecipeStatsDto dto = RecipeStatsDto.builder().timesEaten(timesEaten).lastEaten(lastEaten).nextEaten(nextEaten).percentageEaten((timesEaten/total)*100).build();
+		
+		return dto;
+		
+		
+		
+	}
+
+	public List<Recipe> findLastEaten() {
+		// TODO Auto-generated method stub
 		return null;
-		
-		
-		
 	}
 
 

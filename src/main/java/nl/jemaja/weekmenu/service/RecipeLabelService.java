@@ -28,7 +28,7 @@ public class RecipeLabelService {
 		return label;
 		
 	}
-	/*
+	
 	public List<RecipeLabel> findByRecipe(long recipeId) throws NotFoundException {
 		List<RecipeLabel> labelList = new ArrayList<>();
 		//Recipe recipe = rService.findByRecipeId(recipeId);
@@ -36,12 +36,12 @@ public class RecipeLabelService {
 		if(labelList.isEmpty()) throw new NotFoundException("Could not find recipelabel with recipe: "+recipeId);
 		return labelList;
 		
-	}*/
+	}
 
 	public void save(RecipeLabel label) {
 		recipeLabelRepo.save(label);
-		
-		
+				
 	}
+	
 
 }

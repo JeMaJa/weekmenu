@@ -27,7 +27,7 @@ import nl.jemaja.weekmenu.model.Recipe;
 public interface DayRecipeRepository extends PagingAndSortingRepository<DayRecipe, Long> {
 	List<DayRecipe> findByDate(Date date);
 	
-	
+	@Deprecated
 	List<DayRecipe> findByDateBetween(Date startDate, Date endDate);
 	
 	List<DayRecipe> findByDateBetweenOrderByDateAsc(Date startDate, Date endDate);
@@ -45,6 +45,15 @@ public interface DayRecipeRepository extends PagingAndSortingRepository<DayRecip
 
 	@Query(value = "select max(dr.date) from DayRecipe dr where dr.recipe = ?1 and dr.date < ?2")
 	public Date findPrevLastEaten(Recipe recipe, Date date);
+
+	@Query(value = "select min(dr.date) from DayRecipe dr where dr.recipe = ?1 and dr.date >= ?2")
+	public Date findNextEaten(Recipe recipe, Date currentdate);
+
+	@Query(value = "select max(dr.date) from DayRecipe dr where dr.recipe = ?1 and dr.date < ?2 and status=2")
+	int countEaten(Recipe recipe, Date currentdate);
+
+
+	
 
 	
 
