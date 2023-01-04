@@ -67,21 +67,8 @@ public class DayRecipe implements Comparable<DayRecipe>{
     private OffsetDateTime createdDate;
 	@UpdateTimestamp
     private OffsetDateTime lastModifiedDate;
-	private Boolean workday;
 	
-	public void setRecipe(Recipe newRecipe) {
-		
-		if(this.recipe != null) {
-			
-			//update the last eaten
-			//we wont need this anymore, we will get the last eaten from DB
-			DayRecipeRepository dRRepo = new DayRecipeRepoImpl();
-			DayRecipeService dRService = new DayRecipeService(dRRepo);
-			Date prevDate = dRService.findPrevLastEaten(this.recipe,this.date);
-			this.recipe.setLastEaten(prevDate);
-		} 
-		this.recipe = newRecipe;
-	}
+	
 	
 	public int compareTo(DayRecipe dayrecipe) {
         return date.compareTo(dayrecipe.getDate());

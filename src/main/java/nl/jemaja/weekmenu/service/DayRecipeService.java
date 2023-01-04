@@ -96,12 +96,11 @@ public class DayRecipeService {
 		int returnVal = 0;
 		log.debug("Scheduling dinner"+dayRecipe.getDate() + " to be: "+recipe.getRecipeName());
 		try {
-			//remove old way via custom query
-			//dayRecipeRepo.scheduleDinner(dayRecipe.getId(),recipe,status);
+
 			dayRecipe.setRecipe(recipe);
 			dayRecipe.setStatus(status);
 			this.save(dayRecipe);
-			recipeService.setLastEaten(recipe.getRecipeId(),dayRecipe.getDate()); 
+			
 		} catch (Exception e){
 			returnVal = 1;
 			log.debug("Exception in dinner: "+e.getMessage());
@@ -162,18 +161,13 @@ public class DayRecipeService {
 		c.add(Calendar.DATE, 1);
 		while(c.before(end)) {
 			log.debug("Creating DayRecipe for: "+ c.toString());
-			Boolean workDay = true;
 			c.add(Calendar.DATE, 1);
 			Date d = new Date(c.getTimeInMillis());
-			if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || 
-				    c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-				workDay = false;
-			}
+
 			
 			DayRecipe dR = DayRecipe.builder()
 							.date(d)
 							.recipe(null)
-							.workday(workDay)
 							.status(0)
 							.build();
 			dR = this.save(dR);
@@ -209,18 +203,11 @@ public class DayRecipeService {
 			} else {
 				//date is not in, so we need to add it!
 				log.debug("create: "+c.toString());
-				Boolean workDay = true;
 				
-				
-				if (c.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || 
-					    c.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-					workDay = false;
-				}
 				
 				DayRecipe dR = DayRecipe.builder()
 								.date(d)
 								.recipe(null)
-								.workday(workDay)
 								.status(0)
 								.build();
 				try {
@@ -251,18 +238,10 @@ public class DayRecipeService {
 		{
 			List<DayRecipe> dRL = findByDate(new Date(cal.getTimeInMillis()));
 			if(dRL.isEmpty()) {
-				Boolean workDay = true;
-				
-				log.debug("Create DayRecipe "+cal.getTime());
-				if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY || 
-					    cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-					workDay = false;
-				}
 				
 				DayRecipe dr = DayRecipe.builder()
 								.date(new Date(cal.getTimeInMillis()))
 								.recipe(null)
-								.workday(workDay)
 								.status(0)
 								.build();
 				try {

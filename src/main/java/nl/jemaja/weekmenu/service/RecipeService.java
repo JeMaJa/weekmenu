@@ -6,6 +6,7 @@ package nl.jemaja.weekmenu.service;
 import java.sql.Date;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -170,18 +171,20 @@ public class RecipeService {
 
 	public Date findLastEaten(Recipe recipe) {
 		Date currentdate = new java.sql.Date(System.currentTimeMillis());
-		return dRRepo.findPrevLastEaten(recipe,currentdate);
+		return this.findLastEaten(recipe,currentdate);
 	}
-
-	public void setLastEaten(long recipeId, Date date) {
-		// get last eaten, see if it is smaller
-		Recipe recipe = recipeRepo.findByRecipeId(recipeId);
-		if(recipe.getLastEaten() == null | recipe.getLastEaten().before(date)) {
-			log.debug("New date is > old date, so we update.");
-			recipeRepo.updateLastEaten(recipeId, date);
+	
+	public Date findLastEaten(Recipe recipe, Date date) {
+		Date returnVal = dRRepo.findPrevLastEaten(recipe,date);
+		if(returnVal == null) {
+			return new Date(0);
+		} else {
+			return returnVal;
 		}
-		
 	}
+	
+	
+	
 
 	public List<Recipe> findAll() {
 				return recipeRepo.findAll();
@@ -221,7 +224,30 @@ public class RecipeService {
 
 	public List<Recipe> findLastEaten() {
 		// TODO Auto-generated method stub
-		return null;
+		List<Recipe> unSorted = this.findAll();
+		List<Recipe> sorted = new LinkedList<Recipe>();
+		TreeMap<Date, Recipe> map = new TreeMap<Date, Recipe>();
+		for(int i =0;i<unSorted.size();i++)
+		{
+			map.put(this.findLastEaten(unSorted.get(i)), unSorted.get(i));
+		}
+		for(Date key : map.keySet()) {
+		    sorted.add(map.get(key));
+		}
+		
+		return sorted;
+		
+		
+	}
+
+
+
+	public List<Recipe> findAllActive() {
+		return recipeRepo.findByActiveTrue();
+	}
+
+	public List<Recipe> findAllWorkdayActive() {
+		return recipeRepo.findByActiveTrueAndWorkdayOkTrue();
 	}
 
 

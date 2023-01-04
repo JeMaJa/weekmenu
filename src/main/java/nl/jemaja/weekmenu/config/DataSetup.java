@@ -60,7 +60,7 @@ public class DataSetup {
 				.description("Lorum Ipsum.")
 				.complexity(4)
 				.healthScore(1)
-				.lastEaten(java.sql.Date.valueOf("2018-07-25"))
+				.active(true)
 				.build();
 		try {
 			recipeService.save(r);
@@ -75,7 +75,7 @@ public class DataSetup {
 				.description("Lorum Ipsum.")
 				.complexity(2)
 				.healthScore(3)
-				.lastEaten(java.sql.Date.valueOf("2018-07-26"))
+				.active(true)
 				.build();
 		try {
 			recipeService.save(r);
@@ -90,7 +90,7 @@ public class DataSetup {
 				.description("Lorum Ipsum.")
 				.complexity(2)
 				.healthScore(2)
-				.lastEaten(java.sql.Date.valueOf("2018-07-27"))
+				.active(true)
 				.build();
 		try {
 			recipeService.save(r);
@@ -106,7 +106,7 @@ public class DataSetup {
 				.description("Lorum Ipsum.")
 				.complexity(2)
 				.healthScore(1)
-				.lastEaten(java.sql.Date.valueOf("2018-07-28"))
+				.active(true)
 				.build();
 		try {
 			recipeService.save(r);
@@ -121,7 +121,7 @@ public class DataSetup {
 				.description("Lorum Ipsum.")
 				.complexity(2)
 				.healthScore(4)
-				.lastEaten(java.sql.Date.valueOf("2018-07-29"))
+				.active(true)
 				.build();
 		try {
 			recipeService.save(r);
@@ -136,7 +136,7 @@ public class DataSetup {
 				.description("Lorum Ipsum.")
 				.complexity(2)
 				.healthScore(2)
-				.lastEaten(java.sql.Date.valueOf("2018-07-30"))
+				.active(true)
 				.build();
 		try {
 			recipeService.save(r);
@@ -151,7 +151,7 @@ public class DataSetup {
 				.description("Lorum Ipsum.")
 				.complexity(2)
 				.healthScore(2)
-				.lastEaten(java.sql.Date.valueOf("2018-07-24"))
+				.active(true)
 				.build();
 		try {
 			recipeService.save(r);
@@ -166,7 +166,6 @@ public class DataSetup {
 				.description("Lorum Ipsum.")
 				.complexity(1)
 				.healthScore(1)
-				.lastEaten(java.sql.Date.valueOf("2018-07-23"))
 				.build();
 		try {
 			recipeService.save(r);
@@ -181,7 +180,6 @@ public class DataSetup {
 				.description("Lorum Ipsum.")
 				.complexity(2)
 				.healthScore(2)
-				.lastEaten(java.sql.Date.valueOf("2018-07-22"))
 				.build();
 		try {
 			recipeService.save(r);
@@ -196,7 +194,6 @@ public class DataSetup {
 				.description("Lorum Ipsum.")
 				.complexity(4)
 				.healthScore(2)
-				.lastEaten(java.sql.Date.valueOf("2018-07-21"))
 				.build();
 		try {
 			recipeService.save(r);

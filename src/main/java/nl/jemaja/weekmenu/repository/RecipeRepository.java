@@ -42,9 +42,11 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 
 	
 
-	@Modifying
-	@Query("update Recipe r set r.lastEaten = ?2 where r.recipeId = ?1")
-	void updateLastEaten(long recipeId, Date date);
+	
+
+	List<Recipe> findByActiveTrueAndWorkdayOkTrue();
+
+	List<Recipe> findByActiveTrue();
 
 	
 

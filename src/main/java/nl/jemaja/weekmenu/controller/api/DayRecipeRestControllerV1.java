@@ -115,7 +115,7 @@ public class DayRecipeRestControllerV1 {
 				} catch (Exception e) {
 					log.error(e.getMessage());
 					//response.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
-					log.debug("stack"+ e.getStackTrace());
+					log.debug("stack"+ e.getStackTrace().toString());
 					return new ResponseEntity<>(e.getMessage(),HttpStatus.INTERNAL_SERVER_ERROR);
 				}
 		
