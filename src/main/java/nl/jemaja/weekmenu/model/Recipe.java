@@ -50,8 +50,9 @@ public class Recipe {
 	@Temporal(TemporalType.TIMESTAMP)
     private Date lastModifiedDate;
     
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastEaten;
+	//taken out, we will not store it on the recipe but get it from the db!
+	//@Temporal(TemporalType.TIMESTAMP)
+	//private Date lastEaten;
 
     
     @Column(unique=true)

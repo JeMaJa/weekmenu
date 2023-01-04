@@ -49,7 +49,7 @@ public interface DayRecipeRepository extends PagingAndSortingRepository<DayRecip
 	@Query(value = "select min(dr.date) from DayRecipe dr where dr.recipe = ?1 and dr.date >= ?2")
 	public Date findNextEaten(Recipe recipe, Date currentdate);
 
-	@Query(value = "select max(dr.date) from DayRecipe dr where dr.recipe = ?1 and dr.date < ?2 and status=2")
+	@Query(value = "select count(dr.date) from DayRecipe dr where dr.recipe = ?1 and dr.date < ?2 and status=2")
 	int countEaten(Recipe recipe, Date currentdate);
 
 

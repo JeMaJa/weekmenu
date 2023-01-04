@@ -38,7 +38,6 @@ public class DayRecipeMapper {
 				dr = DayRecipe.builder()
 						.date(dto.getDate())
 						.recipe(rec)
-						.workday(dto.getWorkDay())
 						.status(dto.getStatus())
 						.id(dto.getId())
 						.build();
@@ -50,7 +49,6 @@ public class DayRecipeMapper {
 		}	else {
 			dr = DayRecipe.builder()
 					.date(dto.getDate())
-					.workday(dto.getWorkDay())
 					.status(dto.getStatus())
 					.id(dto.getId())
 					.build();
@@ -69,14 +67,12 @@ public class DayRecipeMapper {
 					.recipeName(dr.getRecipe().getRecipeName())
 					.recipeId(dr.getRecipe().getRecipeId())
 					.status(dr.getStatus())
-					.workDay(dr.getWorkday())
 					.id(dr.getId())
 					.build();
 		} else {
 			dto = DayRecipeDto.builder()
 					.date(dr.getDate())
 					.status(dr.getStatus())
-					.workDay(dr.getWorkday())
 					.id(dr.getId())
 					.build();
 		}

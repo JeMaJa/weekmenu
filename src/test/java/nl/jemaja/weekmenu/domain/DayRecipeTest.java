@@ -90,44 +90,8 @@ class DayRecipeTest {
 		
 	}
 	*/
+
 	@Test
-	void prevDateTest() {
-		
-		Date date = Date.valueOf("2021-09-09");
-		Recipe recipe = Recipe.builder()
-						.recipeName("Layervlaai4")
-						.build();
-		Recipe recipe1 = Recipe.builder()
-						.recipeName("Appeltaart")
-						.build();
-		
-		DayRecipe dr1 = DayRecipe.builder()
-						.date(date)
-						.recipe(recipe)
-						.status(2)
-						.build();
-		Date date2 = Date.valueOf("2021-09-08");
-		DayRecipe dr2 = DayRecipe.builder()
-						.date(date2)
-						.recipe(recipe)
-						.status(2)
-						.build();
-		recipe.setLastEaten(date);
-		
-		TreeMap<String, Object> r = rService.save(recipe);
-		dr1 = dRService.save(dr1);
-		dr2 = dRService.save(dr2);
-		
-		Date maxFound = dRService.findPrevLastEaten(recipe, date);
-		System.out.println("Prevmax found: "+maxFound.toString());
-		System.out.println("Last eaten before: "+recipe.getLastEaten());
-		DayRecipe dr3 = dRService.findByDate(date).get(0);
-		dr3.setRecipe(recipe1);
-		//dr1.setRecipe(recipe1); // setting the new recipe
-		System.out.println("Last eaten after: "+recipe.getLastEaten());
-		
-	}
-/*	@Test
 	void createrTest() {
 		int i = 10;
 		Date date = Date.valueOf("2018-07-24");
@@ -182,7 +146,7 @@ class DayRecipeTest {
 		
 		
 	}
-	/*
+	
 	@Test
 	void testYear() {
 		//DataSetup ds = new DataSetup();
@@ -190,10 +154,10 @@ class DayRecipeTest {
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.YEAR, 2022);
 		cal.set(Calendar.DAY_OF_YEAR, 1);    
-		java.util.Date start =  cal.getTime();
+		java.sql.Date start =  (Date) cal.getTime();
 		cal.set(Calendar.YEAR, 2024);
 		cal.set(Calendar.DAY_OF_YEAR, 1);    
-		java.util.Date end=  cal.getTime();
+		java.sql.Date end=  (Date) cal.getTime();
 		try {
 			dRService.creater(start, end);
 		} catch (Exception e) {
@@ -253,6 +217,6 @@ class DayRecipeTest {
 		System.out.println("the first: "+list.get(0));
 		System.out.println("the 5th: "+list.get(4));
 		System.out.println("the 10th: "+list.get(9));
-	}*/
+	}
 
 }

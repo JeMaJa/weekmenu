@@ -1,9 +1,11 @@
-/*package nl.jemaja.weekmenu.domain;
+package nl.jemaja.weekmenu.domain;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.*;
+
 
 import java.sql.Date;
 import java.time.OffsetDateTime;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ import nl.jemaja.weekmenu.dto.RecipeDto;
 import nl.jemaja.weekmenu.dto.mapper.RecipeMapper;
 import nl.jemaja.weekmenu.model.DayRecipe;
 import nl.jemaja.weekmenu.model.Recipe;
+import nl.jemaja.weekmenu.repository.DayRecipeRepository;
+import nl.jemaja.weekmenu.repository.RecipeRepository;
 import nl.jemaja.weekmenu.service.RecipeService;
 
 @Slf4j
@@ -30,6 +34,11 @@ class Rtest {
 	@Autowired
 	RecipeService recipeService;
 	
+	@Autowired
+	RecipeRepository recipeRepository;
+	
+	@Autowired
+	DayRecipeRepository dRRepo;
 	
 	
 	//@Autowired
@@ -133,12 +142,18 @@ class Rtest {
 	void lastTest() {
 		
 		//DataSetup.recipes(recipeService);
-
 		
+		dRRepo.deleteAll();
+		//recipeRepository.deleteAll();
 		Date date = Date.valueOf("2021-09-09");
 		Recipe recipe = Recipe.builder()
-						.recipeName("Layervlaai4")
+						.recipeName(UUID.randomUUID().toString())
 						.build();
+		recipeService.save(recipe);
+		Recipe recipe2 = Recipe.builder()
+				.recipeName(UUID.randomUUID().toString())
+				.build();
+		recipeService.save(recipe2);
 		DayRecipe dr1 = DayRecipe.builder()
 						.date(date)
 						.recipe(recipe)
@@ -151,20 +166,37 @@ class Rtest {
 						.status(2)
 						.build();
 		
+		Date now = new java.sql.Date( new java.util.Date().getTime() );
+		Date tomorrow= new java.sql.Date( now.getTime() + 24*60*60*1000);
+		DayRecipe dr4 = DayRecipe.builder()
+						.date(tomorrow)
+						.recipe(recipe)
+						.status(2)
+						.build();
+		
+		
+		dRRepo.save(dr1);
+		dRRepo.save(dr2);
+		dRRepo.save(dr4);
 		Date date3 = recipeService.findLastEaten(recipe);
-		System.out.println("Longest not eaten: "+date3.toString());
+		assertEquals((String)date3.toString(),(String)date.toString());	
+		//System.out.println("Longest not eaten: "+date3.toString());
+		dRRepo.delete(dr1);
+		dRRepo.delete(dr2);
+		dRRepo.delete(dr4);
+		recipeRepository.delete(recipe);
+		recipeRepository.delete(recipe2);
 	}
 	
 	@Test
-	void lastPageTest(){
-		DataSetup.recipes(recipeService);
-		Pageable sortedLastEatenAsc = 
-				  PageRequest.of(0, 5, Sort.by("lastEaten").ascending());
-		Page<Recipe> page = recipeService.findLastEatenPage(sortedLastEatenAsc);
-		for(int i=0;i<5;i++) {
-			System.out.println(i+ "recipe on Page:" +page.getContent().get(i).getRecipeName());
-		}
-		
+	void neverEaten() {
+		Recipe recipe = Recipe.builder()
+				.recipeName(UUID.randomUUID().toString())
+				.build();
+		recipeService.save(recipe);
+		Date date3 = recipeService.findLastEaten(recipe);
+		Date date = new Date(0);
+		assertEquals((String)date3.toString(),(String)date.toString());	
 	}
 
 }
