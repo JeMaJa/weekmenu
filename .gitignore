@@ -23,7 +23,7 @@ spring.log.*
 *.rar
 
 
-application.properties
+
 /target
 /.mvn
 /.settings
