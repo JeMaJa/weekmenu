@@ -1,6 +1,6 @@
 # Compiled class file
 *.class
-
+application.properties
 # Log file
 *.log
 SPRING.txt
@@ -21,7 +21,6 @@ spring.log.*
 *.zip
 *.tar.gz
 *.rar
-
 
 application.properties
 /target
