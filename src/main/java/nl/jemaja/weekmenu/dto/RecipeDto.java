@@ -33,4 +33,6 @@ public class RecipeDto {
     private int healthScore;
     private int complexity;
     private String imageUrl;
+    private int servings;  // number of servings in default recipe.
+    private String shortDescription;
 }

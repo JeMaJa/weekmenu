@@ -3,6 +3,7 @@
  */
 package nl.jemaja.weekmenu.controller;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -33,10 +34,12 @@ import org.springframework.web.servlet.view.RedirectView;
 import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.dto.InfoDto;
 import nl.jemaja.weekmenu.dto.RecipeDto;
+import nl.jemaja.weekmenu.dto.RecipeStatsDto;
 import nl.jemaja.weekmenu.dto.mapper.RecipeMapper;
 import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.model.RecipeList;
 import nl.jemaja.weekmenu.repository.RecipeRepository;
+import nl.jemaja.weekmenu.service.DayRecipeService;
 import nl.jemaja.weekmenu.service.RecipeService;
 import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
 
@@ -53,6 +56,9 @@ public class RecipeWebController {
 	
 	@Autowired
 	private RecipeRepository recipeRepository;
+	
+	@Autowired
+	DayRecipeService dRService;
 	
 	@Autowired
 	private RecipeMapper mapper;
@@ -89,15 +95,21 @@ public class RecipeWebController {
 		
 		if(recipeId != null){
 			Recipe recipe = new Recipe();
+			RecipeStatsDto stats = new RecipeStatsDto();
 			try {
 				log.debug("retrieving single recipe: "+recipeId);
 				recipe = recipeService.findByRecipeId(recipeId);
+				stats.setLastEaten(recipeService.findLastEaten(recipe));
+				stats.setNextEaten(recipeService.findNextEaten(recipe));
+				
 			} catch (NotFoundException e) {
-				// TODO Auto-generated catch block
+				log.error("recipe not found/");
 				e.printStackTrace();
 			}
 			RecipeDto recipeDto = mapper.recipeToRecipeDto(recipe);
 			recipeDto.setDescription(recipeDto.getDescription().replaceAll("(\r\n|\n)", "<br>"));
+			recipeDto.setShortDescription(recipeDto.getShortDescription().replaceAll("(\r\n|\n)", "<br>"));
+			model.put("stats", stats);
 			model.put("recipeDto", recipeDto);
 			return "recipe";
 		} else {
@@ -105,7 +117,7 @@ public class RecipeWebController {
 			 * No recipe ID provided,show all 
 			 */
 			log.debug("Showing all recipes");
-			return "recipeoverview";
+			return "redirect:/getrecipes";
 		}
 		
 		

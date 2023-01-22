@@ -60,6 +60,7 @@ public class RecipeService {
 	public TreeMap<String,Object> save(Recipe recipe) {
 		TreeMap<String, Object> result = new TreeMap();
 		try {
+			recipe.setActive(true); // issue#24 by default set active to true
 			recipeRepo.save(recipe);
 			result.put("Status", "saved");
 			result.put("Recipe", recipe);
@@ -250,6 +251,22 @@ public class RecipeService {
 		return recipeRepo.findByActiveTrueAndWorkdayOkTrue();
 	}
 
+	public java.util.Date findNextEaten(Recipe recipe) {
+		Date currentdate = new java.sql.Date(System.currentTimeMillis());
+		return this.findNextEaten(recipe,currentdate);
+	}
+
+	private java.util.Date findNextEaten(Recipe recipe, Date currentdate) {
+		Date returnVal = dRRepo.findNextEaten(recipe,currentdate);
+		if(returnVal == null) {
+			return new Date(0);
+		} else {
+			return returnVal;
+		}
+	}
+
+
+	
 
 
 

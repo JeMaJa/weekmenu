@@ -22,6 +22,8 @@ public class RecipeMapper {
 				.complexity(recipeDto.getComplexity())
 				.coolDown(recipeDto.isCooldDown())
 				.imageUrl(recipeDto.getImageUrl())
+				.shortDescription(recipeDto.getShortDescription())
+				.servings(recipeDto.getServings())
 				.build();
 	}
 	
@@ -37,6 +39,8 @@ public class RecipeMapper {
 				.complexity(recipe.getComplexity())
 				.cooldDown(recipe.isCoolDown())
 				.imageUrl(recipe.getImageUrl())
+				.shortDescription(recipe.getShortDescription())
+				.servings(recipe.getServings())
 				.build();
 	}
 

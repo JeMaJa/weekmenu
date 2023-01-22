@@ -2,6 +2,7 @@ package nl.jemaja.weekmenu.domain;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,14 +48,14 @@ public class RecipeLabelTest {
 	}
 	@Test
 	void findLabelTest() {
-		RecipeLabel label3 = RecipeLabel.builder().name("name3").sortOrder(10).build();
-		RecipeLabel label4 = RecipeLabel.builder().name("name3").sortOrder(20).build();
+		RecipeLabel label3 = RecipeLabel.builder().name(UUID.randomUUID().toString()).sortOrder(10).build();
+		RecipeLabel label4 = RecipeLabel.builder().name(UUID.randomUUID().toString()).sortOrder(20).build();
 		labelService.save(label3);
 		labelService.save(label4);
 		List<RecipeLabel> list = new ArrayList();
 		list.add(label3);
 		list.add(label4);
-		Recipe recipe = Recipe.builder().recipeName("r2").servings(2).labels(list).build();
+		Recipe recipe = Recipe.builder().recipeName(UUID.randomUUID().toString()).servings(2).labels(list).build();
 		recipeService.save(recipe);
 		
 	}

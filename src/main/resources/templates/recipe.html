@@ -22,41 +22,51 @@
 
 	<div class="container text-center">
 		<div class="row">
-			<div class="col-2">
-				Menu en knopjes
-
-				<div class="list-group">
-					<a href="#" class="list-group-item list-group-item-action active"
-						aria-current="true">
-						<div class="d-flex w-100 justify-content-between">
-							<h5 class="mb-1">Random recipe 1</h5>
-							
-						</div>
-						<p class="mb-1">Some placeholder content in a paragraph.</p> <small>This is another recipe with similar labels</small>
-					</a> <a href="#" class="list-group-item list-group-item-action">
-						<div class="d-flex w-100 justify-content-between">
-							<h5 class="mb-1">Random recipe 2</h5>
-							
-						</div>
-						<p class="mb-1">Some placeholder content in a paragraph.</p> <small>This is another recipe with similar labels</small>
-					</a> <a href="#" class="list-group-item list-group-item-action">
-						<div class="d-flex w-100 justify-content-between">
-							<h5 class="mb-1">Random recipe 3</h5>
-							
-						</div>
-						<p class="mb-1">Some placeholder content in a paragraph.</p> <<small>This is another recipe with similar labels</small>
-					</a>
+			
+			<div class="col-10">
+				
+				<!-- buttons -->
+				<div class="btn-toolbar mb-3" role="toolbar" aria-label="Toolbar with button groups">
+				  <div class="btn-group me-2" role="group" aria-label="First group">
+				    <button type="button" class="btn btn-outline-secondary">Edit</button>
+				    <button type="button" class="btn btn-outline-secondary">Plan for today</button>
+				    
+				    
+				  </div>
+				  <div class="input-group">
+				    <div class="input-group-text" id="btnGroupAddon">Plan for date: </div>
+				    <input type="date" class="form-control" placeholder="Input group example" aria-label="Input group example" aria-describedby="btnGroupAddon">
+				  </div>
 				</div>
-
-
-			</div>
-			<div class="col-8">
+				
+				
 				<!-- Main area -->
-				<!-- Pictue -->
-				<img th:s="${recipeDto.image}"
-					class="col-md-6 float-md-end mb-3 ms-md-3" alt="...">
+				
+				
+				
+				<p class="h3" th:text="${recipeDto.recipeName}">Recipe name</p>
+				<div class="col-7">
 				<!-- Description-->
-			</div>
+					<p class="lead" th:text="${recipeDto.shortDescription}">
+	  					This is a lead paragraph. It stands out from regular paragraphs.
+					</p>
+				<div>
+				  <a class="btn btn-primary" data-bs-toggle="collapse" href="#fullDescription" role="button" aria-expanded="false" aria-controls="collapseExample">
+				    Full description
+				  </a>
+				  <div class="collapse" id="fullDescription" th:text="${recipeDto.description}">
+					  <div class="card card-body">
+					    the full description
+					  </div>
+				  </div>	
+				</div>
+				<div class="col-3">
+					<!-- Pictue -->
+					<img th:src="${recipeDto.imageUrl}"
+						class=" float-end max-vw-5" th:alt="${recipeDto.recipeName}">
+					
+				
+				</div>
 
 			<div class="col-2">
 				<!-- Sidebar -->
@@ -71,8 +81,10 @@
 						<div id="panelsStayOpen-collapseOne"
 							class="accordion-collapse collapse show"
 							aria-labelledby="panelsStayOpen-headingOne">
-							<div class="accordion-body">Show last time eaten and next
-								time scheduled</div>
+							<div class="accordion-body"><small>Last eaten: <div th:text="${stats.lastEaten}">
+								time scheduled</div><br>
+								Next scheduled: <div th:text="${stats.nextEaten}">
+								time scheduled</small></div>
 						</div>
 					</div>
 					<div class="accordion-item">
@@ -86,10 +98,10 @@
 							class="accordion-collapse collapse"
 							aria-labelledby="panelsStayOpen-headingTwo">
 							<div class="accordion-body">
-								<!-- Show all the labels as small buttons -->
+								<!-- Show all the labels as small buttons
 								<div th:each="label : ${recipePage.labels}">
 									<button type="button" class="btn btn-secondary btn-sm"
-										th:text="${label.labelName}">a label</button>
+										th:text="${label.labelName}">a label</button>-->
 								</div>
 							</div>
 						</div>

@@ -34,6 +34,6 @@ public class RecipeLabel {
 	@Column(unique=true)
 	private String name;
 	
-	@ManyToMany(cascade=CascadeType.ALL, mappedBy="labels")
+	@ManyToMany(cascade=CascadeType.MERGE, mappedBy="labels")
 	List<Recipe> recipes;
 }

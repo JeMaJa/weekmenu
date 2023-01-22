@@ -77,9 +77,10 @@ public class Recipe {
     @Column(columnDefinition = "int default 4")
     private int servings;  // number of servings in default recipe.
     private String imageUrl;
+    @Column(columnDefinition="LONGTEXT")
     private String shortDescription;
     
-    @ManyToMany(cascade=CascadeType.ALL)
+    @ManyToMany(cascade=CascadeType.MERGE)
     @JoinTable(
         name = "recipe_labels",
         joinColumns = {@JoinColumn(name = "recipe_id", referencedColumnName = "recipeId")},
