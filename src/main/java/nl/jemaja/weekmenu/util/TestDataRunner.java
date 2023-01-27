@@ -3,12 +3,10 @@
  */
 package nl.jemaja.weekmenu.util;
 
-import org.springframework.beans.factory.annotation.Autowired;
-
-
 import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.service.DayRecipeService;
 import nl.jemaja.weekmenu.service.RecipeService;
+import org.springframework.beans.factory.annotation.Autowired;
 
 /**
  * @author yannick.tollenaere

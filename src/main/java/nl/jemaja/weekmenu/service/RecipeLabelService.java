@@ -1,18 +1,14 @@
 package nl.jemaja.weekmenu.service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-
+import lombok.extern.slf4j.Slf4j;
+import nl.jemaja.weekmenu.model.RecipeLabel;
+import nl.jemaja.weekmenu.repository.RecipeLabelRepository;
+import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import lombok.extern.slf4j.Slf4j;
-import nl.jemaja.weekmenu.model.Recipe;
-import nl.jemaja.weekmenu.model.RecipeLabel;
-import nl.jemaja.weekmenu.repository.RecipeLabelRepository;
-
-import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 @Slf4j

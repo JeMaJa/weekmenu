@@ -1,14 +1,5 @@
 package nl.jemaja.weekmenu;
 
-import java.sql.Date;
-import java.util.Calendar;
-import java.util.List;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.boot.test.context.SpringBootTest;
-
 import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.config.DataSetup;
 import nl.jemaja.weekmenu.model.DayRecipe;
@@ -17,9 +8,16 @@ import nl.jemaja.weekmenu.repository.RecipeRepository;
 import nl.jemaja.weekmenu.service.DayRecipeService;
 import nl.jemaja.weekmenu.service.PlannerService;
 import nl.jemaja.weekmenu.service.RecipeService;
-
 import nl.jemaja.weekmenu.util.exceptions.NoRecipeFoundException;
 import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.sql.Date;
+import java.util.Calendar;
+import java.util.List;
 
 @Slf4j
 @Configurable

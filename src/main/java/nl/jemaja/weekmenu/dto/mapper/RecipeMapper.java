@@ -1,12 +1,9 @@
 package nl.jemaja.weekmenu.dto.mapper;
 
 
-
-
-import org.springframework.stereotype.Component;
-
 import nl.jemaja.weekmenu.dto.RecipeDto;
 import nl.jemaja.weekmenu.model.Recipe;
+import org.springframework.stereotype.Component;
 
 @Component
 public class RecipeMapper {

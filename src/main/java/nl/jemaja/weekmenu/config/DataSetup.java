@@ -3,24 +3,13 @@
  */
 package nl.jemaja.weekmenu.config;
 
-import java.util.Calendar;
-import java.sql.Date;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.model.Recipe;
-
-import nl.jemaja.weekmenu.repository.DayRecipeRepository;
-
 import nl.jemaja.weekmenu.service.DayRecipeService;
 import nl.jemaja.weekmenu.service.RecipeService;
 
-import org.springframework.security.core.userdetails.UserDetails;
+import java.sql.Date;
+import java.util.Calendar;
 
 /**
  * @author yannick.tollenaere

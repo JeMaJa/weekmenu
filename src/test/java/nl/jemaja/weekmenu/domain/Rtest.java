@@ -1,23 +1,6 @@
 package nl.jemaja.weekmenu.domain;
 
-import static org.junit.Assert.*;
-
-
-import java.sql.Date;
-import java.time.OffsetDateTime;
-import java.util.UUID;
-
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Configurable;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
-
 import lombok.extern.slf4j.Slf4j;
-import nl.jemaja.weekmenu.config.DataSetup;
 import nl.jemaja.weekmenu.dto.RecipeDto;
 import nl.jemaja.weekmenu.dto.mapper.RecipeMapper;
 import nl.jemaja.weekmenu.model.DayRecipe;
@@ -25,6 +8,16 @@ import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.repository.DayRecipeRepository;
 import nl.jemaja.weekmenu.repository.RecipeRepository;
 import nl.jemaja.weekmenu.service.RecipeService;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.boot.test.context.SpringBootTest;
+
+import java.sql.Date;
+import java.time.OffsetDateTime;
+import java.util.UUID;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @Slf4j
 @Configurable
