@@ -3,24 +3,20 @@
  */
 package nl.jemaja.weekmenu.service;
 
+import lombok.extern.slf4j.Slf4j;
+import nl.jemaja.weekmenu.model.DayRecipe;
+import nl.jemaja.weekmenu.model.PlanRule;
+import nl.jemaja.weekmenu.model.Recipe;
+import nl.jemaja.weekmenu.repository.RecipeRepository;
+import nl.jemaja.weekmenu.util.exceptions.NoRecipeFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.TreeMap;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import lombok.extern.slf4j.Slf4j;
-import nl.jemaja.weekmenu.model.DayRecipe;
-import nl.jemaja.weekmenu.model.Recipe;
-
-import nl.jemaja.weekmenu.repository.RecipeRepository;
-
-import nl.jemaja.weekmenu.repository.DayRecipeRepository;
-import nl.jemaja.weekmenu.model.PlanRule;
-import nl.jemaja.weekmenu.util.exceptions.NoRecipeFoundException;
 
 /**
  * @author yannick.tollenaere

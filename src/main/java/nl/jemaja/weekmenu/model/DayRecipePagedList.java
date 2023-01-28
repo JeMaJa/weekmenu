@@ -1,14 +1,13 @@
 package nl.jemaja.weekmenu.model;
 
-import java.io.Serializable;
-import java.util.List;
-
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+
+import java.io.Serializable;
+import java.util.List;
 
 
 

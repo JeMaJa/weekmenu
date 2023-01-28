@@ -3,20 +3,16 @@
  */
 package nl.jemaja.weekmenu.repository;
 
-import java.sql.Date;
-import java.util.List;
-
+import nl.jemaja.weekmenu.model.DayRecipe;
+import nl.jemaja.weekmenu.model.Recipe;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Isolation;
-import org.springframework.transaction.annotation.Transactional;
 
-import nl.jemaja.weekmenu.model.DayRecipe;
-import nl.jemaja.weekmenu.model.Recipe;
+import java.sql.Date;
+import java.util.List;
 
 /**
  * @author yannick.tollenaere

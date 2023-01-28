@@ -1,164 +1,170 @@
 <html>
 <head>
-<!-- CSS only -->
-<link
-	href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
-	rel="stylesheet"
-	integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
-	crossorigin="anonymous">
-<!-- JavaScript Bundle with Popper -->
-<meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- CSS only -->
+    <link
+            crossorigin="anonymous"
+            href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css"
+            integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx"
+            rel="stylesheet">
+    <!-- JavaScript Bundle with Popper -->
+    <meta content="width=deklvice-width, initial-scale=1" name="viewport">
 
 </head>
 <body>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
-		crossorigin="anonymous"></script>
-	<script
-		src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<div th:replace="header"></div>	
-	<div class="container px-4 text-center">
-		
-
-		<!-- Date navigators -->
-
-			<script type="text/javascript" src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js"></script>
-			<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js"></script>
-			<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" />
-				<form method="get" id="frmDateRange">
-					
-					<input type="hidden" name="f" id="f" th:value="${infoDto.from}">
-					<input type="hidden" name="t" id="t" th:value="${infoDto.to}">
-
-				</form>
-				<div class="input-group input-group-sm mb-3">
-				<span class="input-group-text" id="inputGroup-sizing-sm">Date range:</span>
-				<input type="text" name="daterange" th:value="${infoDto.from} +' - '+ ${infoDto.to}" class="form-control"/>
-				<button type="button" class="btn btn-secondary" onclick="planPeriod()">Suggest menu</button>
-				</div>
-		<!-- Start block for a day -->
-		<div class="row align-items-center"
-			th:each="dayRecipeDto: ${dayRecipeDtos}">
-			<div class="col-md-2 gy-1">
-				<div class="p-1 " th:text="${dayRecipeDto.date}">24-07-2018</div>
-			</div>
-			<div class="col-md-8 gy-1">
-
-				<div	class="fst-italic" th:text="${dayRecipeDto.recipeName}" th:id="'dr'+${dayRecipeDto.id}" 
-					th:if="${dayRecipeDto.status == 1}">Recipe goes here</div> 
-				<div	class="fw-bold" th:text="${dayRecipeDto.recipeName}"  th:id="'dr'+${dayRecipeDto.id}" 
-					th:if="${dayRecipeDto.status == 2}">Recipe goes here</div>
-
-			</div>
-			<div class="col-md-2 gy-1">
-				<div class="p-1">
-					<div class="dropdown">
-						<button class="btn btn-secondary dropdown-toggle btn-sm"
-							type="button" data-bs-toggle="dropdown" aria-expanded="true">
-							Options</button>
-						<ul class="dropdown-menu">
-							<li><a class="dropdown-item" href="#" data-bs-target="#accept" onClick="acceptSuggestion()" th:data-whatever="${dayRecipeDto.id}">Accept suggestion</a></li>
-							<li><a class="dropdown-item" href="#" data-bs-toggle="modal"
-								data-bs-target="#modal1" th:data-whatever="${dayRecipeDto.date}">Choose
-									other recipe</a></li>
-							<li><a class="dropdown-item" href="#" data-bs-target="#suggest" onClick="newSuggestion()" th:data-whatever="${dayRecipeDto.id}">Suggest other
-									recipe</a></li>
-
-							<li><a class="dropdown-item" id="modal2button" href="#"
-								data-bs-toggle="modal" data-bs-target="#modal2"
-								th:data-id="${dayRecipeDto.recipeId}">Show recipe</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- End block for a day -->
-		
-		<!-- Modal -->
-		<div class="modal fade" id="modal1" tabindex="-1"
-			aria-labelledby="modal1" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="ModalLabel">Choose other recipe</h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<div class="container-sm">
-							<form method="post" id="modalform" action="/updatedayrecipe">
-								<div class="mydate row-sm gy-1">
-									Date: <input type="date" class="form-control" id="date"
-										name="date">
-								</div>
-								<div class="row-sm gy-1">
-									<select class="form-control" id="recipeId" name="recipeId">
-										<option value=0>Select another recipe</option>
-										<option th:each="recipeDto: ${recipeDtos}"
-											th:value="${recipeDto.recipeId}"
-											th:text="${recipeDto.recipeName }" />
-									</select>
-								</div>
-							</form>
-						</div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">Close</button>
-						<button type="button" class="btn btn-primary" id="modalAccept">Accept</button>
-					</div>
-				</div>
-			</div>
-		</div>
+<script
+        crossorigin="anonymous"
+        integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+        src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"></script>
+<script
+        src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<div th:replace="header"></div>
+<div class="container px-4 text-center">
 
 
-		<!-- Show recipe Modal -->
-		<div class="modal fade" id="modal2" tabindex="-1"
-			aria-labelledby="modal2" aria-hidden="true">
-			<div class="modal-dialog">
-				<div class="modal-content">
-					<div class="modal-header">
-						<h5 class="modal-title" id="Modal2Label"></h5>
-						<button type="button" class="btn-close" data-bs-dismiss="modal"
-							aria-label="Close"></button>
-					</div>
-					<div class="modal-body">
-						<div class="container-sm" id="Modal2body"></div>
-					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-secondary"
-							data-bs-dismiss="modal">Close</button>
-						
-					</div>
-				</div>
-			</div>
-		</div>
+    <!-- Date navigators -->
 
-	
-		<!--div class="fixed-bottom">-->
-		<!--  <div class="fixed-bottom">Copyright &copy 2022 Yannick Tollenaere. <br>This application is licensed under the <a href="https://raw.githubusercontent.com/JeMaJa/weekmenu/main/LICENSE.md">MIT License</a><br></div>
+    <script src="https://cdn.jsdelivr.net/momentjs/latest/moment.min.js" type="text/javascript"></script>
+    <script src="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js" type="text/javascript"></script>
+    <link href="https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css" rel="stylesheet" type="text/css"/>
+    <form id="frmDateRange" method="get">
+
+        <input id="f" name="f" th:value="${infoDto.from}" type="hidden">
+        <input id="t" name="t" th:value="${infoDto.to}" type="hidden">
+
+    </form>
+    <div class="input-group input-group-sm mb-3">
+        <span class="input-group-text" id="inputGroup-sizing-sm">Date range:</span>
+        <input class="form-control" name="daterange" th:value="${infoDto.from} +' - '+ ${infoDto.to}" type="text"/>
+        <button class="btn btn-secondary" onclick="planPeriod()" type="button">Suggest menu</button>
+    </div>
+    <!-- Start block for a day -->
+    <div class="d-flex justify-content-between"
+         th:each="dayRecipeDto: ${dayRecipeDtos}">
+        <div class="gy-1" style="white-space: nowrap;">
+            <div class="p-1 " th:text="${dayRecipeDto.date}">24-07-2018</div>
+        </div>
+        <div class="gy-1">
+            <div class="row align-items-center">
+                <div class="fst-italic" th:id="'dr'+${dayRecipeDto.id}" th:if="${dayRecipeDto.status == 1}"
+                     th:text="${dayRecipeDto.recipeName}">Recipe goes here
+                </div>
+                <div class="fw-bold" th:id="'dr'+${dayRecipeDto.id}" th:if="${dayRecipeDto.status == 2}"
+                     th:text="${dayRecipeDto.recipeName}">Recipe goes here
+                </div>
+            </div>
+        </div>
+        <div class="gy-1">
+            <div class="p-1">
+                <div class="dropdown">
+                    <button aria-expanded="true"
+                            class="btn btn-secondary dropdown-toggle btn-sm" data-bs-toggle="dropdown" type="button">
+                        Options
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a class="dropdown-item" data-bs-target="#accept" href="#" onClick="acceptSuggestion()"
+                               th:data-whatever="${dayRecipeDto.id}">Accept suggestion</a></li>
+                        <li><a class="dropdown-item" data-bs-target="#modal1" data-bs-toggle="modal"
+                               href="#" th:data-whatever="${dayRecipeDto.date}">Choose
+                            other recipe</a></li>
+                        <li><a class="dropdown-item" data-bs-target="#suggest" href="#" onClick="newSuggestion()"
+                               th:data-whatever="${dayRecipeDto.id}">Suggest other
+                            recipe</a></li>
+
+                        <li><a class="dropdown-item" data-bs-target="#modal2" data-bs-toggle="modal"
+                               href="#" id="modal2button"
+                               th:data-id="${dayRecipeDto.recipeId}">Show recipe</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- End block for a day -->
+
+    <!-- Modal -->
+    <div aria-hidden="true" aria-labelledby="modal1" class="modal fade"
+         id="modal1" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="ModalLabel">Choose other recipe</h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                            type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-sm">
+                        <form action="/updatedayrecipe" id="modalform" method="post">
+                            <div class="mydate row-sm gy-1">
+                                Date: <input class="form-control" id="date" name="date"
+                                             type="date">
+                            </div>
+                            <div class="row-sm gy-1">
+                                <select class="form-control" id="recipeId" name="recipeId">
+                                    <option value=0>Select another recipe</option>
+                                    <option th:each="recipeDto: ${recipeDtos}"
+                                            th:text="${recipeDto.recipeName }"
+                                            th:value="${recipeDto.recipeId}"/>
+                                </select>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal"
+                            type="button">Close
+                    </button>
+                    <button class="btn btn-primary" id="modalAccept" type="button">Accept</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Show recipe Modal -->
+    <div aria-hidden="true" aria-labelledby="modal2" class="modal fade"
+         id="modal2" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="Modal2Label"></h5>
+                    <button aria-label="Close" class="btn-close" data-bs-dismiss="modal"
+                            type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="container-sm" id="Modal2body"></div>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" data-bs-dismiss="modal"
+                            type="button">Close
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!--div class="fixed-bottom">-->
+    <!--  <div class="fixed-bottom">Copyright &copy 2022 Yannick Tollenaere. <br>This application is licensed under the <a href="https://raw.githubusercontent.com/JeMaJa/weekmenu/main/LICENSE.md">MIT License</a><br></div>
 <!-- </div>-->
-		<p>
-			<br>
-			<br>
-			<br>
-		<p>
-			<br>
-			<br>
-			<br>
-	</div>
-	<div class="container fixed-bottom">
-		Copyright &copy 2022 Yannick Tollenaere. <br>This application is
-		licensed under the <a
-			href="https://raw.githubusercontent.com/JeMaJa/weekmenu/main/LICENSE.md">MIT
-			License</a><br>
-	</div>
+    <p>
+        <br>
+        <br>
+        <br>
+    <p>
+        <br>
+        <br>
+        <br>
+</div>
+<div class="container fixed-bottom">
+    Copyright &copy 2022 Yannick Tollenaere. <br>This application is
+    licensed under the <a
+        href="https://raw.githubusercontent.com/JeMaJa/weekmenu/main/LICENSE.md">MIT
+    License</a><br>
+</div>
 
-	<script type="text/javascript" src="/js/period.js"></script>
+<script src="/js/period.js" type="text/javascript"></script>
 
 </body>
-
 
 
 </html>

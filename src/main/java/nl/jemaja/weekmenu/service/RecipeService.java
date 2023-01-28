@@ -3,33 +3,25 @@
  */
 package nl.jemaja.weekmenu.service;
 
-import java.sql.Date;
-import java.sql.SQLIntegrityConstraintViolationException;
-import java.util.Calendar;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TreeMap;
-import java.util.stream.Collectors;
-
-import org.hibernate.exception.ConstraintViolationException;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.ObjectUtils;
-
 import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.dto.RecipeStatsDto;
-import nl.jemaja.weekmenu.model.DayRecipe;
-import nl.jemaja.weekmenu.model.DayRecipePagedList;
 import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.model.RecipeLabel;
 import nl.jemaja.weekmenu.model.RecipePagedList;
 import nl.jemaja.weekmenu.repository.DayRecipeRepository;
 import nl.jemaja.weekmenu.repository.RecipeRepository;
 import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import java.sql.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
 
 /**
  * @author yannick.tollenaere

@@ -1,16 +1,15 @@
 package nl.jemaja.weekmenu.repository;
 
-import java.sql.Date;
-import java.util.List;
-import java.util.Optional;
-
+import nl.jemaja.weekmenu.model.DayRecipe;
+import nl.jemaja.weekmenu.model.Recipe;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
-import nl.jemaja.weekmenu.model.DayRecipe;
-import nl.jemaja.weekmenu.model.Recipe;
+import java.sql.Date;
+import java.util.List;
+import java.util.Optional;
 
 public class DayRecipeRepoImpl implements DayRecipeRepository {
 

@@ -3,19 +3,12 @@
  */
 package nl.jemaja.weekmenu.dto;
 
-import java.sql.Date;
-import java.time.OffsetDateTime;
-
-import javax.persistence.ManyToOne;
-
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nl.jemaja.weekmenu.model.Recipe;
+
+import java.sql.Date;
 
 /**
  * @author yannick.tollenaere
