@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.dto.DayRecipeDto;
 import nl.jemaja.weekmenu.model.DayRecipe;
 import nl.jemaja.weekmenu.model.Recipe;
+import nl.jemaja.weekmenu.model.RecipeStatus;
 import nl.jemaja.weekmenu.service.RecipeService;
 import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;

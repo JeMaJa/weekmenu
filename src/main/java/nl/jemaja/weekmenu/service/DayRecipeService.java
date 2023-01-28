@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.model.DayRecipe;
 import nl.jemaja.weekmenu.model.DayRecipePagedList;
 import nl.jemaja.weekmenu.model.Recipe;
+import nl.jemaja.weekmenu.model.RecipeStatus;
 import nl.jemaja.weekmenu.repository.DayRecipeRepository;
 import nl.jemaja.weekmenu.util.exceptions.IncorrectStatusException;
 import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
@@ -62,7 +63,7 @@ public class DayRecipeService {
 		int returnVal = 0;
 		log.debug("Scheduling dinner  with status 2 for: "+dayRecipe.getDate() + " to be: "+recipe.getRecipeName());
 		try {
-			returnVal = dinner(dayRecipe,recipe,recipeService,2);
+			returnVal = dinner(dayRecipe,recipe,recipeService,RecipeStatus.SELECTED);
 		} catch (Exception e){
 			returnVal = 1;
 			log.debug("Exception in scheduleDiner: "+e.getMessage());
@@ -74,7 +75,7 @@ public class DayRecipeService {
 		int returnVal = 0;
 		log.debug("Scheduling dinner  with status 1 for: "+dayRecipe.getDate() + " to be: "+recipe.getRecipeName());
 		try {
-			returnVal = dinner(dayRecipe,recipe,recipeService,1);
+			returnVal = dinner(dayRecipe,recipe,recipeService,RecipeStatus.SUGGESTED);
 		} catch (Exception e){
 			returnVal = 1;
 			log.debug("Exception in suggestDiner: "+e.getMessage());
@@ -82,7 +83,7 @@ public class DayRecipeService {
 		return returnVal;
 	}
 	
-	public int dinner(DayRecipe dayRecipe, Recipe recipe, RecipeService recipeService, int status) {
+	public int dinner(DayRecipe dayRecipe, Recipe recipe, RecipeService recipeService, RecipeStatus status) {
 		int returnVal = 0;
 		log.debug("Scheduling dinner"+dayRecipe.getDate() + " to be: "+recipe.getRecipeName());
 		try {
@@ -158,7 +159,7 @@ public class DayRecipeService {
 			DayRecipe dR = DayRecipe.builder()
 							.date(d)
 							.recipe(null)
-							.status(0)
+							.status(RecipeStatus.NOT_SET)
 							.build();
 			dR = this.save(dR);
 		}
@@ -198,7 +199,7 @@ public class DayRecipeService {
 				DayRecipe dR = DayRecipe.builder()
 								.date(d)
 								.recipe(null)
-								.status(0)
+								.status(RecipeStatus.NOT_SET)
 								.build();
 				try {
 					save(dR);
@@ -232,7 +233,7 @@ public class DayRecipeService {
 				DayRecipe dr = DayRecipe.builder()
 								.date(new Date(cal.getTimeInMillis()))
 								.recipe(null)
-								.status(0)
+								.status(RecipeStatus.NOT_SET)
 								.build();
 				try {
 					save(dr);
@@ -265,7 +266,7 @@ public class DayRecipeService {
 	public DayRecipe acceptSuggestion(Long id) throws NotFoundException, IncorrectStatusException {
 		Optional<DayRecipe> dr = dayRecipeRepo.findById(id);
 		Optional<DayRecipe> dr2 = null;
-		if(dr.get().getStatus() == 1) {
+		if(dr.get().getStatus().equals(RecipeStatus.SUGGESTED)) {
 			//dayRecipeRepo.acceptSuggestion(id);
 			dayRecipeRepo.save(dr.get());
 			dr2 = dayRecipeRepo.findById(id);

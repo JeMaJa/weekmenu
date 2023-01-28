@@ -6,6 +6,7 @@ import nl.jemaja.weekmenu.dto.DayRecipeDto;
 import nl.jemaja.weekmenu.dto.mapper.DayRecipeMapper;
 import nl.jemaja.weekmenu.model.DayRecipe;
 import nl.jemaja.weekmenu.model.Recipe;
+import nl.jemaja.weekmenu.model.RecipeStatus;
 import nl.jemaja.weekmenu.repository.DayRecipeRepository;
 import nl.jemaja.weekmenu.service.DayRecipeService;
 import nl.jemaja.weekmenu.service.RecipeService;
@@ -189,7 +190,7 @@ class DayRecipeTest {
 				.date(date)
 				.recipe(null)
 				.workday(false)
-				.status(0)
+				.status(RecipeStatus.NOT_SET)
 				.build();
 		DayRecipeMapper mapper = new DayRecipeMapper();
 		DayRecipeDto dto = mapper.dayRecipeToDayRecipeDto(dr);
@@ -206,7 +207,7 @@ class DayRecipeTest {
 				.date(test)
 				.recipe(null)
 				.workday(false)
-				.status(0)
+				.status(RecipeStatus.NOT_SET)
 				.build();
 		dRService.save(dr); // we add one in the middle, to see if this gets found instead of created
 		List<DayRecipe> list = dRService.getOrCreate(from, to);

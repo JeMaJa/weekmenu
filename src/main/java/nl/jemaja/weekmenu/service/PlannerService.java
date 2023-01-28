@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.model.DayRecipe;
 import nl.jemaja.weekmenu.model.PlanRule;
 import nl.jemaja.weekmenu.model.Recipe;
+import nl.jemaja.weekmenu.model.RecipeStatus;
 import nl.jemaja.weekmenu.repository.RecipeRepository;
 import nl.jemaja.weekmenu.util.exceptions.NoRecipeFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,7 +90,7 @@ public class PlannerService {
 		for(int j=0;j<dayRecipeList.size();j++) {
 			
 			// Need to add a check to see if there already was something planned, in that case skip the day.
-			if(dayRecipeList.get(j).getStatus() == 0 || dayRecipeList.get(j).getRecipe() == null) {
+			if(dayRecipeList.get(j).getStatus().equals(RecipeStatus.NOT_SET) || dayRecipeList.get(j).getRecipe() == null) {
 				switch(rule) {
 				case LONGEST: {
 					dayRecipe = longestPlanDay(dayRecipeList.get(j));

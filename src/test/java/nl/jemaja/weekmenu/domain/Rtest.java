@@ -5,6 +5,7 @@ import nl.jemaja.weekmenu.dto.RecipeDto;
 import nl.jemaja.weekmenu.dto.mapper.RecipeMapper;
 import nl.jemaja.weekmenu.model.DayRecipe;
 import nl.jemaja.weekmenu.model.Recipe;
+import nl.jemaja.weekmenu.model.RecipeStatus;
 import nl.jemaja.weekmenu.repository.DayRecipeRepository;
 import nl.jemaja.weekmenu.repository.RecipeRepository;
 import nl.jemaja.weekmenu.service.RecipeService;
@@ -150,13 +151,13 @@ class Rtest {
 		DayRecipe dr1 = DayRecipe.builder()
 						.date(date)
 						.recipe(recipe)
-						.status(2)
+						.status(RecipeStatus.SELECTED)
 						.build();
 		Date date2 = Date.valueOf("2021-09-08");
 		DayRecipe dr2 = DayRecipe.builder()
 						.date(date2)
 						.recipe(recipe)
-						.status(2)
+						.status(RecipeStatus.SELECTED)
 						.build();
 		
 		Date now = new java.sql.Date( new java.util.Date().getTime() );
@@ -164,7 +165,7 @@ class Rtest {
 		DayRecipe dr4 = DayRecipe.builder()
 						.date(tomorrow)
 						.recipe(recipe)
-						.status(2)
+						.status(RecipeStatus.SELECTED)
 						.build();
 		
 		

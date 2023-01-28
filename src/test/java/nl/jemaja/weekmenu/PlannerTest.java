@@ -3,6 +3,7 @@ package nl.jemaja.weekmenu;
 import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.config.DataSetup;
 import nl.jemaja.weekmenu.model.DayRecipe;
+import nl.jemaja.weekmenu.model.RecipeStatus;
 import nl.jemaja.weekmenu.repository.DayRecipeRepository;
 import nl.jemaja.weekmenu.repository.RecipeRepository;
 import nl.jemaja.weekmenu.service.DayRecipeService;
@@ -74,52 +75,52 @@ public class PlannerTest {
 				DayRecipe dayRecipe = dayRecipeList.get(0);
 			
 				dayRecipe.setRecipe(rService.findByRecipeName("Pizza"));
-				dayRecipe.setStatus(2);	
+				dayRecipe.setStatus(RecipeStatus.SELECTED);	
 				dRService.save(dayRecipe);
 				
 				dayRecipe = dayRecipeList.get(1);
 				dayRecipe.setRecipe(rService.findByRecipeName("Red cabbage stew with sausages."));
-				dayRecipe.setStatus(2);	
+				dayRecipe.setStatus(RecipeStatus.SELECTED);	
 				dRService.save(dayRecipe);
 				
 				dayRecipe = dayRecipeList.get(2);
 				dayRecipe.setRecipe(rService.findByRecipeName("Red cabbage stew with sausages."));
-				dayRecipe.setStatus(2);	
+				dayRecipe.setStatus(RecipeStatus.SELECTED);	
 				dRService.save(dayRecipe);
 				
 				dayRecipe = dayRecipeList.get(3);
 				dayRecipe.setRecipe(rService.findByRecipeName("Fries"));
-				dayRecipe.setStatus(2);	
+				dayRecipe.setStatus(RecipeStatus.SELECTED);	
 				dRService.save(dayRecipe);
 				
 				dayRecipe = dayRecipeList.get(4);
 				dayRecipe.setRecipe(rService.findByRecipeName("Fries"));
-				dayRecipe.setStatus(2);	
+				dayRecipe.setStatus(RecipeStatus.SELECTED);	
 				dRService.save(dayRecipe);
 				
 				dayRecipe = dayRecipeList.get(5);
 				dayRecipe.setRecipe(rService.findByRecipeName("Stew"));
-				dayRecipe.setStatus(2);	
+				dayRecipe.setStatus(RecipeStatus.SELECTED);	
 				dRService.save(dayRecipe);
 				
 				dayRecipe = dayRecipeList.get(6);
 				dayRecipe.setRecipe(rService.findByRecipeName("Fries"));
-				dayRecipe.setStatus(2);	
+				dayRecipe.setStatus(RecipeStatus.SELECTED);	
 				dRService.save(dayRecipe);
 				
 				dayRecipe = dayRecipeList.get(7);
 				dayRecipe.setRecipe(rService.findByRecipeName("Vegetarian lasagne"));
-				dayRecipe.setStatus(2);	
+				dayRecipe.setStatus(RecipeStatus.SELECTED);	
 				dRService.save(dayRecipe);
 				
 				dayRecipe = dayRecipeList.get(8);
 				dayRecipe.setRecipe(rService.findByRecipeName("Pizza"));
-				dayRecipe.setStatus(2);	
+				dayRecipe.setStatus(RecipeStatus.SELECTED);	
 				dRService.save(dayRecipe);
 				
 				dayRecipe = dayRecipeList.get(9);
 				dayRecipe.setRecipe(rService.findByRecipeName("Vegetarian lasagne"));
-				dayRecipe.setStatus(2);	
+				dayRecipe.setStatus(RecipeStatus.SELECTED);	
 				dRService.save(dayRecipe);
 				
 			} catch (NotFoundException e) {

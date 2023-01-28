@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import nl.jemaja.weekmenu.model.RecipeStatus;
 
 import java.sql.Date;
 
@@ -25,6 +26,6 @@ public class DayRecipeDto {
 	private Date date;
 	private Long recipeId;
 	private String recipeName;
-	private int status;
+	private RecipeStatus status;
 	private Long id;
 }

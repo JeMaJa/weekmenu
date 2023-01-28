@@ -4,6 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.dto.DayRecipeDto;
 import nl.jemaja.weekmenu.dto.mapper.DayRecipeMapper;
 import nl.jemaja.weekmenu.model.DayRecipe;
+import nl.jemaja.weekmenu.model.RecipeStatus;
 import nl.jemaja.weekmenu.repository.DayRecipeRepository;
 import nl.jemaja.weekmenu.repository.RecipeRepository;
 import nl.jemaja.weekmenu.service.DayRecipeService;
@@ -63,9 +64,9 @@ public class DayRecipeRestControllerV1 {
 			//dRService.acceptSuggestion(id);
 			
 			DayRecipe dr2 = dRService.findById(id);
-			if(dr2.getStatus() == 1)
+			if(dr2.getStatus().equals(RecipeStatus.SUGGESTED))
 			{
-				dr2.setStatus(2);
+				dr2.setStatus(RecipeStatus.SELECTED);
 				dRService.save(dr2);
 			} else {
 				log.warn("Day Recipe: "+id+" doe not have status 1, so cannot be updated to 2");
@@ -123,7 +124,7 @@ public class DayRecipeRestControllerV1 {
 		try {
 			DayRecipe dr = dRService.findById(id);
 			dr.setRecipe(null);
-			dr.setStatus(0);
+			dr.setStatus(RecipeStatus.NOT_SET);
 			Date date = dr.getDate();
 			
 
