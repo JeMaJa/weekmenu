@@ -38,6 +38,13 @@ public class RecipeLabelService {
 		recipeLabelRepo.save(label);
 				
 	}
+
+	public boolean existsByName(String name) {
+		List<RecipeLabel> labelList = new ArrayList<>();
+		labelList = recipeLabelRepo.findByName(name);
+		if(labelList.isEmpty()) return false;
+		return true;
+	}
 	
 
 }
