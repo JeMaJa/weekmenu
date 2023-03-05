@@ -45,6 +45,12 @@ public class RecipeLabelService {
 		if(labelList.isEmpty()) return false;
 		return true;
 	}
+
+	public void deleteById(Long id) {
+		recipeLabelRepo.deleteById(id);
+		log.debug("deleted: "+id);
+		
+	}
 	
 
 }
