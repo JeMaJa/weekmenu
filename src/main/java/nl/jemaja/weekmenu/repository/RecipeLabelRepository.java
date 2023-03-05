@@ -16,6 +16,9 @@ public interface RecipeLabelRepository extends JpaRepository<RecipeLabel, Long> 
 	@Query(value="select l from RecipeLabel l where l.recipes= ?1")
 	List<RecipeLabel> findByRecipe(long recipeId);
 
+
+	List<RecipeLabel> findByName(String name);
+
 	
 
 }
