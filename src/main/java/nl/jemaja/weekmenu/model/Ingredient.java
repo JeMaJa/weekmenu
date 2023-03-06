@@ -27,6 +27,20 @@ public class Ingredient {
 	
 	@ManyToMany(cascade=CascadeType.ALL, mappedBy="ingredients")
 	List<Recipe> recipes;
+
+	public void update(Ingredient ingredient) {
+		this.name = ingredient.getName();
+		this.uom = ingredient.getUom();
+		
+	}
+
+	public boolean validate() {
+		if(this.name != null && name.length() > 0 && this.uom != null) {
+		return true;
+		} 
+		return false;
+		
+	}
 	
 
 }
