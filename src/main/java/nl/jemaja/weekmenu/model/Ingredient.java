@@ -11,6 +11,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 @Entity
@@ -25,6 +28,7 @@ public class Ingredient {
 	private String name;
 	private UOM uom;
 	
+	@JsonIgnore
 	@ManyToMany(cascade=CascadeType.ALL, mappedBy="ingredients")
 	List<Recipe> recipes;
 

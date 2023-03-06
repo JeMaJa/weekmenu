@@ -12,6 +12,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 
 @Entity
@@ -28,6 +31,7 @@ public class RecipeLabel {
 	@Column(unique=true)
 	private String name;
 	
+	@JsonIgnore
 	@ManyToMany(cascade=CascadeType.MERGE, mappedBy="labels")
 	List<Recipe> recipes;
 }
