@@ -101,7 +101,10 @@ public class RecipeWebController {
 			}
 			RecipeDto recipeDto = mapper.recipeToRecipeDto(recipe);
 			recipeDto.setDescription(recipeDto.getDescription().replaceAll("(\r\n|\n)", "<br>"));
-			recipeDto.setShortDescription(recipeDto.getShortDescription().replaceAll("(\r\n|\n)", "<br>"));
+			if(recipeDto.getShortDescription() != null)
+			{
+				recipeDto.setShortDescription(recipeDto.getShortDescription().replaceAll("(\r\n|\n)", "<br>"));
+			}
 			model.put("stats", stats);
 			model.put("recipeDto", recipeDto);
 			return "recipe";

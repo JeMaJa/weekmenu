@@ -23,9 +23,43 @@
 	<div class="container text-center"> <!-- main container-->
 	
 	<div class=".container-fluid"> <!-- Image with recipe name -->
-	<img src="file:///C:/Users/yanni/OneDrive/github/tasty-recipes-master/tasty-recipes-master/img/recepie/recepie_details.png" class="img-fluid rounded mx-auto d-block" alt="...">
-	<div class="centered">Centered</div>
+	<h1 class="centered" th:text="${recipeDto.recipeName}">Recipe name</h1>
 	</div> <!-- Image with recipe name -->
+	
+	<div class="container-fluid">
+  
+ 	<div  th:utext="${recipeDto.shortDescription}">short description</div>
+ 	<hr>
+ 		<div class="table-responsive">
+ 		<table class="table-light">
+ 			<tr>
+ 				<td>left</td>
+ 				<td class="table-info" th:utext="${recipeDto.description}">mid</td>
+ 				<td class="align-top">
+				<div class="dropdown">
+							<button class="btn btn-secondary dropdown-toggle btn-sm"
+								type="button" data-bs-toggle="dropdown" aria-expanded="true">
+								Options</button>
+							<ul class="dropdown-menu">
+								<li><a class="dropdown-item" href="#">Plan for tomorrow</a></li>
+								<li><a class="dropdown-item" href="#"
+									data-bs-toggle="modal" data-bs-target="#modal1"
+									th:data-whatever="${recipeDto.recipeId}">Plan for date</a></li>
+								
+								<li><hr class="dropdown-divider"></li>
+								<li><a class="dropdown-item" th:href="@{/modifyrecipe(recipeId=${recipeDto.recipeId})}">Modify recipe</a></li>
+							</ul>
+						</div>
+
+				</td>
+ 			</tr>
+		</table>
+		</div>
+		<div> <!--labels-->
+		<span class="badge text-bg-secondary">Label</span>
+		</div><!--labels end-->
+	</div> <!-- the fluid container-->
+	
 	</div> <!-- main container-->
 </body>
 

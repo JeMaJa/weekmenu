@@ -14,6 +14,9 @@ import nl.jemaja.weekmenu.service.DayRecipeService;
 import nl.jemaja.weekmenu.service.RecipeLabelService;
 import nl.jemaja.weekmenu.service.RecipeService;
 import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,7 +33,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/recipe")
 public class RecipeRestControllerV1 {
 	
 	@Autowired
@@ -92,12 +95,25 @@ public class RecipeRestControllerV1 {
 			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		
-		
+	
 		
 		
 	}
 	
-
+	@GetMapping(path = "labels/{recipeId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<RecipeLabel>> getRecipeLabels(@PathVariable("recipeId") Long id) {
+		try {
+			Recipe recipe = recipeService.findByRecipeId(id);
+			return new ResponseEntity<List<RecipeLabel>>(recipe.getLabels(),HttpStatus.OK);
+		} catch (NotFoundException e) {
+			log.debug("Did not find labels for recipe:"+id);
+			return new ResponseEntity<List<RecipeLabel>>(HttpStatus.NO_CONTENT);
+			
+		}  catch (Exception e) {
+			log.error("We have an exception in the return new ResponseEntity<List<RecipeLabel>>( method.");
+			return new ResponseEntity<List<RecipeLabel>>(HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+	}
 	
 	
 

@@ -42,7 +42,7 @@ public class IngredientControllerV1 {
 		}
 	}
 	
-	@PostMapping(path = "createingredient", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(path = "ingredient", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Ingredient> createLabel(@RequestBody Ingredient ingredient) {
 		ResponseEntity<Ingredient> response= new ResponseEntity<Ingredient>(ingredient, HttpStatus.ACCEPTED);
 		try {
@@ -58,7 +58,7 @@ public class IngredientControllerV1 {
 		
 	}
 	
-	@PutMapping(path = "updateingredient/{ingredientId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path = "ingredient/{ingredientId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Ingredient> updateLabel(@RequestBody Ingredient ingredient, @PathVariable("ingredientId") Long id) {
 		ResponseEntity<Ingredient> response= new ResponseEntity<Ingredient>(ingredient, HttpStatus.OK);
 		
@@ -82,7 +82,7 @@ public class IngredientControllerV1 {
 		
 	}
 	
-	@DeleteMapping(path = "deleteingredient/{ingredientId}")
+	@DeleteMapping(path = "ingredient/{ingredientId}")
 	public ResponseEntity deleteLabel(@PathVariable("ingredientId") Long id) {
 		ResponseEntity response= new ResponseEntity( HttpStatus.OK);
 		

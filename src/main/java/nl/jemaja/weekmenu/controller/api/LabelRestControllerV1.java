@@ -55,22 +55,10 @@ public class LabelRestControllerV1 {
 	
 	
 	}
-	@GetMapping(path = "recipelabels/{recipeId}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<List<RecipeLabel>> getRecipeLabels(@PathVariable("recipeId") Long id) {
-		try {
-			Recipe recipe = recipeService.findByRecipeId(id);
-			return new ResponseEntity<List<RecipeLabel>>(recipe.getLabels(),HttpStatus.OK);
-		} catch (NotFoundException e) {
-			log.debug("Did not find labels for recipe:"+id);
-			return new ResponseEntity<List<RecipeLabel>>(HttpStatus.NO_CONTENT);
-			
-		}  catch (Exception e) {
-			log.error("We have an exception in the return new ResponseEntity<List<RecipeLabel>>( method.");
-			return new ResponseEntity<List<RecipeLabel>>(HttpStatus.INTERNAL_SERVER_ERROR);
-		}
-	}
+	//move
 	
-	@PostMapping(path = "createlabel", produces = MediaType.APPLICATION_JSON_VALUE)
+	
+	@PostMapping(path = "label", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RecipeLabel> createLabel(@RequestBody RecipeLabel recipeLabel) {
 		ResponseEntity<RecipeLabel> response= new ResponseEntity<RecipeLabel>(recipeLabel, HttpStatus.ACCEPTED);
 		try {
@@ -86,7 +74,7 @@ public class LabelRestControllerV1 {
 		
 	}
 	
-	@PutMapping(path = "updatelabel/{labelId}", produces = MediaType.APPLICATION_JSON_VALUE)
+	@PutMapping(path = "label/{labelId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<RecipeLabel> updateLabel(@RequestBody RecipeLabel recipeLabel, @PathVariable("labelId") Long id) {
 		ResponseEntity<RecipeLabel> response= new ResponseEntity<RecipeLabel>(recipeLabel, HttpStatus.OK);
 		
