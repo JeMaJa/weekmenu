@@ -17,6 +17,7 @@
 		crossorigin="anonymous"></script>
 	<script
 		src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="/js/recipe.js" type="text/javascript"></script>
 
 	<div th:replace="header"></div>
 
@@ -55,11 +56,16 @@
  			</tr>
 		</table>
 		</div>
-		<div> <!--labels-->
-		<span class="badge text-bg-secondary">Label</span>
-		</div><!--labels end-->
+		<!--labels-->
+		
+		
+		<a type="button"  th:each="label : ${labels}"  th:class="${label.color.buttonClass}" th:text="${label.name}" th:href="@{/getrecipes(labelId=${label.id})}" role="button"> Label </a>
+		
+		<!--labels end-->
+		
 	</div> <!-- the fluid container-->
-	
+
+
 	</div> <!-- main container-->
 </body>
 

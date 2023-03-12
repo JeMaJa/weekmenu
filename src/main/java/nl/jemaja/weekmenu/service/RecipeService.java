@@ -257,6 +257,21 @@ public class RecipeService {
 		}
 	}
 
+	public Page<Recipe> findByRecipeNameOrDescriptionContaining(String q, String q2, PageRequest sortedByName) {
+		
+		return recipeRepo.findByRecipeNameOrDescriptionContaining(q, q2, sortedByName);
+	}
+
+	public Page<Recipe> findAll(PageRequest sortedByName) {
+		
+		return recipeRepo.findAll(sortedByName);
+	}
+
+	public Page<Recipe> findByLabel(RecipeLabel label, PageRequest sortedByName) {
+		
+		return recipeRepo.findByLabels(label, sortedByName);
+	}
+
 
 	
 

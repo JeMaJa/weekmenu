@@ -4,6 +4,8 @@
 package nl.jemaja.weekmenu.repository;
 
 import nl.jemaja.weekmenu.model.Recipe;
+import nl.jemaja.weekmenu.model.RecipeLabel;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -44,6 +46,10 @@ public interface RecipeRepository extends JpaRepository<Recipe, Long> {
 	List<Recipe> findByActiveTrueAndWorkdayOkTrue();
 
 	List<Recipe> findByActiveTrue();
+
+	
+
+	Page<Recipe> findByLabels(RecipeLabel label, PageRequest sortedByName);
 
 	
 

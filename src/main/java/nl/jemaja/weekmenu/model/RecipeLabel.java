@@ -34,4 +34,6 @@ public class RecipeLabel {
 	@JsonIgnore
 	@ManyToMany(cascade=CascadeType.MERGE, mappedBy="labels")
 	List<Recipe> recipes;
+	
+	private LabelColor color;
 }

@@ -23,6 +23,10 @@
 	  <div th:if="${#fields.hasErrors('recipeDto.recipeName')}">Invalid recipe name</div>
 	</div>
 	<div class="mb-3">
+	  <label for="shortDescription" class="form-label">Short Description (heading)</label>
+	  <textarea class="form-control" th:field="${recipeDto.shortDescription}"rows="2"></textarea>
+	</div>
+	<div class="mb-3">
 	  <label for="description" class="form-label">Description</label>
 	  <textarea class="form-control" th:field="${recipeDto.description}"rows="5"></textarea>
 	</div>

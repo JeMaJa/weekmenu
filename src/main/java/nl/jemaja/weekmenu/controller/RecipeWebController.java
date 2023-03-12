@@ -8,9 +8,12 @@ import nl.jemaja.weekmenu.dto.InfoDto;
 import nl.jemaja.weekmenu.dto.RecipeDto;
 import nl.jemaja.weekmenu.dto.RecipeStatsDto;
 import nl.jemaja.weekmenu.dto.mapper.RecipeMapper;
+import nl.jemaja.weekmenu.model.LabelColor;
 import nl.jemaja.weekmenu.model.Recipe;
+import nl.jemaja.weekmenu.model.RecipeLabel;
 import nl.jemaja.weekmenu.repository.RecipeRepository;
 import nl.jemaja.weekmenu.service.DayRecipeService;
+import nl.jemaja.weekmenu.service.RecipeLabelService;
 import nl.jemaja.weekmenu.service.RecipeService;
 import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,6 +32,8 @@ import org.springframework.web.servlet.support.RequestContextUtils;
 import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletRequest;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -44,6 +49,7 @@ import java.util.stream.IntStream;
 @Controller
 public class RecipeWebController {
 	
+	
 	@Autowired
 	private RecipeService recipeService;
 	
@@ -54,20 +60,34 @@ public class RecipeWebController {
 	DayRecipeService dRService;
 	
 	@Autowired
+	RecipeLabelService lService;
+	
+	@Autowired
 	private RecipeMapper mapper;
 	
 	@GetMapping(path = "/getrecipes") 
 	public String getRecipes(ModelMap map,@RequestParam("page") Optional<Integer> page, 
-		      @RequestParam("size") Optional<Integer> size, @RequestParam("q") Optional<String> query) {
+		      @RequestParam("size") Optional<Integer> size, @RequestParam("q") Optional<String> query, Long labelId) {
 		int currentPage = page.orElse(0);
         int pageSize = size.orElse(10);
         Page<Recipe> recipePage = null;
 		PageRequest sortedByName = PageRequest.of(currentPage, pageSize, Sort.by("recipeName").ascending());
 		if(!query.isEmpty()) {
 			String q = "%"+query.get().toLowerCase()+"%";
-			recipePage = recipeRepository.findByRecipeNameOrDescriptionContaining(q,q, sortedByName);
+			recipePage = recipeService.findByRecipeNameOrDescriptionContaining(q,q, sortedByName);
+		} else if(labelId != null) {
+			/* get by a label */
+			RecipeLabel label = null;
+			try {
+				label = lService.findById(labelId);
+			} catch (NotFoundException e) {
+				// TODO Auto-generated catch block
+				log.error("no recipes with label found");
+			}
+			
+			recipePage = recipeService.findByLabel(label,sortedByName);
 		} else {
-			recipePage = recipeRepository.findAll(sortedByName);
+			recipePage = recipeService.findAll(sortedByName);
 		}
 		
 		map.addAttribute("recipePage", recipePage);
@@ -89,25 +109,37 @@ public class RecipeWebController {
 		if(recipeId != null){
 			Recipe recipe = new Recipe();
 			RecipeStatsDto stats = new RecipeStatsDto();
+			List<RecipeLabel> labels = new ArrayList<RecipeLabel>();
 			try {
 				log.debug("retrieving single recipe: "+recipeId);
 				recipe = recipeService.findByRecipeId(recipeId);
 				stats.setLastEaten(recipeService.findLastEaten(recipe));
 				stats.setNextEaten(recipeService.findNextEaten(recipe));
+				labels = recipeService.getLabels(recipe);
+				RecipeDto recipeDto = mapper.recipeToRecipeDto(recipe);
+				recipeDto.setDescription(recipeDto.getDescription().replaceAll("(\r\n|\n)", "<br>"));
+				if(recipeDto.getShortDescription() != null)
+				{
+					recipeDto.setShortDescription(recipeDto.getShortDescription().replaceAll("(\r\n|\n)", "<br>"));
+				}
+				for(RecipeLabel label : labels) {
+					if(label.getColor() == null) {
+						label.setColor(LabelColor.GREY);
+						
+					}
+				}
+				model.put("stats", stats);
+				model.put("recipeDto", recipeDto);
+				model.put("labels", labels);
+				return "recipe";
 				
 			} catch (NotFoundException e) {
 				log.error("recipe not found/");
 				e.printStackTrace();
+				return "redirect:/getrecipes";
 			}
-			RecipeDto recipeDto = mapper.recipeToRecipeDto(recipe);
-			recipeDto.setDescription(recipeDto.getDescription().replaceAll("(\r\n|\n)", "<br>"));
-			if(recipeDto.getShortDescription() != null)
-			{
-				recipeDto.setShortDescription(recipeDto.getShortDescription().replaceAll("(\r\n|\n)", "<br>"));
-			}
-			model.put("stats", stats);
-			model.put("recipeDto", recipeDto);
-			return "recipe";
+			
+
 		} else {
 			/*
 			 * No recipe ID provided,show all 

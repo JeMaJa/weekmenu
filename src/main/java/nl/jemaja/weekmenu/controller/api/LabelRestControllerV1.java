@@ -84,6 +84,7 @@ public class LabelRestControllerV1 {
 			if(rLabelService.existsByName(name) == false && name != null && name.length() > 0) {
 				label.setName(name);
 				label.setSortOrder(recipeLabel.getSortOrder());
+				label.setColor(recipeLabel.getColor());
 				rLabelService.save(label);
 				response= new ResponseEntity<RecipeLabel>(label, HttpStatus.ACCEPTED);
 			} else {
