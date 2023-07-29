@@ -56,6 +56,8 @@
 	  <div th:if="${#fields.hasErrors('recipeDto.externalUrl')}">Invalid link</div>
 	</div>
 	<input type="submit">
+	<input type="hidden" th:field="${recipeDto.update}"> <!--  Hidden field holding the value for updates -->
+	<input type="hidden" th:field="${recipeDto.recipeId}"> <!--  Hidden field holding the value for updates -->
 	</form>
 	
 	

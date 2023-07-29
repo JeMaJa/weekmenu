@@ -31,13 +31,13 @@
   
  	<div  th:utext="${recipeDto.shortDescription}">short description</div>
  	<hr>
- 		<div class="table-responsive">
+ 		
  		<table class="table-light">
  			<tr>
- 				<td>left</td>
- 				<td class="table-info" th:utext="${recipeDto.description}">mid</td>
- 				<td class="align-top">
-				<div class="dropdown">
+ 				
+ 				<td >mid<div class="table-info" th:utext="${recipeDto.description}"></div></td>
+ 				<td >
+				<div class="dropdown align-top">
 							<button class="btn btn-secondary dropdown-toggle btn-sm"
 								type="button" data-bs-toggle="dropdown" aria-expanded="true">
 								Options</button>
@@ -55,7 +55,7 @@
 				</td>
  			</tr>
 		</table>
-		</div>
+		
 		<!--labels-->
 		
 		

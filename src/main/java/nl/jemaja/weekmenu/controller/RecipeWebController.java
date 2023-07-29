@@ -151,8 +151,33 @@ public class RecipeWebController {
 		
 		
 	}
-
-	
+	@GetMapping("modifyrecipe")
+	public RedirectView modifyRecipe(Long recipeId,  RedirectAttributes redirectAttributes) {
+		/*
+		 * Will redirect to the create recipe page with a flash attribute
+		 * 
+		 */
+		
+		InfoDto infoDto = new InfoDto();
+		RecipeDto recipeDto = new RecipeDto();
+		try {
+			Recipe recipe = recipeService.findByRecipeId(recipeId);
+			infoDto.setType("Info");
+			infoDto.setBody("Modify this recipe.");
+			recipeDto = mapper.recipeToRecipeDto(recipe);
+			recipeDto.setUpdate(true);
+		} catch (NotFoundException e) {
+			infoDto.setType("Warning");
+			infoDto.setBody("No recipe found with this ID, feel free to create a new recipe.");
+		}
+		
+		  log.debug("Preparing to modify recipe: "+recipeId);
+		  
+		  
+		  redirectAttributes.addFlashAttribute("infoDto", infoDto);
+		  redirectAttributes.addFlashAttribute("recipeDto", recipeDto);
+		  return new RedirectView("/recipe/submit", true);
+	}
 	  /*
 	   * Try via https://www.baeldung.com/spring-web-flash-attributes
 	   * 

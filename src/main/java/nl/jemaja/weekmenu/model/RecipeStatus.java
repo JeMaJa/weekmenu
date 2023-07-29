@@ -9,6 +9,14 @@ public enum RecipeStatus {
     private int value;
 
     RecipeStatus(int i) {
-        this.value = i;
+        this.setValue(i);
     }
+
+	public int getValue() {
+		return value;
+	}
+
+	public void setValue(int value) {
+		this.value = value;
+	}
 }

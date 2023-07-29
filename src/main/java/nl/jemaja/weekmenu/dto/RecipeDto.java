@@ -28,4 +28,5 @@ public class RecipeDto {
     private String imageUrl;
     private int servings;  // number of servings in default recipe.
     private String shortDescription;
+    private boolean update; // this boolean is set when updating an existing recipe. 
 }

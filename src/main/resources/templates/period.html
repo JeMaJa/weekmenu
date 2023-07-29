@@ -45,10 +45,17 @@
         </div>
         <div class="gy-1">
             <div class="row align-items-center">
-                <div class="fst-italic" th:id="'dr'+${dayRecipeDto.id}" th:if="${dayRecipeDto.status == T(nl.jemaja.weekmenu.model.RecipeStatus).SUGGESTED}"
+                <!--<div class="fst-italic" th:id="'dr'+${dayRecipeDto.id}" th:if="${dayRecipeDto.status == T(nl.jemaja.weekmenu.model.RecipeStatus).SUGGESTED}"
                      th:text="${dayRecipeDto.recipeName}">Recipe goes here
                 </div>
+                
                 <div class="fw-bold" th:id="'dr'+${dayRecipeDto.id}" th:if="${dayRecipeDto.status == T(nl.jemaja.weekmenu.model.RecipeStatus).SELECTED}"
+                     th:text="${dayRecipeDto.recipeName}">Recipe goes here
+                </div>-->
+                <div class="fst-italic" th:id="'dr'+${dayRecipeDto.id}" th:if="${dayRecipeDto.status.value == 1}"
+                     th:text="${dayRecipeDto.recipeName}">Recipe goes here
+                </div>
+                <div class="fw-bold" th:id="'dr'+${dayRecipeDto.id}" th:if="${dayRecipeDto.status.value ==2}"
                      th:text="${dayRecipeDto.recipeName}">Recipe goes here
                 </div>
             </div>
@@ -143,9 +150,7 @@
     </div>
 
 
-    <!--div class="fixed-bottom">-->
-    <!--  <div class="fixed-bottom">Copyright &copy 2022 Yannick Tollenaere. <br>This application is licensed under the <a href="https://raw.githubusercontent.com/JeMaJa/weekmenu/main/LICENSE.md">MIT License</a><br></div>
-<!-- </div>-->
+
     <p>
         <br>
         <br>
@@ -156,7 +161,7 @@
         <br>
 </div>
 <div class="container fixed-bottom">
-    Copyright &copy 2022 Yannick Tollenaere. <br>This application is
+    Copyright &copy 2022-2023 Yannick Tollenaere. <br>This application is
     licensed under the <a
         href="https://raw.githubusercontent.com/JeMaJa/weekmenu/main/LICENSE.md">MIT
     License</a><br>
