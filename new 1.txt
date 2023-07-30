@@ -1,0 +1,3 @@
+ #!/bin/bash
+
+sudo nohup java -jar target/weekmenu-1.0.2-BETA.jar

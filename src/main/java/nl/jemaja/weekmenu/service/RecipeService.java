@@ -52,7 +52,7 @@ public class RecipeService {
 	public TreeMap<String,Object> save(Recipe recipe) {
 		TreeMap<String, Object> result = new TreeMap();
 		try {
-			recipe.setActive(true); // issue#24 by default set active to true
+			//recipe.setActive(true); // issue#24 by default set active to true
 			recipeRepo.save(recipe);
 			result.put("Status", "saved");
 			result.put("Recipe", recipe);
@@ -87,7 +87,7 @@ public class RecipeService {
 			//return recipeRepo.findByRecipeName(recipe.getRecipeName()).get(0);
 
 		} catch (org.springframework.dao.DataIntegrityViolationException e) {
-			log.error("Unique constraint violation.2");
+			log.error("Unique constraint violation.2 Will go for update");
 			log.debug(e.getMessage());
 			//lets update
 			try {

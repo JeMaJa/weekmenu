@@ -21,6 +21,7 @@ public class RecipeMapper {
 				.imageUrl(recipeDto.getImageUrl())
 				.shortDescription(recipeDto.getShortDescription())
 				.servings(recipeDto.getServings())
+				.active(recipeDto.isActive())
 				.build();
 	}
 	
@@ -38,6 +39,7 @@ public class RecipeMapper {
 				.imageUrl(recipe.getImageUrl())
 				.shortDescription(recipe.getShortDescription())
 				.servings(recipe.getServings())
+				.active(recipe.isActive())
 				.build();
 	}
 

@@ -186,6 +186,7 @@ public class RecipeWebController {
 	public String submitGet(Model model, HttpServletRequest request) {
 
 		RecipeDto recipeDto = new RecipeDto();
+		recipeDto.setActive(true);
 		InfoDto infoDto = new InfoDto();
 		Map<String, ?> inputFlashMap = RequestContextUtils.getInputFlashMap(request);
 		if (inputFlashMap != null) {
@@ -251,6 +252,7 @@ public class RecipeWebController {
 				existingRecipe.setServings(recipeDto.getServings());
 				existingRecipe.setExternalUrl(recipeDto.getExternalUrl());
 				existingRecipe.setRecipeName(recipeDto.getRecipeName());
+				existingRecipe.setActive(recipeDto.isActive());
 				recipeService.saveOrUpdate(existingRecipe);
 				
 			} catch (NotFoundException e) {
@@ -260,20 +262,7 @@ public class RecipeWebController {
 			return new RedirectView("/recipe?recipeId="+recipeDto.getRecipeId(), true);
 			
 			
-			
-			/*
-			 * rivate String recipeName;
-    private String externalUrl;
-    private String description;
-    private boolean vega;
-    private boolean workdayOk;
-    private boolean cooldDown;
-    private int healthScore;
-    private int complexity;
-    private String imageUrl;
-    private int servings;  // number of servings in default recipe.
-    private String shortDescription;
-			 */
+
 		}
 
 	}

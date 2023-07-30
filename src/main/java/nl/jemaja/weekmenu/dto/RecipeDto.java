@@ -29,4 +29,5 @@ public class RecipeDto {
     private int servings;  // number of servings in default recipe.
     private String shortDescription;
     private boolean update; // this boolean is set when updating an existing recipe. 
+    private boolean active;
 }
