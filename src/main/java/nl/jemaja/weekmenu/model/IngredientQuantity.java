@@ -9,6 +9,7 @@ import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -22,20 +23,19 @@ import lombok.NoArgsConstructor;
 @Builder
 @Entity
 public class IngredientQuantity {
+	
 	@EmbeddedId
-    IngredientQuantityKey id;
+    private IngredientQuantityKey id = new IngredientQuantityKey();
 
     @ManyToOne
-    @MapsId("id")
-    @JsonIgnore
+    @MapsId("ingredientId")
     @JoinColumn(name = "ingredient_id")
-    Ingredient ingredient;
+    private Ingredient ingredient;
 
     @ManyToOne
     @MapsId("recipeId")
     @JoinColumn(name = "recipe_id")
-    @JsonIgnore
-    Recipe recipe;
+    private Recipe recipe;
 
-    float quantity;
+    private float quantity;
 }

@@ -44,7 +44,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Slf4j
 @Controller
-public class MenuController {
+public class MenuWebController {
 	
 	@Autowired
 	PlannerService plannerService;
@@ -54,9 +54,6 @@ public class MenuController {
 	
 	@Autowired
 	DayRecipeService dRService;
-	
-	@Autowired
-	DayRecipeRepository dayRecipeRepo;
 	
 	@Autowired
 	DayRecipeRepository dRRepo;

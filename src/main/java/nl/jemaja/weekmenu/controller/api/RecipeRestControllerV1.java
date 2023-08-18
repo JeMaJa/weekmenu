@@ -7,10 +7,13 @@ import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.config.DataSetup;
 import nl.jemaja.weekmenu.dto.RecipeDto;
 import nl.jemaja.weekmenu.dto.mapper.RecipeMapper;
+import nl.jemaja.weekmenu.model.Ingredient;
 import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.model.RecipeLabel;
 import nl.jemaja.weekmenu.repository.RecipeRepository;
 import nl.jemaja.weekmenu.service.DayRecipeService;
+import nl.jemaja.weekmenu.service.IngredientQuantityService;
+import nl.jemaja.weekmenu.service.IngredientService;
 import nl.jemaja.weekmenu.service.RecipeLabelService;
 import nl.jemaja.weekmenu.service.RecipeService;
 import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
@@ -47,6 +50,13 @@ public class RecipeRestControllerV1 {
 	
 	@Autowired
 	RecipeLabelService labelService;
+	
+	@Autowired
+	IngredientService iService;
+
+	
+	@Autowired
+	IngredientQuantityService iQService;
 
 	
 	
@@ -92,13 +102,11 @@ public class RecipeRestControllerV1 {
 			
 		} catch (NotFoundException e) {
 			log.error(e.getMessage());
-			return new ResponseEntity(HttpStatus.INTERNAL_SERVER_ERROR);
+			return new ResponseEntity<RecipeDto>(HttpStatus.INTERNAL_SERVER_ERROR);
 		}
-		
-	
-		
-		
 	}
+		
+ 
 	
 	@GetMapping(path = "labels/{recipeId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<RecipeLabel>> getRecipeLabels(@PathVariable("recipeId") Long id) {

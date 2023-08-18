@@ -13,7 +13,13 @@ public enum UOM {
 		this.single = single;
 		this.plural = plural;
 	}
+	public String getSingle() {
+		return single;
+	}
 	private String single;
 	private String plural;
 	
+	public String toString() {
+		return this.plural;
+	}
 }

@@ -11,10 +11,13 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+import javax.persistence.Transient;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -27,11 +30,20 @@ public class Ingredient {
 	private long id;
 	private String name;
 	private UOM uom;
+	@Transient 
+	private boolean update; //used for DTO purposes, field is transient so not stored in the db.
 	
+	/*
 	@JsonIgnore
 	@ManyToMany(cascade=CascadeType.ALL, mappedBy="ingredients")
 	List<Recipe> recipes;
-
+	*/
+	
+	//https://www.baeldung.com/jpa-many-to-many
+	@JsonIgnore
+	@OneToMany(mappedBy = "ingredient")
+	Set<IngredientQuantity> ingredientQuantities;
+	
 	public void update(Ingredient ingredient) {
 		this.name = ingredient.getName();
 		this.uom = ingredient.getUom();

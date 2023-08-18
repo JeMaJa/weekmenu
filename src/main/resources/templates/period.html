@@ -45,13 +45,7 @@
         </div>
         <div class="gy-1">
             <div class="row align-items-center">
-                <!--<div class="fst-italic" th:id="'dr'+${dayRecipeDto.id}" th:if="${dayRecipeDto.status == T(nl.jemaja.weekmenu.model.RecipeStatus).SUGGESTED}"
-                     th:text="${dayRecipeDto.recipeName}">Recipe goes here
-                </div>
-                
-                <div class="fw-bold" th:id="'dr'+${dayRecipeDto.id}" th:if="${dayRecipeDto.status == T(nl.jemaja.weekmenu.model.RecipeStatus).SELECTED}"
-                     th:text="${dayRecipeDto.recipeName}">Recipe goes here
-                </div>-->
+  
                 <div class="fst-italic" th:id="'dr'+${dayRecipeDto.id}" th:if="${dayRecipeDto.status.value == 1}"
                      th:text="${dayRecipeDto.recipeName}">Recipe goes here
                 </div>

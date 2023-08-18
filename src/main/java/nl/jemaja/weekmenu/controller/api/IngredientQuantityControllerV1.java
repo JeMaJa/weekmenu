@@ -6,10 +6,13 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.jemaja.weekmenu.dto.IQDto;
 import nl.jemaja.weekmenu.model.Ingredient;
 import nl.jemaja.weekmenu.model.IngredientQuantity;
 import nl.jemaja.weekmenu.model.Recipe;
@@ -47,6 +50,33 @@ public class IngredientQuantityControllerV1 {
 		}
 	}
 	
+	@PostMapping(path = "")
+	public ResponseEntity<IQDto> addIngredientQuantity(@RequestBody IQDto iQuantity) {
+		try {
+			Ingredient ingredient = iService.findById(iQuantity.getIngredientId());
+			Recipe recipe = rService.findByRecipeId(iQuantity.getRecipeId());
+			IngredientQuantity existing = new IngredientQuantity();
+			existing = iQService.findByRecipeAndIngredient(recipe, ingredient);
+			if(existing == null) {
+				//create new
+				IngredientQuantity iQ = new IngredientQuantity();
+				iQ.setIngredient(ingredient);
+				iQ.setRecipe(recipe);
+				iQ.setQuantity(iQuantity.getQuantity());
+				iQService.save(iQ);
+				return new ResponseEntity<IQDto> (HttpStatus.OK); 
+			} else {
+				//update
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			return new ResponseEntity<IQDto> (HttpStatus.INTERNAL_SERVER_ERROR); 
+		}
+		return new ResponseEntity<IQDto> (HttpStatus.OK);
+		
+	}
 	
+	  
 
 }

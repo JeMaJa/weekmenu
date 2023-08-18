@@ -1,5 +1,7 @@
 package nl.jemaja.weekmenu.repository;
 
+import java.util.List;
+
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import nl.jemaja.weekmenu.model.Ingredient;
@@ -12,5 +14,7 @@ public interface IngredientQuantityRepository extends JpaRepository<IngredientQu
 	
 
 	IngredientQuantity findByRecipeAndIngredient(Recipe recipe, Ingredient ingredient);
+
+	List<IngredientQuantity> findByRecipe(Recipe recipe);
 
 }

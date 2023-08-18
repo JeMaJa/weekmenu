@@ -7,6 +7,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -16,12 +18,14 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import java.time.OffsetDateTime;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author yannick.tollenaere
@@ -80,7 +84,7 @@ public class Recipe {
         joinColumns = {@JoinColumn(name = "recipe_id", referencedColumnName = "recipeId")},
         inverseJoinColumns = {@JoinColumn(name = "label_id", referencedColumnName = "id")})
     private List<RecipeLabel> labels;
-    
+    /*
     @ManyToMany(cascade=CascadeType.ALL)
     @JoinTable(
         name = "recipe_ingredients",
@@ -89,7 +93,11 @@ public class Recipe {
     private List<Ingredient> ingredients;
     
     
-   
+   */
+    
+    @JsonIgnore
+	@OneToMany(mappedBy = "recipe")
+	Set<IngredientQuantity> ingredientQuantities;
 	
     
     

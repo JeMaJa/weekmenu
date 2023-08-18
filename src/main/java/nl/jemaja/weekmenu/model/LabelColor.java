@@ -1,11 +1,11 @@
 package nl.jemaja.weekmenu.model;
 
 public enum LabelColor {
-	GREEN("green","btn btn-outline-success btn-sm"),
-	RED("red","btn btn-outline-danger btn-sm"),
-	YELLOW("yellow","btn btn-outline-warning btn-sm"),
-	BLUE("blue","btn btn-outline-primary btn-sm"),
-	GREY("grey","btn btn-outline-secondary btn-sm");
+	GREEN("green","btn btn-outline-success btn-sm ms-1 mt-1"),
+	RED("red","btn btn-outline-danger btn-sm ms-1 mt-1"),
+	YELLOW("yellow","btn btn-outline-warning btn-sm ms-1 mt-1"),
+	BLUE("blue","btn btn-outline-primary btn-sm ms-1 mt-1"),
+	GREY("grey","btn btn-outline-secondary btn-sm ms-1 mt-1");
 
 	LabelColor(String color, String buttonClass) {
 		this.color = color;

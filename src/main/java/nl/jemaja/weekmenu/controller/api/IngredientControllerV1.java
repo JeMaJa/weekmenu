@@ -30,6 +30,17 @@ public class IngredientControllerV1 {
 	@Autowired
 	IngredientService iService;
 	
+	@GetMapping(path = "ingredient", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Ingredient>> getAllIngredients() {
+		try {
+			List<Ingredient> ingredients = iService.findAll();
+			return new ResponseEntity<List<Ingredient>>(ingredients, HttpStatus.OK);
+		} catch (Exception e) {
+			log.debug("Did not find ingredients");
+			return new ResponseEntity<List<Ingredient>>(HttpStatus.NO_CONTENT);
+			
+		}
+	}
 	@GetMapping(path = "ingredient/{ingredientId}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Ingredient> getIngredient(@PathVariable("ingredientId") Long id) {
 		try {
@@ -43,7 +54,7 @@ public class IngredientControllerV1 {
 	}
 	
 	@PostMapping(path = "ingredient", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<Ingredient> createLabel(@RequestBody Ingredient ingredient) {
+	public ResponseEntity<Ingredient> createIngredient(@RequestBody Ingredient ingredient) {
 		ResponseEntity<Ingredient> response= new ResponseEntity<Ingredient>(ingredient, HttpStatus.ACCEPTED);
 		try {
 			String name = ingredient.getName();
@@ -51,7 +62,7 @@ public class IngredientControllerV1 {
 				iService.save(ingredient);
 			}
 		} catch (Exception e) {
-			log.error("We have an exception in the createlabel method.");
+			log.error("We have an exception in the createingredient method.");
 			response= new ResponseEntity<Ingredient>(ingredient, HttpStatus.INTERNAL_SERVER_ERROR);
 		}
 		return response;

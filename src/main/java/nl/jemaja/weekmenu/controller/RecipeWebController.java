@@ -4,15 +4,18 @@
 package nl.jemaja.weekmenu.controller;
 
 import lombok.extern.slf4j.Slf4j;
+import nl.jemaja.weekmenu.dto.IQDto;
 import nl.jemaja.weekmenu.dto.InfoDto;
 import nl.jemaja.weekmenu.dto.RecipeDto;
 import nl.jemaja.weekmenu.dto.RecipeStatsDto;
 import nl.jemaja.weekmenu.dto.mapper.RecipeMapper;
+import nl.jemaja.weekmenu.model.IngredientQuantity;
 import nl.jemaja.weekmenu.model.LabelColor;
 import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.model.RecipeLabel;
 import nl.jemaja.weekmenu.repository.RecipeRepository;
 import nl.jemaja.weekmenu.service.DayRecipeService;
+import nl.jemaja.weekmenu.service.IngredientQuantityService;
 import nl.jemaja.weekmenu.service.RecipeLabelService;
 import nl.jemaja.weekmenu.service.RecipeService;
 import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
@@ -64,6 +67,9 @@ public class RecipeWebController {
 
 	@Autowired
 	private RecipeMapper mapper;
+	
+	@Autowired
+	IngredientQuantityService iQService;
 
 	@GetMapping(path = "/getrecipes") 
 	public String getRecipes(ModelMap map,@RequestParam("page") Optional<Integer> page, 
@@ -110,12 +116,18 @@ public class RecipeWebController {
 			Recipe recipe = new Recipe();
 			RecipeStatsDto stats = new RecipeStatsDto();
 			List<RecipeLabel> labels = new ArrayList<RecipeLabel>();
+			List<IngredientQuantity> iQuantities = new ArrayList<IngredientQuantity>();
+			List<IQDto> iQDtos =  new ArrayList<IQDto>();
 			try {
 				log.debug("retrieving single recipe: "+recipeId);
 				recipe = recipeService.findByRecipeId(recipeId);
 				stats.setLastEaten(recipeService.findLastEaten(recipe));
 				stats.setNextEaten(recipeService.findNextEaten(recipe));
 				labels = recipeService.getLabels(recipe);
+				iQuantities = iQService.findByRecipe(recipe); // moet een DTO worden!
+				for(IngredientQuantity iq : iQuantities) {
+					iQDtos.add(new IQDto(recipe.getRecipeName(),iq.getIngredient().getName(),iq.getQuantity(),iq.getIngredient().getUom().toString()));
+				}
 				RecipeDto recipeDto = mapper.recipeToRecipeDto(recipe);
 				recipeDto.setDescription(recipeDto.getDescription().replaceAll("(\r\n|\n)", "<br>"));
 				if(recipeDto.getShortDescription() != null)
@@ -131,6 +143,7 @@ public class RecipeWebController {
 				model.put("stats", stats);
 				model.put("recipeDto", recipeDto);
 				model.put("labels", labels);
+				model.put("iQDtos",iQDtos);
 				return "recipe";
 
 			} catch (NotFoundException e) {

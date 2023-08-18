@@ -46,7 +46,7 @@
 									th:data-whatever="${recipe.recipeId}">Plan for date</a></li>
 								<li><a class="dropdown-item" th:href="@{/recipe(recipeId=${recipe.recipeId})}">View</a></li>
 								<li><hr class="dropdown-divider"></li>
-								<li><a class="dropdown-item" href="#">Modify recipe</a></li>
+								<li><a class="dropdown-item" th:href="@{/modifyrecipe(recipeId=${recipe.recipeId})}">Modify recipe</a></li>
 							</ul>
 						</div>
 				</tr>

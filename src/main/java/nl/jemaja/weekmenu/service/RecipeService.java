@@ -5,6 +5,8 @@ package nl.jemaja.weekmenu.service;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.dto.RecipeStatsDto;
+import nl.jemaja.weekmenu.model.Ingredient;
+import nl.jemaja.weekmenu.model.IngredientQuantity;
 import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.model.RecipeLabel;
 import nl.jemaja.weekmenu.model.RecipePagedList;
@@ -40,6 +42,8 @@ public class RecipeService {
 	
 	@Autowired
 	DayRecipeRepository dRRepo;
+	
+	
 
 	/*
 	 * Method: save(Recipe recipe) 
@@ -272,6 +276,7 @@ public class RecipeService {
 		return recipeRepo.findByLabels(label, sortedByName);
 	}
 
+	
 
 	
 

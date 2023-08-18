@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.model.Ingredient;
+import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.model.RecipeLabel;
 import nl.jemaja.weekmenu.repository.IngredientRepository;
 import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
@@ -27,7 +28,7 @@ public class IngredientService {
 			return ingredient.get();
 		} catch (NoSuchElementException e) {
 			log.debug("NoSuchElementException " + e.getMessage());
-			throw new NotFoundException("Could not find recipelabel with id: "+id);
+			throw new NotFoundException("Could not find ingredient with id: "+id);
 		}
 	}
 
@@ -47,6 +48,16 @@ public class IngredientService {
 		ingredientRepo.deleteById(id);
 		
 	}
+
+	public List<Ingredient> findAll() {
+		return  ingredientRepo.findAll();
+	}
+
+	public List<Ingredient> findAllOrderByNameAsc() {
+		return  ingredientRepo.findAllByOrderByNameAsc();
+	}
+
+
 
 	
 	

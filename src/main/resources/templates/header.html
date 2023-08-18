@@ -22,7 +22,12 @@
           <a class="nav-link active" aria-current="page" th:href="@{/getrecipes}">Recipes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" th:href="@{/settings}">Settings</a>
+          <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">Settings</a>
+          <ul class="dropdown-menu">
+            <li><a class="dropdown-item" th:href="@{/settings}">Generic</a></li>
+            <li><a class="dropdown-item" th:href="@{/ingredients}">Ingredients</a></li>
+
+          </ul>
         </li>
 	</ul></div></div>     
 </nav>
