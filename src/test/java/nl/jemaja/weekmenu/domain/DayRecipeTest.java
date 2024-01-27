@@ -152,10 +152,10 @@ class DayRecipeTest {
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.YEAR, 2022);
 		cal.set(Calendar.DAY_OF_YEAR, 1);    
-		java.sql.Date start =  (Date) cal.getTime();
-		cal.set(Calendar.YEAR, 2024);
+		java.sql.Date start =  new java.sql.Date(cal.getTimeInMillis());
+		cal.set(Calendar.YEAR, 2025);
 		cal.set(Calendar.DAY_OF_YEAR, 1);    
-		java.sql.Date end=  (Date) cal.getTime();
+		java.sql.Date end= new java.sql.Date(cal.getTimeInMillis());
 		try {
 			dRService.creater(start, end);
 		} catch (Exception e) {

@@ -27,10 +27,10 @@ public class DataSetup {
 		//create the entire year, and next of DayRecipe objects
 		//DayRecipeService dRservice = new DayRecipeService();
 		Calendar cal = Calendar.getInstance();
-		cal.set(Calendar.YEAR, 2022);
+		cal.set(Calendar.YEAR, 2024);
 		cal.set(Calendar.DAY_OF_YEAR, 1);    
 		Date start =  new Date(cal.getTimeInMillis());
-		cal.set(Calendar.YEAR, 2024);
+		cal.set(Calendar.YEAR, 2026);
 		cal.set(Calendar.DAY_OF_YEAR, 1);    
 		Date end=  new Date(cal.getTimeInMillis());
 		try {
