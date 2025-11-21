@@ -37,5 +37,17 @@ public class IngredientQuantityService {
 		return iQRepository.findByRecipe(recipe);
 	}
 
+    /**
+     * Delete an IngredientQuantity from the database.
+     * This removes the ingredient from the recipe.
+     *
+     * @param ingredientQuantity The IngredientQuantity to delete
+     */
+    public void delete(IngredientQuantity ingredientQuantity) {
+        log.debug("Deleting ingredient quantity: recipeId={}, ingredientId={}",
+                ingredientQuantity.getRecipe().getRecipeId(),
+                ingredientQuantity.getIngredient().getId());
+        iQRepository.delete(ingredientQuantity);
+    }
 
 }

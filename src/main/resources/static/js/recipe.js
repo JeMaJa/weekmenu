@@ -1,5 +1,4 @@
 
-
 /*let modalAccept = document.getElementById('modalAccept')
 
 modalAccept.addEventListener('click', function() {
@@ -79,3 +78,33 @@ function addIngredient() {
     	})
 	
 }
+/**
+ * Delete an ingredient from the recipe
+ * @param ingredientId The ID of the ingredient to delete
+ * @param recipeId The ID of the recipe
+ */
+function deleteIngredient(ingredientId, recipeId) {
+    // Confirm deletion with user
+    if (!confirm('Are you sure you want to remove this ingredient from the recipe?')) {
+        return;
+    }
+
+    const url = '/api/v1/ingredientquantity/' + recipeId + '/' + ingredientId;
+
+    $.ajax({
+        url: url,
+        type: "DELETE",
+        success: function(response) {
+            console.log('Ingredient deleted successfully');
+            // Reload the page to show updated ingredient list
+            location.reload();
+        },
+        error: function(jqXHR, textStatus, errorThrown) {
+            if (jqXHR.status === 404) {
+                alert('Error: Ingredient not found in recipe');
+            } else {
+                alert('Error removing ingredient: ' + textStatus);
+            }
+            console.error('Delete error:', jqXHR.responseText);
+        }
+    });
