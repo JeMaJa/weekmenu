@@ -5,8 +5,6 @@ package nl.jemaja.weekmenu.service;
 
 import lombok.extern.slf4j.Slf4j;
 import nl.jemaja.weekmenu.dto.RecipeStatsDto;
-import nl.jemaja.weekmenu.model.Ingredient;
-import nl.jemaja.weekmenu.model.IngredientQuantity;
 import nl.jemaja.weekmenu.model.Recipe;
 import nl.jemaja.weekmenu.model.RecipeLabel;
 import nl.jemaja.weekmenu.model.RecipePagedList;
@@ -252,7 +250,7 @@ public class RecipeService {
 		return this.findNextEaten(recipe,currentdate);
 	}
 
-	private java.util.Date findNextEaten(Recipe recipe, Date currentdate) {
+	public Date findNextEaten(Recipe recipe, Date currentdate) {
 		Date returnVal = dRRepo.findNextEaten(recipe,currentdate);
 		if(returnVal == null) {
 			return new Date(0);

@@ -10,6 +10,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+
 @Entity
 @Data
 @AllArgsConstructor
@@ -28,7 +29,23 @@ public class Settings {
 	private PlanRule saturday;
 	private PlanRule sunday;
 	private int healthyThreshold;
-	
+
+    /*
+    Weights for the schedule setup
+     */
+	private double healthWeight;
+    private double recencyWeight;
+    private double preferenceWeight;
+    private double variatyWeight;
+    private double qOneWeight;
+    private double qTwoWeight;
+    private double qThreeWeight;
+    private double qFourWeight;
+    private double oneWeekPenalty;
+    private double twoWeekPenalty;
+    private double threeWeekPenalty;
+
+
 	
 
 }
