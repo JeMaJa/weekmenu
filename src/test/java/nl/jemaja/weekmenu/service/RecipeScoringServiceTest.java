@@ -72,23 +72,20 @@ class RecipeScoringServiceTest {
         testDate = Date.valueOf("2024-01-15");
 
         // Mock settings service
-        when(settingsService.getSettings()).thenReturn(testSettings);
+        lenient().when(settingsService.getSettings()).thenReturn(testSettings);
     }
 
     @Test
     @DisplayName("calcHealthScore - should normalize health score correctly")
     void testCalcHealthScore() {
-        // Remove the settingsService mock - calcHealthScore doesn't use it
+        // Don't call settingsService at all - calcHealthScore is pure calculation
 
-        // Test with health score 4
         Recipe recipe4 = Recipe.builder().healthScore(4).build();
         assertEquals(0.8, scoringService.calcHealthScore(recipe4), 0.001);
 
-        // Test with health score 5
         Recipe recipe5 = Recipe.builder().healthScore(5).build();
         assertEquals(1.0, scoringService.calcHealthScore(recipe5), 0.001);
 
-        // Test with health score 1
         Recipe recipe1 = Recipe.builder().healthScore(1).build();
         assertEquals(0.2, scoringService.calcHealthScore(recipe1), 0.001);
     }
@@ -299,7 +296,7 @@ class RecipeScoringServiceTest {
         DayRecipe dr1 = DayRecipe.builder().recipe(testRecipe).build();
         DayRecipe dr2 = DayRecipe.builder().recipe(otherRecipe).build();
         DayRecipe dr3 = DayRecipe.builder().recipe(testRecipe).build();
-        
+
 
         // Use calcPreferenceScore to indirectly test countPeriod
         when(dayRecipeService.findByDateBetween(any(Date.class), any(Date.class)))
