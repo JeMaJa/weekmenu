@@ -1,10 +1,7 @@
 package nl.jemaja.weekmenu.service;
 
 import lombok.extern.slf4j.Slf4j;
-import nl.jemaja.weekmenu.model.DayRecipe;
-import nl.jemaja.weekmenu.model.DayRecipePagedList;
-import nl.jemaja.weekmenu.model.Recipe;
-import nl.jemaja.weekmenu.model.RecipeStatus;
+import nl.jemaja.weekmenu.model.*;
 import nl.jemaja.weekmenu.repository.DayRecipeRepository;
 import nl.jemaja.weekmenu.util.exceptions.IncorrectStatusException;
 import nl.jemaja.weekmenu.util.exceptions.NotFoundException;
@@ -137,7 +134,7 @@ public class DayRecipeService {
         return dayRecipePagedList;
         }
         
-    
+
 
 	@Deprecated
 	public int creater(int num) {

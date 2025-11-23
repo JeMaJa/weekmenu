@@ -202,6 +202,7 @@ public class RecipeService {
 		return recipe.getLabels();
 		
 	}
+
 	
 	public RecipeStatsDto getStats(Recipe recipe) {
 		Date currentdate = new java.sql.Date(System.currentTimeMillis());

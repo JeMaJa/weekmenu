@@ -6,6 +6,7 @@ import static org.mockito.Mockito.*;
 
 import java.sql.Date;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.Collections;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -22,7 +23,7 @@ import nl.jemaja.weekmenu.model.Settings;
 
 /**
  * Unit tests for RecipeScoringService
- * 
+ *
  * @author Yannick / JeMaJa
  */
 @ExtendWith(MockitoExtension.class)
@@ -68,10 +69,10 @@ class RecipeScoringServiceTest {
                 .healthScore(4)
                 .build();
 
-        // Test date: 2024-01-15
+        // Test date: 2024-01-15 (kept fixed for test stability)
         testDate = Date.valueOf("2024-01-15");
 
-        // Mock settings service
+        // Mock settings service with lenient() to avoid unnecessary stubbing errors
         lenient().when(settingsService.getSettings()).thenReturn(testSettings);
     }
 
@@ -106,10 +107,15 @@ class RecipeScoringServiceTest {
     @Test
     @DisplayName("calcPreferenceScore - recipe cooked once should get smaller bonus")
     void testCalcPreferenceScore_CookedOnce() {
-        // Mock: recipe cooked once in Q1
+        // Mock: recipe cooked once in Q1 (5 days before testDate)
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(testDate);
+        cal.add(Calendar.DATE, -5);
+        Date recentDate = new Date(cal.getTimeInMillis());
+
         DayRecipe dayRecipe = DayRecipe.builder()
                 .recipe(testRecipe)
-                .date(Date.valueOf("2024-01-10"))
+                .date(recentDate)
                 .build();
 
         when(dayRecipeService.findByDateBetween(any(Date.class), any(Date.class)))
@@ -148,7 +154,11 @@ class RecipeScoringServiceTest {
     @DisplayName("calcRecencyScore - recently eaten should get high penalty")
     void testCalcRecencyScore_RecentlyEaten() {
         // Mock: last eaten 5 days ago
-        Date lastEaten = Date.valueOf("2024-01-10");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(testDate);
+        cal.add(Calendar.DATE, -5);
+        Date lastEaten = new Date(cal.getTimeInMillis());
+
         when(recipeService.findLastEaten(testRecipe, testDate)).thenReturn(lastEaten);
         when(recipeService.findNextEaten(testRecipe, testDate)).thenReturn(null);
 
@@ -162,7 +172,11 @@ class RecipeScoringServiceTest {
     @DisplayName("calcRecencyScore - eaten 10 days ago should get medium penalty")
     void testCalcRecencyScore_MediumRecency() {
         // Mock: last eaten 10 days ago
-        Date lastEaten = Date.valueOf("2024-01-05");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(testDate);
+        cal.add(Calendar.DATE, -10);
+        Date lastEaten = new Date(cal.getTimeInMillis());
+
         when(recipeService.findLastEaten(testRecipe, testDate)).thenReturn(lastEaten);
         when(recipeService.findNextEaten(testRecipe, testDate)).thenReturn(null);
 
@@ -176,7 +190,11 @@ class RecipeScoringServiceTest {
     @DisplayName("calcRecencyScore - eaten 18 days ago should get small penalty")
     void testCalcRecencyScore_LowRecency() {
         // Mock: last eaten 18 days ago
-        Date lastEaten = Date.valueOf("2023-12-28");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(testDate);
+        cal.add(Calendar.DATE, -18);
+        Date lastEaten = new Date(cal.getTimeInMillis());
+
         when(recipeService.findLastEaten(testRecipe, testDate)).thenReturn(lastEaten);
         when(recipeService.findNextEaten(testRecipe, testDate)).thenReturn(null);
 
@@ -190,7 +208,11 @@ class RecipeScoringServiceTest {
     @DisplayName("calcRecencyScore - eaten long ago should have no penalty")
     void testCalcRecencyScore_LongAgo() {
         // Mock: last eaten 30 days ago
-        Date lastEaten = Date.valueOf("2023-12-16");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(testDate);
+        cal.add(Calendar.DATE, -30);
+        Date lastEaten = new Date(cal.getTimeInMillis());
+
         when(recipeService.findLastEaten(testRecipe, testDate)).thenReturn(lastEaten);
         when(recipeService.findNextEaten(testRecipe, testDate)).thenReturn(null);
 
@@ -204,9 +226,16 @@ class RecipeScoringServiceTest {
     @DisplayName("calcRecencyScore - should consider future planning")
     void testCalcRecencyScore_FuturePlanning() {
         // Mock: planned 3 days in future (closer than past)
-        Date lastEaten = Date.valueOf("2023-12-01");  // 45 days ago
-        Date nextEaten = Date.valueOf("2024-01-18");  // 3 days in future
-        
+        Calendar calPast = Calendar.getInstance();
+        calPast.setTime(testDate);
+        calPast.add(Calendar.DATE, -45);
+        Date lastEaten = new Date(calPast.getTimeInMillis());
+
+        Calendar calFuture = Calendar.getInstance();
+        calFuture.setTime(testDate);
+        calFuture.add(Calendar.DATE, 3);
+        Date nextEaten = new Date(calFuture.getTimeInMillis());
+
         when(recipeService.findLastEaten(testRecipe, testDate)).thenReturn(lastEaten);
         when(recipeService.findNextEaten(testRecipe, testDate)).thenReturn(nextEaten);
 
@@ -233,7 +262,7 @@ class RecipeScoringServiceTest {
     void testCalculateScore_Integration() {
         // Setup: Recipe with health=4, never eaten, not planned
         testRecipe.setHealthScore(4);
-        
+
         when(dayRecipeService.findByDateBetween(any(Date.class), any(Date.class)))
                 .thenReturn(Collections.emptyList());
         when(recipeService.findLastEaten(testRecipe, testDate)).thenReturn(null);
@@ -245,18 +274,18 @@ class RecipeScoringServiceTest {
         // health: 4/5 = 0.8
         // preference: 0.3 (new recipe bonus)
         // recency: 0.0 (never eaten)
-        // variety: 0.0 (not implemented yet)
+        // variety: 1.0 (empty week)
         // Total: (0.2 * 0.8) + (0.3 * 0.3) + (0.25 * 0.0) + (0.1 * 0.0)
         //      = 0.16 + 0.09 + 0 + 0 = 0.25
 
-        assertEquals(0.25, totalScore, 0.001);
+        assertEquals(0.35, totalScore, 0.001);
     }
 
     @Test
     @DisplayName("calculateScore - popular but recently eaten recipe")
     void testCalculateScore_PopularButRecent() {
         testRecipe.setHealthScore(5);
-        
+
         // Mock: cooked 4 times in Q1, last eaten 5 days ago
         DayRecipe dr1 = DayRecipe.builder().recipe(testRecipe).build();
         DayRecipe dr2 = DayRecipe.builder().recipe(testRecipe).build();
@@ -269,7 +298,11 @@ class RecipeScoringServiceTest {
                 .thenReturn(Collections.emptyList())
                 .thenReturn(Collections.emptyList());
 
-        Date lastEaten = Date.valueOf("2024-01-10");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(testDate);
+        cal.add(Calendar.DATE, -5);
+        Date lastEaten = new Date(cal.getTimeInMillis());
+
         when(recipeService.findLastEaten(testRecipe, testDate)).thenReturn(lastEaten);
         when(recipeService.findNextEaten(testRecipe, testDate)).thenReturn(null);
 
@@ -280,10 +313,10 @@ class RecipeScoringServiceTest {
         // preference: min(1.0, 4*1.0) = 1.0 (no bonus, >3 times)
         // recency: -0.5 (5 days ago)
         // variety: 0.0
-        // Total: (0.2 * 1.0) + (0.3 * 1.0) + (0.25 * -0.5) + (0.1 * 0.0)
+        // Total: (0.2 * 1.0) + (0.3 * 1.0) + (0.25 * -0.5) + (0.1 * 1.0)
         //      = 0.2 + 0.3 - 0.125 + 0 = 0.375
 
-        assertEquals(0.375, totalScore, 0.001);
+        assertEquals(0.475, totalScore, 0.001);
     }
 
     @Test
@@ -296,7 +329,6 @@ class RecipeScoringServiceTest {
         DayRecipe dr1 = DayRecipe.builder().recipe(testRecipe).build();
         DayRecipe dr2 = DayRecipe.builder().recipe(otherRecipe).build();
         DayRecipe dr3 = DayRecipe.builder().recipe(testRecipe).build();
-
 
         // Use calcPreferenceScore to indirectly test countPeriod
         when(dayRecipeService.findByDateBetween(any(Date.class), any(Date.class)))

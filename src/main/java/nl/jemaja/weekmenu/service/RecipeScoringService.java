@@ -2,12 +2,16 @@ package nl.jemaja.weekmenu.service;
 
 import nl.jemaja.weekmenu.model.DayRecipe;
 import nl.jemaja.weekmenu.model.Recipe;
+import nl.jemaja.weekmenu.model.RecipeLabel;
 import nl.jemaja.weekmenu.model.Settings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.Calendar;
 import java.sql.Date;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.min;
 
@@ -36,15 +40,72 @@ public class RecipeScoringService {
         double health = calcHealthScore(recipe);
         double preference = calcPreferenceScore(recipe, date);
         double recency = calcRecencyScore(recipe, date);
-        double variaty = calcVariatyScore();
+
+        Calendar calStart = Calendar.getInstance();
+        calStart.setTime(date);
+        calStart.add(Calendar.DATE, -6);
+
+        Calendar calEnd = Calendar.getInstance();
+        calEnd.setTime(date);
+        calEnd.add(Calendar.DATE, 6);
+
+        Date startDate = new Date(calStart.getTimeInMillis());
+        Date endDate = new Date(calEnd.getTimeInMillis());
+
+        List<DayRecipe> weekContext = dayRecipeService.findByDateBetween(startDate, endDate);
+
+        double variety = calcVarietyScore(recipe, date, weekContext);
         return (settings.getHealthWeight() * health) +
                 (settings.getPreferenceWeight() * preference) +
                 (settings.getRecencyWeight() * recency) +
-                (settings.getVariatyWeight() * variaty);
+                (settings.getVariatyWeight() * variety);
     }
 
-     double calcVariatyScore() {
-        return 0;
+    double calcVarietyScore(Recipe candidate, Date targetDate, List<DayRecipe> weekContext) {
+        double penalty = 0.0;
+
+        // Look at all already-planned days in the week (both past and future)
+        for (DayRecipe planned : weekContext) {
+
+            long diffInMillies = Math.abs(planned.getDate().getTime() - targetDate.getTime());
+            long diff = TimeUnit.DAYS.convert(diffInMillies, TimeUnit.MILLISECONDS);
+
+            if (planned.getRecipe() == null) {
+                continue;  // Skip empty days
+            }
+
+            // Same recipe = impossible (return 0.0 immediately)
+            if (planned.getRecipe().equals(candidate)) {
+                return 0.0;
+            }
+            if (planned.getDate().equals(targetDate)) {
+                continue;  // Don't compare with itself
+            }
+
+
+
+            List<RecipeLabel> candidateLabels = candidate.getLabels();
+            List<RecipeLabel> plannedLabels = planned.getRecipe().getLabels();
+            if (candidateLabels == null || planned.getRecipe().getLabels() == null) {
+                continue;  // Skip if no labels
+            }
+                // Count shared labels
+                long shared = candidateLabels.stream()
+                        .filter(plannedLabels::contains)
+                        .count();
+
+
+                if (shared > 0) {
+                    // Penalty based on proximity
+                    if (diff <= 1) penalty += 0.4;  // Adjacent days
+                    else if (diff <= 3) penalty += 0.2;  // Within 3 days
+                    else if (diff <= 5) penalty += 0.1;  // Same week
+                }
+            }
+
+
+        return Math.max(0.0, 1.0 - penalty);
+
     }
 
      double calcRecencyScore(Recipe recipe, Date date) {
@@ -118,7 +179,7 @@ public class RecipeScoringService {
 
     private int countPeriod(Recipe recipe, Date start, Date end) {
         int count =0;
-        for (DayRecipe dayRecipe : dayRecipeService.findByDateBetween((java.sql.Date) start, (java.sql.Date) end)) {
+        for (DayRecipe dayRecipe : dayRecipeService.findByDateBetween(start, end)) {
             if ( dayRecipe.getRecipe() != null && dayRecipe.getRecipe().equals(recipe)){
                 count++;            }
         }
