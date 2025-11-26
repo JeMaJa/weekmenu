@@ -258,6 +258,24 @@ class RecipeScoringServiceTest {
     }
 
     @Test
+    @DisplayName("calcRecencyScore - Date(0) should be treated as never eaten (no penalty)")
+    void testCalcRecencyScore_DateZeroShouldBeNoPenalty() {
+        // BUG TEST: RecipeService returns Date(0) for never-eaten recipes
+        // This should NOT result in a penalty
+        Date epochDate = new Date(0);  // January 1, 1970
+        
+        when(recipeService.findLastEaten(testRecipe, testDate)).thenReturn(epochDate);
+        when(recipeService.findNextEaten(testRecipe, testDate)).thenReturn(epochDate);
+
+        double score = scoringService.calcRecencyScore(testRecipe, testDate);
+
+        // Date(0) means "never eaten", should return 0.0 (no penalty)
+        // BUG: Currently returns -0.5 because Date(0) is treated as a real date
+        assertEquals(0.0, score, 0.001, 
+            "Date(0) should be treated as 'never eaten' and have no penalty");
+    }
+
+    @Test
     @DisplayName("calculateScore - should combine all sub-scores with weights")
     void testCalculateScore_Integration() {
         // Setup: Recipe with health=4, never eaten, not planned

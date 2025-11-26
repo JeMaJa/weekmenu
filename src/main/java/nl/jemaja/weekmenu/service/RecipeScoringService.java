@@ -61,7 +61,7 @@ public class RecipeScoringService {
                 (settings.getVariatyWeight() * variety);
     }
 
-    double calcVarietyScore(Recipe candidate, Date targetDate, List<DayRecipe> weekContext) {
+    public double calcVarietyScore(Recipe candidate, Date targetDate, List<DayRecipe> weekContext) {
         double penalty = 0.0;
 
         // Look at all already-planned days in the week (both past and future)
@@ -108,13 +108,14 @@ public class RecipeScoringService {
 
     }
 
-     double calcRecencyScore(Recipe recipe, Date date) {
+     public double calcRecencyScore(Recipe recipe, Date date) {
         Settings settings = settingsService.getSettings();
         Date last = recipeService.findLastEaten(recipe, date);
         Date next =  recipeService.findNextEaten(recipe, date);
         // Calculate days to closest occurrence (past or future)
-        int daysSinceLast = (last != null) ? daysBetween(last, date) : Integer.MAX_VALUE;
-        int daysUntilNext = (next != null) ? daysBetween(date, next) : Integer.MAX_VALUE;
+
+        int daysSinceLast = (last != null && !last.equals(new Date(0))) ? daysBetween(last, date) : Integer.MAX_VALUE;
+        int daysUntilNext = (next != null && !last.equals(new Date(0))) ? daysBetween(date, next) : Integer.MAX_VALUE;
 
         int daysSince = Math.min(daysSinceLast, daysUntilNext);
 
@@ -125,14 +126,14 @@ public class RecipeScoringService {
         else return 0.0;
     }
 
-     double calcHealthScore(Recipe recipe) {
+     public double calcHealthScore(Recipe recipe) {
         return (double) recipe.getHealthScore() / 5; // normalized health score 1-5
     }
 
     /*
     Calculate the preference score based upon seasonality and how often a meal has been cooked in the past 12 months, weighting per quarter
     */
-     double calcPreferenceScore(Recipe recipe, Date date) {
+     public double calcPreferenceScore(Recipe recipe, Date date) {
         Settings settings = settingsService.getSettings();
         Calendar calStart = Calendar.getInstance();
         calStart.setTime(date);

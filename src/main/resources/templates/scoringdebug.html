@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scoring Debug - Weekmenu</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" 
+          rel="stylesheet" 
+          integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" 
+          crossorigin="anonymous">
+    
+    <style>
+        .score-cell {
+            font-family: monospace;
+            text-align: right;
+        }
+        .score-high {
+            background-color: #d4edda !important;
+        }
+        .score-medium {
+            background-color: #fff3cd !important;
+        }
+        .score-low {
+            background-color: #f8d7da !important;
+        }
+        .score-zero {
+            background-color: #e9ecef !important;
+            color: #6c757d;
+        }
+        .total-score {
+            font-weight: bold;
+        }
+        .settings-card {
+            font-size: 0.85rem;
+        }
+        .settings-card .badge {
+            font-size: 0.75rem;
+        }
+        .date-nav {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .week-context-list {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        .table-responsive {
+            max-height: 70vh;
+            overflow-y: auto;
+        }
+        .sticky-header th {
+            position: sticky;
+            top: 0;
+            background-color: #f8f9fa;
+            z-index: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js" 
+            integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa" 
+            crossorigin="anonymous"></script>
+
+    <div th:replace="header"></div>
+
+    <div class="container-fluid mt-4">
+        <!-- Header with Date Navigation -->
+        <div class="row mb-4">
+            <div class="col">
+                <h2>🔧 Scoring Debug</h2>
+                <p class="text-muted">Visualize how RecipeScoringService calculates scores for each recipe on a given date.</p>
+            </div>
+        </div>
+        
+        <!-- Date Selector -->
+        <div class="row mb-4">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Select Date</h6>
+                        <div class="date-nav">
+                            <a th:href="@{/debug/scoring(date=${targetDate.minusDays(1)})}" class="btn btn-outline-secondary btn-sm">
+                                ← Previous
+                            </a>
+                            <input type="date" 
+                                   id="dateInput" 
+                                   class="form-control" 
+                                   style="max-width: 200px;"
+                                   th:value="${targetDate}">
+                            <a th:href="@{/debug/scoring(date=${targetDate.plusDays(1)})}" class="btn btn-outline-secondary btn-sm">
+                                Next →
+                            </a>
+                            <a th:href="@{/debug/scoring}" class="btn btn-outline-primary btn-sm">
+                                Today
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Current Settings -->
+            <div class="col-md-6">
+                <div class="card settings-card">
+                    <div class="card-body">
+                        <h6 class="card-title">Current Weights</h6>
+                        <div class="d-flex flex-wrap gap-2">
+                            <span class="badge bg-success" th:text="'Health: ' + ${settings.healthWeight}">Health: 0.25</span>
+                            <span class="badge bg-info" th:text="'Preference: ' + ${settings.preferenceWeight}">Preference: 0.25</span>
+                            <span class="badge bg-warning text-dark" th:text="'Recency: ' + ${settings.recencyWeight}">Recency: 0.25</span>
+                            <span class="badge bg-primary" th:text="'Variety: ' + ${settings.variatyWeight}">Variety: 0.25</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Week Context -->
+        <div class="row mb-4">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h6 class="card-title">Week Context (±6 days)</h6>
+                        <div class="week-context-list">
+                            <div th:if="${#lists.isEmpty(weekContext)}" class="text-muted">
+                                No recipes planned in this week.
+                            </div>
+                            <div th:unless="${#lists.isEmpty(weekContext)}" class="d-flex flex-wrap gap-2">
+                                <span th:each="dr : ${weekContext}" 
+                                      th:if="${dr.recipe != null}"
+                                      class="badge"
+                                      th:classappend="${dr.date.toString() == targetDate.toString()} ? 'bg-primary' : 'bg-secondary'"
+                                      th:text="${dr.date} + ': ' + ${dr.recipe.title}">
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Scores Table -->
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-header">
+                        <strong>Recipe Scores</strong> 
+                        <span class="badge bg-secondary" th:text="${#lists.size(scoreDetails)} + ' recipes'"></span>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-sm mb-0">
+                                <thead class="table-light sticky-header">
+                                    <tr>
+                                        <th>#</th>
+                                        <th>Recipe</th>
+                                        <th>Labels</th>
+                                        <th class="text-end">Health<br/><small class="text-muted" th:text="'×' + ${settings.healthWeight}"></small></th>
+                                        <th class="text-end">Preference<br/><small class="text-muted" th:text="'×' + ${settings.preferenceWeight}"></small></th>
+                                        <th class="text-end">Recency<br/><small class="text-muted" th:text="'×' + ${settings.recencyWeight}"></small></th>
+                                        <th class="text-end">Variety<br/><small class="text-muted" th:text="'×' + ${settings.variatyWeight}"></small></th>
+                                        <th class="text-end">Total Score</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="detail, iter : ${scoreDetails}">
+                                        <td th:text="${iter.count}">1</td>
+                                        <td>
+                                            <a th:href="@{/recipe?recipeId={id}(id=${detail.recipe.recipeId})}" th:text="${detail.recipe.recipeName}">Recipe Name</a>
+                                        </td>
+                                        <td>
+                                            <span th:each="label : ${detail.recipe.labels}" 
+                                                  class="badge bg-light text-dark me-1"
+                                                  th:text="${label.name}">
+                                            </span>
+                                        </td>
+                                        <td class="score-cell" 
+                                            th:classappend="${detail.healthScore >= 0.8} ? 'score-high' : (${detail.healthScore >= 0.5} ? 'score-medium' : 'score-low')"
+                                            th:text="${#numbers.formatDecimal(detail.healthScore, 1, 3)}">0.800</td>
+                                        <td class="score-cell"
+                                            th:classappend="${detail.preferenceScore >= 0.8} ? 'score-high' : (${detail.preferenceScore >= 0.3} ? 'score-medium' : (${detail.preferenceScore == 0} ? 'score-zero' : 'score-low'))"
+                                            th:text="${#numbers.formatDecimal(detail.preferenceScore, 1, 3)}">0.500</td>
+                                        <td class="score-cell"
+                                            th:classappend="${detail.recencyScore == 0} ? 'score-high' : (${detail.recencyScore <= 0.3} ? 'score-medium' : 'score-low')"
+                                            th:text="${#numbers.formatDecimal(detail.recencyScore, 1, 3)}">0.000</td>
+                                        <td class="score-cell"
+                                            th:classappend="${detail.varietyScore == 0} ? 'score-zero' : (${detail.varietyScore >= 0.8} ? 'score-high' : (${detail.varietyScore >= 0.5} ? 'score-medium' : 'score-low'))"
+                                            th:text="${#numbers.formatDecimal(detail.varietyScore, 1, 3)}">1.000</td>
+                                        <td class="score-cell total-score"
+                                            th:classappend="${detail.totalScore >= 0.7} ? 'score-high' : (${detail.totalScore >= 0.4} ? 'score-medium' : 'score-low')"
+                                            th:text="${#numbers.formatDecimal(detail.totalScore, 1, 3)}">0.650</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Legend -->
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <h6>Score Interpretation</h6>
+                        <div class="d-flex flex-wrap gap-3">
+                            <span><span class="badge score-high">&nbsp;&nbsp;&nbsp;</span> High (≥0.8)</span>
+                            <span><span class="badge score-medium">&nbsp;&nbsp;&nbsp;</span> Medium (0.3-0.8)</span>
+                            <span><span class="badge score-low">&nbsp;&nbsp;&nbsp;</span> Low (&lt;0.3)</span>
+                            <span><span class="badge score-zero">&nbsp;&nbsp;&nbsp;</span> Zero/Blocked</span>
+                        </div>
+                        <hr/>
+                        <small class="text-muted">
+                            <strong>Health:</strong> Higher is better (based on recipe health score 1-5, normalized).<br/>
+                            <strong>Preference:</strong> Based on cooking frequency in past year, with new recipe bonus. Higher means more preferred.<br/>
+                            <strong>Recency:</strong> Penalty for recently eaten recipes. Lower is better (0 = not eaten recently).<br/>
+                            <strong>Variety:</strong> Penalty for similar labels in the week. 0 = same recipe already planned.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Date picker navigation
+        document.getElementById('dateInput').addEventListener('change', function() {
+            window.location.href = '/debug/scoring?date=' + this.value;
+        });
+    </script>
+</body>
+</html>
